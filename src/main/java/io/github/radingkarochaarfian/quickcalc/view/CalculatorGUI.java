@@ -16,30 +16,15 @@ public class CalculatorGUI extends JFrame {
   private JTextField tfInput;
   private JButton bUp;
   private JButton bDown;
+  private JButton[][] listButton;
 
-  private JButton bMod;
-  private JButton bDiv;
-  private JButton bMult;
-  private JButton bSub;
-  private JButton bAdd;
-  private JButton bEqual;
-  private JButton bOpen;
-  private JButton bClose;
-  private JButton bPlusMin;
-  private JButton bClear;
-  private JButton bAllClear;
-  private JButton bHistory;
-  private JButton bDot;
-  private JButton b1;
-  private JButton b2;
-  private JButton b3;
-  private JButton b4;
-  private JButton b5;
-  private JButton b6;
-  private JButton b7;
-  private JButton b8;
-  private JButton b9;
-  private JButton b0;
+  String[][] listButtonText = {
+      { "%", "÷", "×", "-", "C" },
+      { "7", "8", "9", "+", "AC" },
+      { "4", "5", "6", "H", "(" },
+      { "1", "2", "3", "=", ")" },
+      { "0", "", ".", "", "+/-" }
+  };
 
   public CalculatorGUI() {
     setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
@@ -71,187 +56,40 @@ public class CalculatorGUI extends JFrame {
   }
 
   private void setSouthComponent() {
-    JPanel southPanel = new JPanel(new GridBagLayout());
     JPanel region = new JPanel(new BorderLayout());
+    JPanel southPanel = new JPanel(new GridBagLayout());
     region.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
     region.add(southPanel, BorderLayout.CENTER);
     add(region, BorderLayout.CENTER);
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.BOTH;
+    listButton = new JButton[5][5];
     gbc.weightx = 1.0;
     gbc.weighty = 1.0;
-    gbc.insets = new Insets(2, 2, 2, 2);
-
-    bMod = new JButton("%");
-    bDiv = new JButton("÷");
-    bMult = new JButton("×");
-    bSub = new JButton("−");
-    bClear = new JButton("C");
-    b7 = new JButton("7");
-    b8 = new JButton("8");
-    b9 = new JButton("9");
-    bAdd = new JButton("+");
-    bAllClear = new JButton("AC");
-    b4 = new JButton("4");
-    b5 = new JButton("5");
-    b6 = new JButton("6");
-    bHistory = new JButton("H");
-    bOpen = new JButton("(");
-    b1 = new JButton("1");
-    b2 = new JButton("2");
-    b3 = new JButton("3");
-    bEqual = new JButton("=");
-    bClose = new JButton(")");
-    b0 = new JButton("0");
-    bDot = new JButton(".");
-    bPlusMin = new JButton("+/-");
-
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bMod, gbc);
-
-    gbc.gridx = 1;
-    gbc.gridy = 0;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bDiv, gbc);
-
-    gbc.gridx = 2;
-    gbc.gridy = 0;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bMult, gbc);
-
-    gbc.gridx = 3;
-    gbc.gridy = 0;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bSub, gbc);
-
-    gbc.insets = new Insets(2, 5, 2, 2);
-    gbc.gridx = 4;
-    gbc.gridy = 0;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bClear, gbc);
-
-    gbc.insets = new Insets(2, 2, 2, 2);
-    gbc.gridx = 0;
-    gbc.gridy = 1;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(b7, gbc);
-
-    gbc.gridx = 1;
-    gbc.gridy = 1;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(b8, gbc);
-
-    gbc.gridx = 2;
-    gbc.gridy = 1;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(b9, gbc);
-
-    gbc.gridx = 3;
-    gbc.gridy = 1;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bAdd, gbc);
-
-    gbc.insets = new Insets(2, 5, 2, 2);
-    gbc.gridx = 4;
-    gbc.gridy = 1;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bAllClear, gbc);
-
-    gbc.insets = new Insets(2, 2, 2, 2);
-    gbc.gridx = 0;
-    gbc.gridy = 2;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(b4, gbc);
-
-    gbc.gridx = 1;
-    gbc.gridy = 2;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(b5, gbc);
-
-    gbc.gridx = 2;
-    gbc.gridy = 2;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(b6, gbc);
-
-    gbc.gridx = 3;
-    gbc.gridy = 2;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bHistory, gbc);
-
-    gbc.insets = new Insets(2, 5, 2, 2);
-    gbc.gridx = 4;
-    gbc.gridy = 2;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bOpen, gbc);
-
-    gbc.insets = new Insets(2, 2, 2, 2);
-    gbc.gridx = 0;
-    gbc.gridy = 3;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(b1, gbc);
-
-    gbc.gridx = 1;
-    gbc.gridy = 3;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(b2, gbc);
-
-    gbc.gridx = 2;
-    gbc.gridy = 3;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(b3, gbc);
-
-    gbc.gridx = 3;
-    gbc.gridy = 3;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 2;
-    southPanel.add(bEqual, gbc);
-
-    gbc.insets = new Insets(2, 5, 2, 2);
-    gbc.gridx = 4;
-    gbc.gridy = 3;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bClose, gbc);
-
-    gbc.insets = new Insets(2, 2, 2, 2);
-    gbc.gridx = 0;
-    gbc.gridy = 4;
-    gbc.gridwidth = 2;
-    gbc.gridheight = 1;
-    southPanel.add(b0, gbc);
-
-    gbc.gridx = 2;
-    gbc.gridy = 4;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bDot, gbc);
-
-    gbc.insets = new Insets(2, 5, 2, 2);
-    gbc.gridx = 4;
-    gbc.gridy = 4;
-    gbc.gridwidth = 1;
-    gbc.gridheight = 1;
-    southPanel.add(bPlusMin, gbc);
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0; j < 5; j++) {
+        if (listButtonText[i][j].isEmpty()) {
+          continue;
+        }
+        gbc.gridx = j;
+        gbc.gridy = i;
+        if (j == 4) {
+          gbc.insets = new Insets(2, 5, 2, 2);
+        } else {
+          gbc.insets = new Insets(2, 2, 2, 2);
+        }
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        if (listButtonText[i][j].equals("=")) {
+          gbc.gridheight = 2;
+        } else if (listButtonText[i][j].equals("0")) {
+          gbc.gridwidth = 2;
+        } else {
+        }
+        listButton[i][j] = new JButton(listButtonText[i][j]);
+        southPanel.add(listButton[i][j], gbc);
+      }
+    }
 
   }
 }
