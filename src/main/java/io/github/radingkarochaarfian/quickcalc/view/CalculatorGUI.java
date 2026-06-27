@@ -7,24 +7,17 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.HashMap;
 
 import javax.swing.*;
 
 public class CalculatorGUI extends JFrame {
-  private final int MIN_WIDTH = 270;
-  private final int MIN_HEIGHT = 300;
+  private final int MIN_WIDTH = 290;
+  private final int MIN_HEIGHT = 330;
   private JTextField tfInput;
   private JButton bUp;
   private JButton bDown;
-  private JButton[][] listButton;
-
-  String[][] listButtonText = {
-      { "%", "÷", "×", "-", "C" },
-      { "7", "8", "9", "+", "AC" },
-      { "4", "5", "6", "H", "(" },
-      { "1", "2", "3", "=", ")" },
-      { "0", "", ".", "", "+/-" }
-  };
+  private HashMap<String, JButton> mapButton;
 
   public CalculatorGUI() {
     setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
@@ -33,6 +26,7 @@ public class CalculatorGUI extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setSouthComponent();
     setTitle("0 - QuickCalc");
+    getRootPane().setFocusable(true);
   }
 
   private void setNorthComponent() {
@@ -63,9 +57,16 @@ public class CalculatorGUI extends JFrame {
     add(region, BorderLayout.CENTER);
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.BOTH;
-    listButton = new JButton[5][5];
+    mapButton = new HashMap<>();
     gbc.weightx = 1.0;
     gbc.weighty = 1.0;
+    String[][] listButtonText = {
+        { "%", "÷", "×", "-", "C" },
+        { "7", "8", "9", "+", "AC" },
+        { "4", "5", "6", "H", "(" },
+        { "1", "2", "3", "=", ")" },
+        { "0", "", ".", "", "+/-" }
+    };
     for (int i = 0; i < 5; i++) {
       for (int j = 0; j < 5; j++) {
         if (listButtonText[i][j].isEmpty()) {
@@ -86,10 +87,28 @@ public class CalculatorGUI extends JFrame {
           gbc.gridwidth = 2;
         } else {
         }
-        listButton[i][j] = new JButton(listButtonText[i][j]);
-        southPanel.add(listButton[i][j], gbc);
+        JButton button = new JButton(listButtonText[i][j]);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        button.setFocusable(false);
+        southPanel.add(button, gbc);
+        mapButton.put(listButtonText[i][j], button);
       }
     }
+  }
 
+  public JButton getBUp() {
+    return bUp;
+  }
+
+  public JButton getBDown() {
+    return bDown;
+  }
+
+  public HashMap<String, JButton> getMapButton() {
+    return mapButton;
+  }
+
+  public JTextField getTfInput() {
+    return tfInput;
   }
 }
