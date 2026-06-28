@@ -69,46 +69,6 @@ public class CalculatorController {
     }
   }
 
-  private void onNumberClick(String num) {
-    if (model.isInsideBracket()) {
-      String newText = model.getInputOnBracket() + num;
-      view.getTfInput().setText(newText);
-    } else {
-      String screenText = view.getTfInput().getText();
-      if (isOperator(screenText)) {
-        model.commitInputOperator();
-        view.getTfInput().setText(num);
-      } else {
-        if (view.getTfInput().getText().equals("0"))
-          view.getTfInput().setText("");
-        view.getTfInput().setText(screenText + num);
-      }
-    }
-  }
-
-  private void onOperatorClick(String op) {
-    if (model.isInsideBracket()) {
-      String currText = model.getInputOnBracket();
-      char lastCharacter = currText.charAt(currText.length() - 1);
-      String newText = currText;
-      if (isOperator(String.valueOf(lastCharacter)) || lastCharacter == '(') {
-        newText += "0" + op;
-      } else {
-        newText += op;
-      }
-      model.setInputOnBracket(newText);
-      view.getTfInput().setText(newText);
-    } else {
-      String currText = view.getTfInput().getText();
-      if (!currText.isEmpty() && !isOperator(currText)) {
-        model.addToken(currText);
-        ;
-      }
-      model.setInputOperator(op);
-      view.getTfInput().setText(op);
-    }
-  }
-
   private boolean isNum(String input) {
     if (List.of(".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9").contains(input)) {
       return true;
