@@ -3,58 +3,104 @@ package io.github.radingkarochaarfian.quickcalc.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class CalculatorGUI extends JFrame {
   private final int MIN_WIDTH = 290;
   private final int MIN_HEIGHT = 330;
   private JTextField tfInput;
-  private JButton bUp;
-  private JButton bDown;
   private HashMap<String, JButton> mapButton;
+
+  private JSplitPane spMain;
+  private JTable tHistory;
+  private DefaultTableModel tModelHistory;
 
   public CalculatorGUI() {
     setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
     setLayout(new BorderLayout(10, 10));
-    setNorthComponent();
+    setComponent();
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setSouthComponent();
     setTitle("0 - QuickCalc");
     getRootPane().setFocusable(true);
+    setLocationRelativeTo(null);
   }
 
-  private void setNorthComponent() {
+  private void setComponent() {
+    JPanel pMain = new JPanel(new BorderLayout(10, 10));
+    JPanel pHistory = new JPanel(new BorderLayout(10, 10));
+    pMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    pHistory.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    setNorthComponentMain(pMain);
+    setSouthComponentMain(pMain);
+    setCenterComponentHistory(pHistory);
+    setSouthComponentHistory(pHistory);
+    spMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pMain, pHistory);
+    spMain.setDividerLocation(getWidth() / 2);
+    spMain.setContinuousLayout(true);
+    add(spMain, BorderLayout.CENTER);
+  }
+
+  private void setCenterComponentHistory(JPanel panel) {
+    tModelHistory = new DefaultTableModel(new Object[] { "Operation History" }, 0) {
+      public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+    tHistory = new JTable(tModelHistory);
+    tHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    JScrollPane spHistory = new JScrollPane(tHistory);
+    panel.add(spHistory, BorderLayout.CENTER);
+  }
+
+  private void setSouthComponentHistory(JPanel panel) {
+    JPanel pSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+    for (String s : List.of("◀", "▶", "Clear", "Restore", "Refresh")) {
+      JButton btn = new JButton(s);
+      pSouth.add(btn);
+      mapButton.put(s, btn);
+    }
+    panel.add(pSouth, BorderLayout.SOUTH);
+  }
+
+  private void setNorthComponentMain(JPanel panel) {
     tfInput = new JTextField();
     tfInput.setText("0");
     tfInput.setHorizontalAlignment(JTextField.RIGHT);
     tfInput.setFont(new Font("Arial", Font.BOLD, 25));
     tfInput.setBackground(new Color(240, 240, 240));
-    bUp = new JButton("▲");
-    bDown = new JButton("▼");
     JPanel northPanel = new JPanel();
     JPanel northPanelWest = new JPanel();
     northPanel.setLayout(new BorderLayout(10, 10));
     northPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     northPanelWest.setLayout(new BorderLayout(0, 3));
-    northPanelWest.add(bUp, BorderLayout.NORTH);
-    northPanelWest.add(bDown, BorderLayout.SOUTH);
+    for (String s : List.of("▲", "▼")) {
+      JButton btn = new JButton(s);
+      if (s.equals("▲"))
+        northPanelWest.add(btn, BorderLayout.NORTH);
+      else
+        northPanelWest.add(btn, BorderLayout.SOUTH);
+      mapButton.put(s, btn);
+
+    }
     northPanel.add(northPanelWest, BorderLayout.WEST);
     northPanel.add(tfInput, BorderLayout.CENTER);
-    add(northPanel, BorderLayout.NORTH);
+    panel.add(northPanel, BorderLayout.NORTH);
   }
 
-  private void setSouthComponent() {
+  private void setSouthComponentMain(JPanel panel) {
     JPanel region = new JPanel(new BorderLayout());
     JPanel southPanel = new JPanel(new GridBagLayout());
     region.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
     region.add(southPanel, BorderLayout.CENTER);
-    add(region, BorderLayout.CENTER);
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.BOTH;
     mapButton = new HashMap<>();
@@ -94,14 +140,7 @@ public class CalculatorGUI extends JFrame {
         mapButton.put(listButtonText[i][j], button);
       }
     }
-  }
-
-  public JButton getBUp() {
-    return bUp;
-  }
-
-  public JButton getBDown() {
-    return bDown;
+    panel.add(region, BorderLayout.CENTER);
   }
 
   public HashMap<String, JButton> getMapButton() {
@@ -110,5 +149,13 @@ public class CalculatorGUI extends JFrame {
 
   public JTextField getTfInput() {
     return tfInput;
+  }
+
+  public JTable getTHistory() {
+    return tHistory;
+  }
+
+  public DefaultTableModel getTModelHistory() {
+    return tModelHistory;
   }
 }
