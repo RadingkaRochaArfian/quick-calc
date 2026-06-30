@@ -1,8 +1,13 @@
 package io.github.radingkarochaarfian.quickcalc.config;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+
+import javax.swing.JOptionPane;
 
 public class DatabaseConfig {
   private static final String HOST = "localhost";
@@ -48,4 +53,21 @@ public class DatabaseConfig {
     return DATABASE_NAME;
   }
 
+  public void ExportConfigToFile(String newUser, String newPass) {
+    setUsername(newUser);
+    setPassword(newPass);
+    Properties prop = new Properties();
+    String fileName = "db_config.properties";
+    try (FileOutputStream output = new FileOutputStream(fileName)) {
+      prop.setProperty("db.user", newUser);
+      prop.setProperty("db.password", newPass);
+      prop.store(output, DATABASE_NAME + " configuration (Auto-Generated)");
+    } catch (IOException e) {
+      JOptionPane.showMessageDialog(
+          null,
+          "Failed to write properties file: " + e.getMessage(),
+          "Error",
+          JOptionPane.ERROR_MESSAGE);
+    }
+  }
 }

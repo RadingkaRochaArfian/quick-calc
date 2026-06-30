@@ -24,6 +24,10 @@ public class CalculatorGUI extends JFrame {
   private JTable tHistory;
   private DefaultTableModel tModelHistory;
 
+  private JMenuBar mbMain;
+  private JMenu mUser;
+  private JMenuItem miResetDatabaseCredential;
+
   public CalculatorGUI() {
     setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
     setLayout(new BorderLayout(10, 10));
@@ -47,6 +51,15 @@ public class CalculatorGUI extends JFrame {
     spMain.setDividerLocation(getWidth() / 2);
     spMain.setContinuousLayout(true);
     add(spMain, BorderLayout.CENTER);
+    setMenuComponent();
+  }
+
+  private void setMenuComponent() {
+    mbMain = new JMenuBar();
+    mUser = new JMenu("User");
+    miResetDatabaseCredential = new JMenuItem("Reset Database Credential");
+    mbMain.add(mUser);
+    mUser.add(miResetDatabaseCredential);
   }
 
   private void setCenterComponentHistory(JPanel panel) {
@@ -157,5 +170,21 @@ public class CalculatorGUI extends JFrame {
 
   public DefaultTableModel getTModelHistory() {
     return tModelHistory;
+  }
+
+  public JSplitPane getSpMain() {
+    return spMain;
+  }
+
+  public JMenuBar getMbMain() {
+    return mbMain;
+  }
+
+  public JMenu getMUser() {
+    return mUser;
+  }
+
+  public JMenuItem getMiResetDatabaseCredential() {
+    return miResetDatabaseCredential;
   }
 }
