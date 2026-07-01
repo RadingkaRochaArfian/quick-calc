@@ -1,16 +1,13 @@
 package io.github.radingkarochaarfian.quickcalc.config;
 
-import java.awt.GridLayout;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+
+import io.github.radingkarochaarfian.quickcalc.view.DatabaseCredentialDialog;
 
 public class DatabaseInit {
   private final DatabaseConfig dbConfig;

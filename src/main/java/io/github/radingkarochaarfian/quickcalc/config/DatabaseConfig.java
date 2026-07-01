@@ -65,7 +65,7 @@ public class DatabaseConfig {
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
           null,
-          "Failed to write properties file: " + e.getMessage(),
+          "Failed to write properties file.",
           "Error",
           JOptionPane.ERROR_MESSAGE);
     }

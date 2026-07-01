@@ -1,4 +1,4 @@
-package io.github.radingkarochaarfian.quickcalc.config;
+package io.github.radingkarochaarfian.quickcalc.view;
 
 import java.awt.GridLayout;
 
@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
 
 public class DatabaseCredentialDialog {
   private final DatabaseConfig dbConfig;
