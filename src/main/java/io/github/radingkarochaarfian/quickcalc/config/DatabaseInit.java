@@ -66,8 +66,7 @@ public class DatabaseInit {
   }
 
   private void createTableIfNotExist(Connection conn) {
-    String query = "use " + dbConfig.getDatabaseName() + " go;" +
-        "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='history' AND xtype='U')" +
+    String query = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='history' AND xtype='U')" +
         "CREATE TABLE history (" +
         "id INT IDENTITY(1,1) PRIMARY KEY, " +
         "expression NVARCHAR(500) NOT NULL, " +

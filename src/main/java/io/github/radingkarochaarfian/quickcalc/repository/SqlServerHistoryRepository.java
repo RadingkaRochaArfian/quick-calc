@@ -54,8 +54,7 @@ public class SqlServerHistoryRepository implements HistoryRepository {
   }
 
   public void save(String expression, String result, String tokens) {
-    String query = "USE " + dbconfig.getDatabaseName() + " GO;" +
-        "INSERT INTO history (expression, result, tokens) VALUES (?, ?, ?)";
+    String query = "INSERT INTO history (expression, result, tokens) VALUES (?, ?, ?)";
     try (Connection conn = dbconfig.getConnection();
         PreparedStatement ps = conn.prepareStatement(query)) {
       ps.setString(1, expression);
