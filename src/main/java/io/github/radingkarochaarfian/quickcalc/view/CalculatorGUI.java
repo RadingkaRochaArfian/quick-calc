@@ -14,6 +14,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 public class CalculatorGUI extends JFrame {
   private final int MIN_WIDTH = 290;
   private final int MIN_HEIGHT = 330;
@@ -43,6 +45,7 @@ public class CalculatorGUI extends JFrame {
     JPanel pHistory = new JPanel(new BorderLayout(10, 10));
     pMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     pHistory.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    mapButton = new HashMap<>();
     setNorthComponentMain(pMain);
     setSouthComponentMain(pMain);
     setCenterComponentHistory(pHistory);
@@ -52,6 +55,20 @@ public class CalculatorGUI extends JFrame {
     spMain.setContinuousLayout(true);
     add(spMain, BorderLayout.CENTER);
     setMenuComponent();
+    setAppIcon();
+  }
+
+  private void setAppIcon() {
+    try {
+      FlatSVGIcon appIcon = new FlatSVGIcon("icons/AppIcon.svg");
+      setIconImage(appIcon.getImage());
+    } catch (Exception e) {
+      JOptionPane.showMessageDialog(
+          this,
+          "Failed to load app icon.",
+          "Error",
+          JOptionPane.ERROR_MESSAGE);
+    }
   }
 
   private void setMenuComponent() {
@@ -60,6 +77,7 @@ public class CalculatorGUI extends JFrame {
     miResetDatabaseCredential = new JMenuItem("Reset Database Credential");
     mbMain.add(mUser);
     mUser.add(miResetDatabaseCredential);
+    setJMenuBar(mbMain);
   }
 
   private void setCenterComponentHistory(JPanel panel) {
@@ -116,7 +134,6 @@ public class CalculatorGUI extends JFrame {
     region.add(southPanel, BorderLayout.CENTER);
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.BOTH;
-    mapButton = new HashMap<>();
     gbc.weightx = 1.0;
     gbc.weighty = 1.0;
     String[][] listButtonText = {

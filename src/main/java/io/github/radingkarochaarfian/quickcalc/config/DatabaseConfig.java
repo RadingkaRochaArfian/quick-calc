@@ -13,24 +13,31 @@ public class DatabaseConfig {
   private static final String HOST = "localhost";
   private static final String PORT = "1433";
   private static final String DATABASE_NAME = "QuickCalcDB";
+  private static final String DRIVER_CLASS = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
   private String username = "sa";
   private String password = "insert_password_here";
 
-  public Connection getConnection() throws SQLException, ClassNotFoundException {
-    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    String url = String.format(
+  public String getMasterUrl() {
+    return String.format(
+        "jdbc:sqlserver://%s:%s;encrypt=true;trustServerCertificate=true;",
+        HOST, PORT);
+  }
+
+  public String getUrl() {
+    return String.format(
         "jdbc:sqlserver://%s:%s;databaseName=%s;encrypt=true;trustServerCertificate=true;",
         HOST, PORT, DATABASE_NAME);
-    return DriverManager.getConnection(url, username, password);
+  }
+
+  public Connection getConnection() throws SQLException, ClassNotFoundException {
+    Class.forName(DRIVER_CLASS);
+    return DriverManager.getConnection(getUrl(), username, password);
   }
 
   public Connection getMasterConnection() throws SQLException, ClassNotFoundException {
-    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    String url = String.format(
-        "jdbc:sqlserver://%s:%s;encrypt=true;trustServerCertificate=true;",
-        HOST, PORT);
-    return DriverManager.getConnection(url, username, password);
+    Class.forName(DRIVER_CLASS);
+    return DriverManager.getConnection(getMasterUrl(), username, password);
   }
 
   public String getUsername() {
@@ -51,6 +58,10 @@ public class DatabaseConfig {
 
   public String getDatabaseName() {
     return DATABASE_NAME;
+  }
+
+  public String getDriverClass() {
+    return DRIVER_CLASS;
   }
 
   public void ExportConfigToFile(String newUser, String newPass) {

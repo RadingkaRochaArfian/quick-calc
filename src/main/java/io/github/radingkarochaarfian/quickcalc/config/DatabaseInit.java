@@ -55,7 +55,6 @@ public class DatabaseInit {
 
   private int showErrorAndChoice(String message) {
     String fullMessage = "Failed connecting to SQL Server!\n\n" +
-        "Error detail: " + message + "\n\n" +
         "Re-enter database username and password?";
     return JOptionPane.showConfirmDialog(
         null,
