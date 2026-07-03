@@ -1,5 +1,6 @@
 package io.github.radingkarochaarfian.quickcalc.config;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,33 +11,48 @@ import java.util.Properties;
 import javax.swing.JOptionPane;
 
 public class DatabaseConfig {
-  private static final String HOST = "localhost";
-  private static final String PORT = "1433";
-  private static final String DATABASE_NAME = "QuickCalcDB";
-  private static final String DRIVER_CLASS = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-
+  private String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+  private String masterUrl = "jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;";
+  private String url = "jdbc:sqlserver://localhost:1433;databaseName=QuickCalcDB;encrypt=true;trustServerCertificate=true;";
+  private String databaseName = "QuickCalcDB";
   private String username = "sa";
   private String password = "insert_password_here";
 
+  public DatabaseConfig() {
+    loadConfirationFromProperties();
+  }
+
+  private void loadConfirationFromProperties() {
+    Properties prop = new Properties();
+    String fileName = "db_config.properties";
+    try (FileInputStream input = new FileInputStream(fileName)) {
+      prop.load(input);
+      driverClass = prop.getProperty("db.driver", driverClass);
+      url = prop.getProperty("db.url", url);
+      masterUrl = prop.getProperty("db.masterUrl", masterUrl);
+      username = prop.getProperty("db.username", username);
+      password = prop.getProperty("db.password", password);
+      databaseName = prop.getProperty("db.name", databaseName);
+    } catch (IOException e) {
+
+    }
+  }
+
   public String getMasterUrl() {
-    return String.format(
-        "jdbc:sqlserver://%s:%s;encrypt=true;trustServerCertificate=true;",
-        HOST, PORT);
+    return masterUrl;
   }
 
   public String getUrl() {
-    return String.format(
-        "jdbc:sqlserver://%s:%s;databaseName=%s;encrypt=true;trustServerCertificate=true;",
-        HOST, PORT, DATABASE_NAME);
+    return url;
   }
 
   public Connection getConnection() throws SQLException, ClassNotFoundException {
-    Class.forName(DRIVER_CLASS);
+    Class.forName(driverClass);
     return DriverManager.getConnection(getUrl(), username, password);
   }
 
   public Connection getMasterConnection() throws SQLException, ClassNotFoundException {
-    Class.forName(DRIVER_CLASS);
+    Class.forName(driverClass);
     return DriverManager.getConnection(getMasterUrl(), username, password);
   }
 
@@ -57,11 +73,11 @@ public class DatabaseConfig {
   }
 
   public String getDatabaseName() {
-    return DATABASE_NAME;
+    return databaseName;
   }
 
   public String getDriverClass() {
-    return DRIVER_CLASS;
+    return driverClass;
   }
 
   public void ExportConfigToFile(String newUser, String newPass) {
@@ -70,9 +86,13 @@ public class DatabaseConfig {
     Properties prop = new Properties();
     String fileName = "db_config.properties";
     try (FileOutputStream output = new FileOutputStream(fileName)) {
-      prop.setProperty("db.user", newUser);
+      prop.setProperty("db.driver", driverClass);
+      prop.setProperty("db.name", databaseName);
+      prop.setProperty("db.url", url);
+      prop.setProperty("db.masterUrl", masterUrl);
+      prop.setProperty("db.username", newUser);
       prop.setProperty("db.password", newPass);
-      prop.store(output, DATABASE_NAME + " configuration (Auto-Generated)");
+      prop.store(output, "QuickCalc Multi-Database configuration (Auto-Generated)");
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
           null,

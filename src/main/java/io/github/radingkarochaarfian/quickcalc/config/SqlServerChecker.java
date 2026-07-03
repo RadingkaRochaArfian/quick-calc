@@ -4,18 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseCheck {
-  public static int checkDatabaseStatus(String driverClass, String url, String user, String pass) {
+public class SqlServerChecker implements DatabaseChecker {
+  public int checkDatabaseStatus(String driverClass, String url, String username, String password) {
     try {
       Class.forName(driverClass);
-      try (Connection conn = DriverManager.getConnection(url, user, pass)) {
+      try (Connection conn = DriverManager.getConnection(url, username, password)) {
         if (conn != null && conn.isValid(2)) {
           return 1;
         }
       }
     } catch (SQLException e) {
-      int errorCode = e.getErrorCode();
-      if (errorCode == 18456) {
+      if (e.getErrorCode() == 18456) {
         return 2;
       }
     } catch (ClassNotFoundException e) {
