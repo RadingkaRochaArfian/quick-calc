@@ -3,7 +3,6 @@ package io.github.radingkarochaarfian.quickcalc.config;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 
@@ -18,85 +17,65 @@ public class DatabaseInit {
 
   public void initializeDatabase() {
     boolean connected = false;
+    DatabaseProvider dbProvider = DatabaseProviderFactory.getProvider(dbConfig);
     while (!connected) {
-      try {
-        createDatabaseIfNotExist();
-        try (Connection conn = dbConfig.getConnection()) {
-          connected = true;
-          createTableIfNotExist(conn);
-        }
-      } catch (SQLException | ClassNotFoundException e) {
-        int selectedChoice = showErrorAndChoice(e.getMessage());
-        if (selectedChoice == JOptionPane.YES_OPTION) {
-          DatabaseCredentialDialog dcDialog = new DatabaseCredentialDialog(dbConfig);
-          if (dcDialog.showDialog()) {
-            String newUser = dcDialog.getUsernameInput();
-            String newPass = dcDialog.getPasswordInput();
-            if (dcDialog.isRememberChecked()) {
-              dbConfig.ExportConfigToFile(newUser, newPass);
-            } else {
-              File f = new File("db_config.properties");
-              if (f.exists())
-                f.delete();
+      int dbStatus = dbProvider.checkDatabaseStatus(
+          dbConfig.getDriverClass(),
+          dbConfig.getMasterUrl(),
+          dbConfig.getUsername(),
+          dbConfig.getPassword());
+      switch (dbStatus) {
+        case 1:
+          try {
+            dbProvider.createDatabaseIfNotExist(dbConfig);
+            try (Connection conn = dbConfig.getConnection()) {
+              dbProvider.createaTableIfNotExist(conn);
+              connected = true;
             }
-          } else {
-            System.exit(0);
+          } catch (SQLException | ClassNotFoundException e) {
+            showError("Failed to create database.");
           }
-        } else {
-          JOptionPane.showMessageDialog(
-              null,
-              "Application cannot run without database. Closing program...");
-          System.exit(0);
-        }
+          break;
+        case 2:
+          showCredentialError();
+          break;
+        case 3:
+          showError("Failed to read JDBC.");
+          break;
+        case 0:
+        default:
+          showError("Database is offline.");
+          break;
       }
-
     }
   }
 
-  private int showErrorAndChoice(String message) {
-    String fullMessage = "Failed connecting to SQL Server!\n\n" +
-        "Re-enter database username and password?";
-    return JOptionPane.showConfirmDialog(
+  private void showError(String message) {
+    JOptionPane.showMessageDialog(
         null,
-        fullMessage,
-        "Database Connection Error",
-        JOptionPane.YES_NO_OPTION,
+        message,
+        "Error",
         JOptionPane.ERROR_MESSAGE);
   }
 
-  private void createTableIfNotExist(Connection conn) {
-    String query = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='history' AND xtype='U')" +
-        "CREATE TABLE history (" +
-        "id INT IDENTITY(1,1) PRIMARY KEY, " +
-        "expression NVARCHAR(500) NOT NULL, " +
-        "result NVARCHAR(255) NOT NULL, " +
-        "tokens NVARCHAR(MAX) NOT NULL" +
-        ");";
-    try (Statement stmt = conn.createStatement()) {
-      stmt.executeUpdate(query);
-    } catch (SQLException e) {
-      JOptionPane.showMessageDialog(
-          null,
-          "Failed to initialize table.",
-          "Error",
-          JOptionPane.ERROR_MESSAGE);
+  private void showCredentialError() {
+    DatabaseCredentialDialog dcDialog = new DatabaseCredentialDialog(dbConfig);
+    if (dcDialog.showDialog()) {
+      String newUsername = dcDialog.getUsernameInput();
+      String newPassword = dcDialog.getPasswordInput();
+      if (dcDialog.isRememberChecked()) {
+        dbConfig.ExportConfigToFile(newUsername, newPassword);
+      } else {
+        dbConfig.setUsername(newUsername);
+        dbConfig.setPassword(newPassword);
+        File fileProp = new File(dbConfig.getConfigFileName());
+        if (fileProp.exists()) {
+          fileProp.delete();
+        }
+      }
+    } else {
+      System.exit(0);// to do: use backup from local
     }
   }
 
-  private void createDatabaseIfNotExist() {
-    try (Connection masterConn = dbConfig.getMasterConnection()) {
-      Statement stmt = masterConn.createStatement();
-      String query = "IF NOT EXISTS (SELECT * FROM sys.database WHERE name='" + dbConfig.getDatabaseName() + "') " +
-          "BEGIN " +
-          "CREATE DATABASE " + dbConfig.getDatabaseName() + " " +
-          "END";
-      stmt.executeUpdate(query);
-    } catch (SQLException | ClassNotFoundException e) {
-      JOptionPane.showMessageDialog(
-          null,
-          "Failed to initialize database.",
-          "Error",
-          JOptionPane.ERROR_MESSAGE);
-    }
-  }
 }

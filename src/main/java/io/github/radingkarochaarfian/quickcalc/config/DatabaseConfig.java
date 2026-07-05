@@ -44,6 +44,10 @@ public class DatabaseConfig {
     }
   }
 
+  public String getConfigFileName() {
+    return CONFIG_FILE_NAME;
+  }
+
   public String getProviderClass() {
     return prop.getProperty("db.provider.class");
   }

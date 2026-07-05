@@ -1,0 +1,21 @@
+!SESSION 2026-07-04 23:24:44.548 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=21.0.11
+java.vendor=Ubuntu
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -data /home/nafrnn/Downloads/project/quick-calc/.workspace
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2026-07-04 23:24:46.902
+!MESSAGE class org.eclipse.jdt.ls.core.internal.JavaLanguageServerPlugin is started
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2026-07-04 23:24:46.956
+!MESSAGE Started org.eclipse.buildship.core 35ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2026-07-04 23:24:46.956
+!MESSAGE Started org.eclipse.m2e.core 0ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2026-07-04 23:24:47.104
+!MESSAGE Main thread is waiting
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2026-07-04 23:24:47.922
+!MESSAGE ProjectRegistryRefreshJob finished 964ms
