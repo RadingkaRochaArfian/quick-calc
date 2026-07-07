@@ -29,7 +29,7 @@ public class SqlServerHistoryRepository implements HistoryRepository {
         String line = rs.getString("expression") + " = " + rs.getString("result");
         listHistory.add(line);
       }
-    } catch (SQLException | ClassNotFoundException e) {
+    } catch (SQLException e) {
       JOptionPane.showMessageDialog(
           null,
           "Failed to load data.",
@@ -44,7 +44,7 @@ public class SqlServerHistoryRepository implements HistoryRepository {
     try (Connection conn = dbconfig.getConnection();
         Statement stmt = conn.createStatement()) {
       stmt.executeUpdate(query);
-    } catch (SQLException | ClassNotFoundException e) {
+    } catch (SQLException e) {
       JOptionPane.showMessageDialog(
           null,
           "Failed to delete all data.",
@@ -53,15 +53,14 @@ public class SqlServerHistoryRepository implements HistoryRepository {
     }
   }
 
-  public void save(String expression, String result, String tokens) {
-    String query = "INSERT INTO history (expression, result, tokens) VALUES (?, ?, ?)";
+  public void save(String expression, String result) {
+    String query = "INSERT INTO history (expression, result) VALUES (?, ?)";
     try (Connection conn = dbconfig.getConnection();
         PreparedStatement ps = conn.prepareStatement(query)) {
       ps.setString(1, expression);
       ps.setString(2, result);
-      ps.setString(3, tokens);
       ps.executeUpdate();
-    } catch (SQLException | ClassNotFoundException e) {
+    } catch (SQLException e) {
       JOptionPane.showMessageDialog(
           null,
           "Failed to save data.",

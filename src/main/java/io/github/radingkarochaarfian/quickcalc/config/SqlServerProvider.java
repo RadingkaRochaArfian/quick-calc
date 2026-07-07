@@ -51,7 +51,6 @@ public class SqlServerProvider implements DatabaseProvider {
         "id INT IDENTITY(1,1) PRIMARY KEY, " +
         "expression NVARCHAR(500) NOT NULL, " +
         "result NVARCHAR(255) NOT NULL, " +
-        "tokens NVARCHAR(MAX) NOT NULL" +
         ");";
     try (Statement stmt = conn.createStatement()) {
       stmt.executeUpdate(query);
