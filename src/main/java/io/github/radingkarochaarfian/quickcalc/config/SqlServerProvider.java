@@ -8,9 +8,8 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 public class SqlServerProvider implements DatabaseProvider {
-  public int checkDatabaseStatus(String driverClass, String url, String username, String password) {
+  public int checkDatabaseStatus(String url, String username, String password) {
     try {
-      Class.forName(driverClass);
       try (Connection conn = DriverManager.getConnection(url, username, password)) {
         if (conn != null && conn.isValid(2)) {
           return 1;
@@ -20,8 +19,6 @@ public class SqlServerProvider implements DatabaseProvider {
       if (e.getErrorCode() == 18456) {
         return 2;
       }
-    } catch (ClassNotFoundException e) {
-      return 3;
     }
     return 0;
   }

@@ -15,12 +15,13 @@ public class DatabaseInit {
     dbConfig = iDbConfig;
   }
 
-  public void initializeDatabase() {
-    boolean connected = false;
+  public boolean initializeDatabase() {
+    if (dbConfig.isUseLocalOnly()) {
+      return false;
+    }
     DatabaseProvider dbProvider = DatabaseProviderFactory.getProvider(dbConfig);
-    while (!connected) {
+    while (true) {
       int dbStatus = dbProvider.checkDatabaseStatus(
-          dbConfig.getDriverClass(),
           dbConfig.getMasterUrl(),
           dbConfig.getUsername(),
           dbConfig.getPassword());
@@ -30,52 +31,36 @@ public class DatabaseInit {
             dbProvider.createDatabaseIfNotExist(dbConfig);
             try (Connection conn = dbConfig.getConnection()) {
               dbProvider.createaTableIfNotExist(conn);
-              connected = true;
+              return true;
             }
-          } catch (SQLException | ClassNotFoundException e) {
-            showError("Failed to create database.");
+          } catch (SQLException e) {
+            showNotification("Failed to setup database. Switching to offline mode.");
+            return false;
           }
-          break;
         case 2:
-          showCredentialError();
-          break;
-        case 3:
-          showError("Failed to read JDBC.");
+          showNotification("Incorrect username or password. Please try again.");
+          boolean isUserTryAgain = handleCredentialInput();
+          if (!isUserTryAgain) {
+            return false;
+          }
           break;
         case 0:
         default:
-          showError("Database is offline.");
-          break;
+          showNotification("Database server unreachable. Activating local backup mode...");
+          return false;
       }
     }
   }
 
-  private void showError(String message) {
+  private void showNotification(String message) {
     JOptionPane.showMessageDialog(
         null,
         message,
-        "Error",
-        JOptionPane.ERROR_MESSAGE);
+        "Information",
+        JOptionPane.INFORMATION_MESSAGE);
   }
 
-  private void showCredentialError() {
-    DatabaseCredentialDialog dcDialog = new DatabaseCredentialDialog(dbConfig);
-    if (dcDialog.showDialog()) {
-      String newUsername = dcDialog.getUsernameInput();
-      String newPassword = dcDialog.getPasswordInput();
-      if (dcDialog.isRememberChecked()) {
-        dbConfig.ExportConfigToFile(newUsername, newPassword);
-      } else {
-        dbConfig.setUsername(newUsername);
-        dbConfig.setPassword(newPassword);
-        File fileProp = new File(dbConfig.getConfigFileName());
-        if (fileProp.exists()) {
-          fileProp.delete();
-        }
-      }
-    } else {
-      System.exit(0);// to do: use backup from local
-    }
+  private boolean handleCredentialInput() {
   }
 
 }
