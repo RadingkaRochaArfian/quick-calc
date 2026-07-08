@@ -105,7 +105,7 @@ public class DatabaseConfig {
     return DriverManager.getConnection(getMasterUrl(), getUsername(), getPassword());
   }
 
-  public void ExportConfigToFile(String newUser, String newPass) {
+  public void exportConfigToFile(String newUser, String newPass) {
     setUsername(newUser);
     setPassword(newPass);
     savePropertiesToFile();

@@ -61,6 +61,24 @@ public class DatabaseInit {
   }
 
   private boolean handleCredentialInput() {
+    DatabaseCredentialDialog dcDialog = new DatabaseCredentialDialog(dbConfig);
+    if (dcDialog.showDialog()) {
+      String newUsername = dcDialog.getUsernameInput();
+      String newPassword = dcDialog.getPasswordInput();
+      if (dcDialog.isRememberChecked()) {
+        dbConfig.exportConfigToFile(newUsername, newPassword);
+      } else {
+        dbConfig.setPassword(newPassword);
+        dbConfig.setUsername(newUsername);
+        File fileProp = new File(dbConfig.getConfigFileName());
+        if (fileProp.exists()) {
+          fileProp.delete();
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }
