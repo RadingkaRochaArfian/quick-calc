@@ -10,10 +10,9 @@ import javax.swing.SwingUtilities;
 
 public class QuickCalcApp {
   public static void main(String[] args) {
-    DatabaseConfig dbConfig = new DatabaseConfig();
-    DatabaseInit dbInit = new DatabaseInit(dbConfig);
-    dbInit.initializeDatabase();
     SwingUtilities.invokeLater(() -> {
+      DatabaseConfig dbConfig = new DatabaseConfig();
+      DatabaseInit dbInit = new DatabaseInit(dbConfig);
       CalculatorGUI view = new CalculatorGUI();
       CalculatorModel model = new CalculatorModel();
       CalculatorController controller = new CalculatorController(view, model);

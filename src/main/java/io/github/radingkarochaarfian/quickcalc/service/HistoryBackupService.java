@@ -80,7 +80,7 @@ public class HistoryBackupService {
 
   private void saveToJson(String equation) {
     folderCheck();
-    List<String> listHistory = historyRepo.loadAll();
+    List<String> listHistory = loadFromJson();
     listHistory.add(equation);
     try (FileWriter writer = new FileWriter(FILE_JSON)) {
       gson.toJson(listHistory, writer);
@@ -120,7 +120,7 @@ public class HistoryBackupService {
     try (PrintWriter printer = new PrintWriter(new FileWriter(FILE_CSV))) {
       printer.println("Expression,Result");
       for (String line : listEquation) {
-        String[] splitLine = line.split(" ");
+        String[] splitLine = line.split(" = ");
         if (splitLine.length == 2) {
           String expression = splitLine[0];
           String result = splitLine[1];
