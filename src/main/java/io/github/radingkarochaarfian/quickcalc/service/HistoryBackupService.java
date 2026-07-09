@@ -1,5 +1,6 @@
 package io.github.radingkarochaarfian.quickcalc.service;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -53,7 +54,7 @@ public class HistoryBackupService {
         String equation = listLocalEquation.get(i);
         String[] splitLine = equation.split(" = ");
         if (splitLine.length == 2) {
-          historyRepo.save(splitLine[0], splitLine[1]);
+          historyRepo.save(splitLine[0].trim(), splitLine[1].trim());
         }
       }
     }
@@ -72,7 +73,7 @@ public class HistoryBackupService {
     folderCheck();
     String equation = expression + " = " + result;
     saveToJson(equation);
-    saveToCsv(equation);
+    saveToCsv(expression, result);
     if (!offlineStatus) {
       historyRepo.save(expression, result);
     }
@@ -113,24 +114,34 @@ public class HistoryBackupService {
 
   }
 
-  private void saveToCsv(String equation) {
+  private void saveToCsv(String expression, String result) {
     folderCheck();
-    List<String> listEquation = historyRepo.loadAll();
-    listEquation.add(equation);
+    File csvFile = new File(FILE_CSV);
+    boolean isNewFile = csvFile.exists();
     try (PrintWriter printer = new PrintWriter(new FileWriter(FILE_CSV))) {
-      printer.println("Expression,Result");
-      for (String line : listEquation) {
-        String[] splitLine = line.split(" = ");
-        if (splitLine.length == 2) {
-          String expression = splitLine[0];
-          String result = splitLine[1];
-          printer.println(expression + "," + result);
-        }
+      if (isNewFile) {
+        printer.println("Expression,Result");
       }
+      printer.println(expression.trim() + "," + result.trim());
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
           null,
           "Failed to save csv backup.",
+          "Error",
+          JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  public void deleteAllHistory() {
+    if (!offlineStatus) {
+      historyRepo.deleteAll();
+    }
+    try (FileWriter writer = new FileWriter(FILE_JSON)) {
+      gson.toJson(new ArrayList<>(), writer);
+    } catch (IOException e) {
+      JOptionPane.showMessageDialog(
+          null,
+          "Failed to delete json backup.",
           "Error",
           JOptionPane.ERROR_MESSAGE);
     }
