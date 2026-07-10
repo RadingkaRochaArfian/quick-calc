@@ -1,28 +1,36 @@
 package io.github.radingkarochaarfian.quickcalc.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
+import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
 import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
+import io.github.radingkarochaarfian.quickcalc.model.HistoryModel;
+import io.github.radingkarochaarfian.quickcalc.service.HistoryBackupService;
 import io.github.radingkarochaarfian.quickcalc.view.CalculatorGUI;
 
 public class CalculatorController {
   private final CalculatorModel model;
+  private final HistoryModel hModel;
   private final CalculatorGUI view;
+  private final DatabaseConfig dbConfig;
+  private final HistoryBackupService backupService;
   private boolean statusCtrlHold;
   private Timer testTimer;
 
-  public CalculatorController(CalculatorGUI iView, CalculatorModel iModel) {
+  public CalculatorController(CalculatorGUI iView,
+      CalculatorModel iModel,
+      HistoryModel iHModel,
+      DatabaseConfig iDbConfig,
+      HistoryBackupService bService) {
     model = iModel;
+    hModel = iHModel;
     view = iView;
+    dbConfig = iDbConfig;
+    backupService = bService;
     initController();
   }
 
