@@ -14,8 +14,8 @@ import javax.swing.JOptionPane;
 public class DatabaseConfig {
   private final Properties prop;
   private static final String CONFIG_FILE_NAME = "db_config.properties";
-
   public static final String KEY_PROVIDER_CLASS = "db.provider-class";
+  public static final String KEY_REPO_CLASS = "db.repo-class";
   public static final String KEY_URL = "db.url";
   public static final String KEY_MASTER_URL = "db.master-url";
   public static final String KEY_NAME = "db.name";
@@ -30,6 +30,7 @@ public class DatabaseConfig {
 
   private void setDefaultValue() {
     prop.setProperty(KEY_PROVIDER_CLASS, "io.github.radingkarochaarfian.quickcalc.config.SqlServerProvider");
+    prop.setProperty(KEY_REPO_CLASS, "io.github.radingkarochaarfian.quickcalc.repository.SqlServerHistoryRepository");
     prop.setProperty(KEY_URL,
         "jdbc:sqlserver://localhost:1433;databaseName=QuickCalcDB;encrypt=true;trustServerCertificate=true;");
     prop.setProperty(KEY_MASTER_URL, "jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;");
@@ -54,6 +55,10 @@ public class DatabaseConfig {
 
   public String getConfigFileName() {
     return CONFIG_FILE_NAME;
+  }
+
+  public String getRepoClass() {
+    return prop.getProperty(KEY_REPO_CLASS);
   }
 
   public String getProviderClass() {
