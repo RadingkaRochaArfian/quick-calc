@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -51,9 +52,10 @@ public class CalculatorGUI extends JFrame {
     setCenterComponentHistory(pHistory);
     setSouthComponentHistory(pHistory);
     spMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pMain, pHistory);
-    spMain.setDividerLocation(getWidth() / 2);
+    spMain.setDividerLocation(1.0);
     spMain.setContinuousLayout(true);
     add(spMain, BorderLayout.CENTER);
+    setSpMainDivider();
     setMenuComponent();
     setAppIcon();
   }
@@ -68,6 +70,13 @@ public class CalculatorGUI extends JFrame {
           "Failed to load app icon.",
           "Error",
           JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  private void setSpMainDivider() {
+    if (spMain.getUI() instanceof BasicSplitPaneUI) {
+      BasicSplitPaneUI ui = (BasicSplitPaneUI) spMain.getUI();
+      ui.getDivider().setEnabled(false);
     }
   }
 
@@ -171,6 +180,23 @@ public class CalculatorGUI extends JFrame {
       }
     }
     panel.add(region, BorderLayout.CENTER);
+  }
+
+  public void toggleHistoryPanel() {
+    int currentWidth = getWidth();
+    int currentHeight = getHeight();
+    int currentDivider = spMain.getDividerLocation();
+    boolean isWidthMax = currentWidth >= (getGraphicsConfiguration().getBounds().getWidth());
+    if (currentDivider == currentWidth) {
+      if (!isWidthMax) {
+        setSize(currentWidth * 2, currentHeight);
+      }
+      spMain.setDividerLocation(0.5);
+    } else {
+      int minWidth = ((currentWidth / 2) >= MIN_WIDTH) ? (currentWidth / 2) : MIN_WIDTH;
+      setSize(minWidth, currentHeight);
+      spMain.setDividerLocation(minWidth);
+    }
   }
 
   public HashMap<String, JButton> getMapButton() {
