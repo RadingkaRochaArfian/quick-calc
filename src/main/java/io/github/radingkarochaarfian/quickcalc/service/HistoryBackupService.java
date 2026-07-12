@@ -1,6 +1,5 @@
 package io.github.radingkarochaarfian.quickcalc.service;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -35,9 +34,25 @@ public class HistoryBackupService {
   }
 
   private void folderCheck() {
-    File folder = new File(FOLDER_BACKUP);
-    if (!folder.exists()) {
-      folder.mkdirs();
+    try {
+      File folder = new File(FOLDER_BACKUP);
+      if (!folder.exists()) {
+        folder.mkdirs();
+      }
+      File jsonFile = new File(FILE_JSON);
+      if (!jsonFile.exists()) {
+        jsonFile.createNewFile();
+      }
+      File csvFile = new File(FILE_CSV);
+      if (!csvFile.exists()) {
+        csvFile.createNewFile();
+      }
+    } catch (IOException e) {
+      JOptionPane.showMessageDialog(
+          null,
+          "Failed to create backup file(s)",
+          "Error",
+          JOptionPane.ERROR_MESSAGE);
     }
   }
 
@@ -117,8 +132,8 @@ public class HistoryBackupService {
   private void saveToCsv(String expression, String result) {
     folderCheck();
     File csvFile = new File(FILE_CSV);
-    boolean isNewFile = csvFile.exists();
-    try (PrintWriter printer = new PrintWriter(new FileWriter(FILE_CSV))) {
+    boolean isNewFile = !csvFile.exists();
+    try (PrintWriter printer = new PrintWriter(new FileWriter(FILE_CSV, true))) {
       if (isNewFile) {
         printer.println("Expression,Result");
       }
