@@ -4,6 +4,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
@@ -35,10 +37,10 @@ public class CalculatorController {
   }
 
   private void initController() {
-    setButtonTextLogic();
+    setButtonLogic();
   }
 
-  private void setButtonTextLogic() {
+  private void setButtonLogic() {
     view.getTfInput().addKeyListener(new KeyAdapter() {
       public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
@@ -69,6 +71,26 @@ public class CalculatorController {
         }
       }
     });
+    setNumberButtonLogic();
+  }
+
+  private void setNumberButtonLogic() {
+    JTextField tfInput = view.getTfInput();
+    for (String textLabel : getListOfNum()) {
+      JButton btnNum = view.getMapButton().get(textLabel);
+      btnNum.addActionListener(e -> {
+        if (tfInput.isFocusOwner()) {
+          tfInput.replaceSelection(textLabel);
+        } else {
+          String currentText = tfInput.getText();
+          if (currentText.equals("0")) {
+            tfInput.setText(textLabel);
+          } else {
+            tfInput.setText(textLabel + textLabel);
+          }
+        }
+      });
+    }
   }
 
   private void setButtonText(List<String> listTextBefore, List<String> listTextAfter) {
@@ -77,8 +99,12 @@ public class CalculatorController {
     }
   }
 
+  private List<String> getListOfNum() {
+    return List.of(".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  }
+
   private boolean isNum(String input) {
-    if (List.of(".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9").contains(input)) {
+    if (getListOfNum().contains(input)) {
       return true;
     }
     return false;
