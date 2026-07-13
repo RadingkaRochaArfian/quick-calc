@@ -55,6 +55,10 @@ public class CalculatorController {
       } else {
         setButtonText(listBeforeCtrl, listAfterCtrl);
       }
+      JTextField tfInput = view.getTfInput();
+      if (tfInput.getText().isEmpty()) {
+        tfInput.setText("0");
+      }
     });
     testTimer.start();
     view.getRootPane().addKeyListener(new KeyAdapter() {
