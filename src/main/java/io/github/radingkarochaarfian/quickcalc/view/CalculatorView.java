@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
-public class CalculatorGUI extends JFrame {
+public class CalculatorView extends JFrame {
   private final int MIN_WIDTH = 290;
   private final int MIN_HEIGHT = 330;
   private JTextField tfInput;
@@ -31,7 +31,7 @@ public class CalculatorGUI extends JFrame {
   private JMenu mUser;
   private JMenuItem miResetDatabaseCredential;
 
-  public CalculatorGUI() {
+  public CalculatorView() {
     setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
     setLayout(new BorderLayout(10, 10));
     setComponent();

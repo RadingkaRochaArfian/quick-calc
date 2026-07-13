@@ -26,7 +26,7 @@ public class QuickCalcApp {
       } else {
         backupService.setOfflineMode(true);
       }
-      CalculatorGUI view = new CalculatorGUI();
+      CalculatorView view = new CalculatorView();
       CalculatorModel model = new CalculatorModel();
       HistoryModel hModel = new HistoryModel();
       CalculatorController controller = new CalculatorController(view, model, hModel, dbConfig, backupService);

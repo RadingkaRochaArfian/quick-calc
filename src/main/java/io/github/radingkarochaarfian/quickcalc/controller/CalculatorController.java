@@ -12,18 +12,18 @@ import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
 import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel;
 import io.github.radingkarochaarfian.quickcalc.service.HistoryBackupService;
-import io.github.radingkarochaarfian.quickcalc.view.CalculatorGUI;
+import io.github.radingkarochaarfian.quickcalc.view.CalculatorView;
 
 public class CalculatorController {
   private final CalculatorModel model;
   private final HistoryModel hModel;
-  private final CalculatorGUI view;
+  private final CalculatorView view;
   private final DatabaseConfig dbConfig;
   private final HistoryBackupService backupService;
   private boolean statusCtrlHold;
   private Timer testTimer;
 
-  public CalculatorController(CalculatorGUI iView,
+  public CalculatorController(CalculatorView iView,
       CalculatorModel iModel,
       HistoryModel iHModel,
       DatabaseConfig iDbConfig,

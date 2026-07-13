@@ -66,4 +66,32 @@ public class CalculatorModel {
     }
     return sb.toString();
   }
+
+  public String togglePlusMinusAt(String text, int caretPosition) {
+    if (text.isEmpty() || text == null || text.equals("0")) {
+      return text;
+    }
+    int start = caretPosition;
+    char currChar = text.charAt(start - 1);
+    while (start > 0 && (Character.isDigit(currChar) || currChar == '.')) {
+      start--;
+      currChar = text.charAt(start - 1);
+    }
+    int end = caretPosition;
+    while (end < text.length() && (Character.isDigit(end) || text.charAt(end) == '.')) {
+      end++;
+    }
+    if (start == end)
+      return text;
+    String targetNum = text.substring(start, end);
+    String beforeTarget = text.substring(0, start);
+    String afterTarget = text.substring(end);
+    if (beforeTarget.endsWith("(-") && afterTarget.startsWith(")")) {
+      beforeTarget = beforeTarget.substring(0, beforeTarget.length() - 2);
+      afterTarget = afterTarget.substring(1);
+      return beforeTarget + targetNum + afterTarget;
+    } else {
+      return beforeTarget + "(-" + targetNum + ")" + afterTarget;
+    }
+  }
 }
