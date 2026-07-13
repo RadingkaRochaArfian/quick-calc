@@ -72,6 +72,22 @@ public class CalculatorController {
       }
     });
     setNumberButtonLogic();
+    setOperatorButtonLogic();
+  }
+
+  private void setOperatorButtonLogic() {
+    JTextField tfInput = view.getTfInput();
+    for (String textLabel : getListOfNum()) {
+      JButton btnNum = view.getMapButton().get(textLabel);
+      btnNum.addActionListener(e -> {
+        if (tfInput.isFocusOwner()) {
+          tfInput.replaceSelection(textLabel);
+        } else {
+          String currentText = tfInput.getText();
+          tfInput.setText(currentText + textLabel);
+        }
+      });
+    }
   }
 
   private void setNumberButtonLogic() {
@@ -86,7 +102,7 @@ public class CalculatorController {
           if (currentText.equals("0")) {
             tfInput.setText(textLabel);
           } else {
-            tfInput.setText(textLabel + textLabel);
+            tfInput.setText(currentText + textLabel);
           }
         }
       });
@@ -103,6 +119,10 @@ public class CalculatorController {
     return List.of(".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
   }
 
+  private List<String> getListOfOperator() {
+    return List.of("%", "/", "÷", "*", "×", "-", "+");
+  }
+
   private boolean isNum(String input) {
     if (getListOfNum().contains(input)) {
       return true;
@@ -111,7 +131,7 @@ public class CalculatorController {
   }
 
   private boolean isOperator(String input) {
-    if (List.of("%", "/", "÷", "*", "×", "-", "+").contains(input)) {
+    if (getListOfOperator().contains(input)) {
       return true;
     }
     return false;
