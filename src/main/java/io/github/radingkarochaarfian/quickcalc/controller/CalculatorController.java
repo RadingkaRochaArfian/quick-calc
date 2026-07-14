@@ -81,15 +81,25 @@ public class CalculatorController {
 
   private void setOperatorButtonLogic() {
     JTextField tfInput = view.getTfInput();
-    for (String textLabel : getListOfNum()) {
+    for (String textLabel : getListOfOperator()) {
       JButton btnNum = view.getMapButton().get(textLabel);
       btnNum.addActionListener(e -> {
-        if (tfInput.isFocusOwner()) {
-          tfInput.replaceSelection(textLabel);
-        } else {
-          String currentText = tfInput.getText();
-          tfInput.setText(currentText + textLabel);
+        model.truncateBelow();
+        String currText = tfInput.getText();
+        int caretPos;
+        if (tfInput.isFocusOwner())
+          caretPos = tfInput.getCaretPosition();
+        else
+          caretPos = currText.length();
+        if (isCaretInsideBracket(currText, caretPos)) {
+          if (tfInput.isFocusOwner()) {
+            tfInput.replaceSelection(textLabel);
+          } else {
+            tfInput.setText(tfInput.getText() + textLabel);
+          }
         }
+        model.addInput(tfInput.getText());
+        tfInput.setText(textLabel);
       });
     }
   }
@@ -99,10 +109,15 @@ public class CalculatorController {
     for (String textLabel : getListOfNum()) {
       JButton btnNum = view.getMapButton().get(textLabel);
       btnNum.addActionListener(e -> {
+        model.truncateBelow();
+        String currentText = tfInput.getText();
+        if (isOperator(currentText)) {
+          model.addInput(currentText);
+          tfInput.setText("0");
+        }
         if (tfInput.isFocusOwner()) {
           tfInput.replaceSelection(textLabel);
         } else {
-          String currentText = tfInput.getText();
           if (currentText.equals("0")) {
             tfInput.setText(textLabel);
           } else {
@@ -139,5 +154,18 @@ public class CalculatorController {
       return true;
     }
     return false;
+  }
+
+  private boolean isCaretInsideBracket(String text, int caretPosition) {
+    int openCount = 0;
+    int closeCount = 0;
+    for (int i = 0; i < caretPosition; i++) {
+      char ch = text.charAt(i);
+      if (ch == '(')
+        openCount++;
+      else if (ch == ')')
+        closeCount++;
+    }
+    return openCount > closeCount;
   }
 }

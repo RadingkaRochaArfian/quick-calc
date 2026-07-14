@@ -9,13 +9,13 @@ public class HistoryModel {
     private final int id;
     private final String expression;
     private final String result;
-    private final List<String> listToken;
+    private final List<String> listHistoryInput;
 
-    public HistoryEntry(int id, String expression, String result, List<String> listToken) {
+    public HistoryEntry(int id, String expression, String result, List<String> listInput) {
       this.id = id;
       this.expression = expression;
       this.result = result;
-      this.listToken = new ArrayList<>(listToken);
+      this.listHistoryInput = new ArrayList<>(listInput);
     }
 
     public int getId() {
@@ -30,8 +30,8 @@ public class HistoryModel {
       return result;
     }
 
-    public List<String> getListToken() {
-      return Collections.unmodifiableList(listToken);
+    public List<String> getListHistoryInput() {
+      return Collections.unmodifiableList(listHistoryInput);
     }
 
     public String getDisplayString() {
@@ -49,7 +49,7 @@ public class HistoryModel {
 
   public List<String> getListTokenAt(int rowTableIndex) {
     if (rowTableIndex >= 0 && rowTableIndex < listHistoryEntry.size()) {
-      return listHistoryEntry.get(rowTableIndex).listToken;
+      return listHistoryEntry.get(rowTableIndex).listHistoryInput;
     }
     return new ArrayList<>();
   }
