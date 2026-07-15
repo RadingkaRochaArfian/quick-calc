@@ -82,6 +82,10 @@ public class CalculatorController {
 
   private void setPlusMinusButtonLogic() {
     JTextField tfInput = view.getTfInput();
+    JButton btnPlusMinus = view.getMapButton().get("+/-");
+    btnPlusMinus.addActionListener(e -> {
+      String currText = tfInput.getText();
+    });
   }
 
   private void setOperatorButtonLogic() {
