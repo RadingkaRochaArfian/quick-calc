@@ -13,6 +13,7 @@ import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel;
 import io.github.radingkarochaarfian.quickcalc.model.MathEvaluator;
 import io.github.radingkarochaarfian.quickcalc.service.HistoryBackupService;
+import io.github.radingkarochaarfian.quickcalc.util.CalculatorUtils;
 import io.github.radingkarochaarfian.quickcalc.view.CalculatorView;
 
 public class CalculatorController {
@@ -125,7 +126,7 @@ public class CalculatorController {
       btnNum.addActionListener(e -> {
         model.truncateBelow();
         String currentText = tfInput.getText();
-        if (evaluator.isOperator(currentText)) {
+        if (CalculatorUtils.isOperator(currentText)) {
           model.addInput(currentText);
           tfInput.setText("0");
         }

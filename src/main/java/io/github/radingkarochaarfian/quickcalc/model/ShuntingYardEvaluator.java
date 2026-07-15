@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import io.github.radingkarochaarfian.quickcalc.util.CalculatorUtils;
+
 public class ShuntingYardEvaluator implements MathEvaluator {
   public List<String> tokenize(String expression) {
     List<String> listToken = new ArrayList<>();
@@ -40,7 +42,7 @@ public class ShuntingYardEvaluator implements MathEvaluator {
     List<String> listPostFix = new ArrayList<>();
     Stack<String> stackOperator = new Stack<>();
     for (String token : listToken) {
-      if (isNumber(token)) {
+      if (CalculatorUtils.isNumber(token)) {
         listPostFix.add(token);
       } else if (token.equals("(")) {
         stackOperator.push(token);
@@ -51,9 +53,9 @@ public class ShuntingYardEvaluator implements MathEvaluator {
         if (!stackOperator.isEmpty()) {
           stackOperator.pop();
         }
-      } else if (isOperator(token)) {
+      } else if (CalculatorUtils.isOperator(token)) {
         while (!stackOperator.isEmpty() &&
-            isOperator(stackOperator.peek()) &&
+            CalculatorUtils.isOperator(stackOperator.peek()) &&
             getPrecedence(stackOperator.peek()) >= getPrecedence(token)) {
           listPostFix.add(stackOperator.pop());
         }
@@ -69,9 +71,9 @@ public class ShuntingYardEvaluator implements MathEvaluator {
   private double evaluateListPostFix(List<String> listPostFix) {
     Stack<Double> stackNum = new Stack<>();
     for (String token : listPostFix) {
-      if (isNumber(token)) {
+      if (CalculatorUtils.isNumber(token)) {
         stackNum.push(Double.parseDouble(token));
-      } else if (isOperator(token)) {
+      } else if (CalculatorUtils.isOperator(token)) {
         if (stackNum.size() < 2) {
           throw new IllegalArgumentException("Expression Invalid.");
         }
@@ -88,19 +90,6 @@ public class ShuntingYardEvaluator implements MathEvaluator {
       throw new IllegalArgumentException("Expression format is incomplete.");
     }
     return stackNum.pop();
-  }
-
-  public boolean isOperator(String token) {
-    return (List.of("%", "/", "*", "-", "+", "×", "÷").contains(token));
-  }
-
-  public boolean isNumber(String token) {
-    try {
-      Double.parseDouble(token);
-      return true;
-    } catch (Exception e) {
-      return false;
-    }
   }
 
   private int getPrecedence(String token) {
