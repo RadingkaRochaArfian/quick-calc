@@ -77,12 +77,11 @@ public class CalculatorController {
     });
     setNumberButtonLogic();
     setOperatorButtonLogic();
-    setPlusMinusButton();
+    setPlusMinusButtonLogic();
   }
 
-  private void setPlusMinusButton() {
+  private void setPlusMinusButtonLogic() {
     JTextField tfInput = view.getTfInput();
-
   }
 
   private void setOperatorButtonLogic() {
@@ -146,10 +145,6 @@ public class CalculatorController {
 
   private List<String> getListOfOperator() {
     return List.of("%", "÷", "×", "-", "+");
-  }
-
-  private List<String> getListOfPlusMinus() {
-    return List.of("+/-");
   }
 
   private boolean isNum(String input) {

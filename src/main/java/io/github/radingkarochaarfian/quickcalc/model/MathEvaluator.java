@@ -77,16 +77,19 @@ public class MathEvaluator {
           stackNum.push(Double.parseDouble(token));
         } else if (isOperator(token)) {
           if (stackNum.size() < 2) {
-            throw new IllegalArgumentException("Expression Invalid");
+            throw new IllegalArgumentException("Expression Invalid.");
           }
           double rightNum = stackNum.pop();
           double leftNum = stackNum.pop();
+          if (List.of("/", "÷").contains(token) && rightNum == 0) {
+            throw new IllegalArgumentException("Cannot divide by zero.");
+          }
           double result = evaluateMath(window, leftNum, rightNum, token);
           stackNum.push(result);
         }
       }
       if (stackNum.size() != 1) {
-        throw new IllegalArgumentException("Expression Invalid");
+        throw new IllegalArgumentException("Expression format is incomplete.");
       }
       return stackNum.pop();
     } catch (Exception e) {
