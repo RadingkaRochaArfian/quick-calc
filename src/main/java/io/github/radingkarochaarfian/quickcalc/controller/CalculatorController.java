@@ -125,7 +125,7 @@ public class CalculatorController {
       btnNum.addActionListener(e -> {
         model.truncateBelow();
         String currentText = tfInput.getText();
-        if (isOperator(currentText)) {
+        if (evaluator.isOperator(currentText)) {
           model.addInput(currentText);
           tfInput.setText("0");
         }
@@ -154,20 +154,6 @@ public class CalculatorController {
 
   private List<String> getListOfOperator() {
     return List.of("%", "÷", "×", "-", "+");
-  }
-
-  private boolean isNum(String input) {
-    if (getListOfNum().contains(input)) {
-      return true;
-    }
-    return false;
-  }
-
-  private boolean isOperator(String input) {
-    if (getListOfOperator().contains(input)) {
-      return true;
-    }
-    return false;
   }
 
   private boolean isCaretInsideBracket(String text, int caretPosition) {
