@@ -11,6 +11,7 @@ import javax.swing.Timer;
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
 import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel;
+import io.github.radingkarochaarfian.quickcalc.model.MathEvaluator;
 import io.github.radingkarochaarfian.quickcalc.service.HistoryBackupService;
 import io.github.radingkarochaarfian.quickcalc.view.CalculatorView;
 
@@ -18,6 +19,7 @@ public class CalculatorController {
   private final CalculatorModel model;
   private final HistoryModel hModel;
   private final CalculatorView view;
+  private final MathEvaluator evaluator;
   private final DatabaseConfig dbConfig;
   private final HistoryBackupService backupService;
   private boolean statusCtrlHold;
@@ -26,13 +28,16 @@ public class CalculatorController {
   public CalculatorController(CalculatorView iView,
       CalculatorModel iModel,
       HistoryModel iHModel,
+      MathEvaluator iEvaluator,
       DatabaseConfig iDbConfig,
       HistoryBackupService bService) {
     model = iModel;
     hModel = iHModel;
     view = iView;
+    evaluator = iEvaluator;
     dbConfig = iDbConfig;
     backupService = bService;
+
     initController();
   }
 

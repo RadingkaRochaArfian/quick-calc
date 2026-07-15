@@ -5,6 +5,8 @@ import io.github.radingkarochaarfian.quickcalc.config.DatabaseInit;
 import io.github.radingkarochaarfian.quickcalc.controller.CalculatorController;
 import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel;
+import io.github.radingkarochaarfian.quickcalc.model.MathEvaluator;
+import io.github.radingkarochaarfian.quickcalc.model.ShuntingYardEvaluator;
 import io.github.radingkarochaarfian.quickcalc.repository.HistoryRepository;
 import io.github.radingkarochaarfian.quickcalc.repository.HistoryRepositoryFactory;
 import io.github.radingkarochaarfian.quickcalc.service.HistoryBackupService;
@@ -29,7 +31,9 @@ public class QuickCalcApp {
       CalculatorView view = new CalculatorView();
       CalculatorModel model = new CalculatorModel();
       HistoryModel hModel = new HistoryModel();
-      CalculatorController controller = new CalculatorController(view, model, hModel, dbConfig, backupService);
+      MathEvaluator evaluator = new ShuntingYardEvaluator();
+      CalculatorController controller = new CalculatorController(view, model, hModel, evaluator, dbConfig,
+          backupService);
       view.setVisible(true);
     });
   }
