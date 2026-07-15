@@ -101,20 +101,19 @@ public class CalculatorController {
       btnNum.addActionListener(e -> {
         model.truncateBelow();
         String currText = tfInput.getText();
-        int caretPos;
-        if (tfInput.isFocusOwner())
-          caretPos = tfInput.getCaretPosition();
-        else
-          caretPos = currText.length();
+        int caretPos = tfInput.isFocusOwner() ? tfInput.getCaretPosition() : currText.length();
         if (isCaretInsideBracket(currText, caretPos)) {
           if (tfInput.isFocusOwner()) {
             tfInput.replaceSelection(textLabel);
           } else {
             tfInput.setText(tfInput.getText() + textLabel);
           }
+        } else if (CalculatorUtils.isOperator(currText)) {
+          tfInput.setText(textLabel);
+        } else {
+          model.addInput(tfInput.getText());
+          tfInput.setText(textLabel);
         }
-        model.addInput(tfInput.getText());
-        tfInput.setText(textLabel);
       });
     }
   }
