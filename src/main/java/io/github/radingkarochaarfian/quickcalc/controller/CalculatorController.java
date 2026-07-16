@@ -91,8 +91,12 @@ public class CalculatorController {
     JButton btnPlusMinus = view.getMapButton().get("+/-");
     btnPlusMinus.addActionListener(e -> {
       String currText = tfInput.getText();
+      if (currText.isEmpty())
+        return;
       int caretPos = (tfInput.isFocusOwner()) ? tfInput.getCaretPosition() : currText.length();
-
+      String resultText = togglePlusMinusAt(currText, caretPos);
+      tfInput.setText(resultText);
+      model.truncateBelow();
     });
   }
 
@@ -175,15 +179,30 @@ public class CalculatorController {
     if (text.isEmpty() || text == null || text.equals("0")) {
       return text;
     }
+    boolean insideBracket = isCaretInsideBracket(text, caretPosition);
+    if (!insideBracket && text.endsWith(")") && caretPosition == text.length()) {
+      if (text.startsWith("(-") && text.endsWith(")")) {
+        return text.substring(2, text.length() - 1);
+      }
+      return "(-" + text + ")";
+    }
     int start = caretPosition;
-    char currChar = text.charAt(start - 1);
-    while (start > 0 && (Character.isDigit(currChar) || currChar == '.')) {
-      start--;
-      currChar = text.charAt(start - 1);
+    while (start > 0) {
+      char currChar = text.charAt(start - 1);
+      if (Character.isDigit(currChar) || currChar == '.') {
+        start--;
+      } else {
+        break;
+      }
     }
     int end = caretPosition;
-    while (end < text.length() && (Character.isDigit(text.charAt(end)) || text.charAt(end) == '.')) {
-      end++;
+    while (end < text.length()) {
+      char currChar = text.charAt(end);
+      if (Character.isDigit(currChar) || currChar == '.') {
+        end++;
+      } else {
+        break;
+      }
     }
     if (start == end)
       return text;
