@@ -84,6 +84,21 @@ public class CalculatorController {
     setNumberButtonLogic();
     setOperatorButtonLogic();
     setPlusMinusButtonLogic();
+    setOpenBracketButtonLogic();
+  }
+
+  private void setOpenBracketButtonLogic() {
+    JTextField tfInput = view.getTfInput();
+    JButton bOBracket = view.getMapButton().get("(");
+    bOBracket.addActionListener(e -> {
+      model.truncateBelow();
+      String currText = tfInput.getText();
+      int caretPos = (tfInput.isFocusOwner()) ? tfInput.getCaretPosition() : currText.length();
+      if (currText.isEmpty() || currText.equals("0")) {
+        insertTfInput("(");
+        return;
+      }
+    });
   }
 
   private void setPlusMinusButtonLogic() {
@@ -151,6 +166,16 @@ public class CalculatorController {
   private void setButtonText(List<String> listTextBefore, List<String> listTextAfter) {
     for (int i = 0; i < listTextBefore.size(); i++) {
       view.getMapButton().get(listTextBefore.get(i)).setText(listTextAfter.get(i));
+    }
+  }
+
+  private void insertTfInput(String newText) {
+    JTextField tfInput = view.getTfInput();
+    if (tfInput.isFocusOwner()) {
+      tfInput.replaceSelection(newText);
+    } else {
+      String currText = tfInput.getText();
+      tfInput.setText(currText + newText);
     }
   }
 
