@@ -98,6 +98,12 @@ public class CalculatorController {
         insertTfInput("(");
         return;
       }
+      String charBefore = String.valueOf(currText.charAt(caretPos - 1));
+      if (CalculatorUtils.isNumber(charBefore) || charBefore.equals(")")) {
+        insertTfInput("×(");
+      } else {
+        insertTfInput("(");
+      }
     });
   }
 
