@@ -130,11 +130,7 @@ public class CalculatorController {
         String currText = tfInput.getText();
         int caretPos = tfInput.isFocusOwner() ? tfInput.getCaretPosition() : currText.length();
         if (isCaretInsideBracket(currText, caretPos)) {
-          if (tfInput.isFocusOwner()) {
-            tfInput.replaceSelection(textLabel);
-          } else {
-            tfInput.setText(tfInput.getText() + textLabel);
-          }
+          insertTfInput(textLabel);
         } else if (CalculatorUtils.isOperator(currText)) {
           tfInput.setText(textLabel);
         } else {
