@@ -85,6 +85,25 @@ public class CalculatorController {
     setOperatorButtonLogic();
     setPlusMinusButtonLogic();
     setOpenBracketButtonLogic();
+    setCloseBracketButtonLogic();
+  }
+
+  private void setCloseBracketButtonLogic() {
+    JTextField tfInput = view.getTfInput();
+    JButton bCBracket = view.getMapButton().get(")");
+    bCBracket.addActionListener(e -> {
+      model.truncateBelow();
+      String currText = tfInput.getText();
+      int caretPos = (tfInput.isFocusOwner()) ? tfInput.getCaretPosition() : currText.length();
+      if (isCaretInsideBracket(currText, caretPos)) {
+        return;
+      }
+      String charBefore = String.valueOf(currText.charAt(caretPos - 1));
+      if (CalculatorUtils.isOperator(charBefore) || charBefore.equals("(")) {
+        return;
+      }
+      insertTfInput(")");
+    });
   }
 
   private void setOpenBracketButtonLogic() {
