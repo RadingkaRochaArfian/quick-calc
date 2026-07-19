@@ -179,7 +179,7 @@ public class CalculatorController {
         String currentText = tfInput.getText();
         if (CalculatorUtils.isOperator(currentText)) {
           model.addInput(currentText);
-          tfInput.setText("0");
+          tfInput.setText(textLabel);
         }
         if (tfInput.isFocusOwner()) {
           tfInput.replaceSelection(textLabel);
