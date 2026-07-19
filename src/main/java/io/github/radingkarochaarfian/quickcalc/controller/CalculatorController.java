@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
 import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
@@ -105,6 +106,12 @@ public class CalculatorController {
         List<String> listToken = model.getListHistoryInput();
         hModel.addHistory(expression, formattedResult, listToken);
 
+        DefaultTableModel tModel = view.getTModelHistory();
+        tModel.addRow(new Object[] {
+            expression + " = " + formattedResult
+        });
+
+        tfInput.setText(formattedResult);
       } catch (Exception ex) {
         tfInput.setText("Error");
       }
