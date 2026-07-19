@@ -87,6 +87,37 @@ public class CalculatorController {
     setOpenBracketButtonLogic();
     setCloseBracketButtonLogic();
     setClearButtonLogic();
+    setAllClearButtonLogic();
+    setEqualButtonLogic();
+  }
+
+  private void setEqualButtonLogic() {
+    JTextField tfInput = view.getTfInput();
+    JButton bEqual = view.getMapButton().get("=");
+    bEqual.addActionListener(e -> {
+      model.addInput(tfInput.getText());
+      try {
+        String expression = model.getExpressionOnString();
+        double evalResult = evaluator.evaluate(expression);
+        String formattedResult = (evalResult % 1 == 0) ? String.valueOf((long) evalResult) : String.valueOf(evalResult);
+
+        backupService.saveHistory(expression, formattedResult);
+        List<String> listToken = model.getListHistoryInput();
+        hModel.addHistory(expression, formattedResult, listToken);
+
+      } catch (Exception ex) {
+        tfInput.setText("Error");
+      }
+    });
+  }
+
+  private void setAllClearButtonLogic() {
+    JTextField tfInput = view.getTfInput();
+    JButton bAllClear = view.getMapButton().get("AC");
+    bAllClear.addActionListener(e -> {
+      model.clearState();
+      tfInput.setText("0");
+    });
   }
 
   private void setClearButtonLogic() {

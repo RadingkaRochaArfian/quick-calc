@@ -103,7 +103,7 @@ public class CalculatorView extends JFrame {
 
   private void setSouthComponentHistory(JPanel panel) {
     JPanel pSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-    for (String s : List.of("◀", "▶", "Clear", "Restore", "Refresh")) {
+    for (String s : List.of("◀", "▶", "Clear", "Restore", "Delete")) {
       JButton btn = new JButton(s);
       pSouth.add(btn);
       mapButton.put(s, btn);
