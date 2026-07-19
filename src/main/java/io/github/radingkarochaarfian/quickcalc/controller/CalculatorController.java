@@ -86,6 +86,16 @@ public class CalculatorController {
     setPlusMinusButtonLogic();
     setOpenBracketButtonLogic();
     setCloseBracketButtonLogic();
+    setClearButtonLogic();
+  }
+
+  private void setClearButtonLogic() {
+    JTextField tfInput = view.getTfInput();
+    JButton bClear = view.getMapButton().get("C");
+    bClear.addActionListener(e -> {
+      model.truncateBelow();
+      tfInput.setText("0");
+    });
   }
 
   private void setCloseBracketButtonLogic() {
