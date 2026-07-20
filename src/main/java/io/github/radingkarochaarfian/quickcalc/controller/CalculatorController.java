@@ -91,6 +91,40 @@ public class CalculatorController {
     setAllClearButtonLogic();
     setEqualButtonLogic();
     setHistoryButtonLogic();
+    setUpButtonLogic();
+    setDownButtonLogic();
+    setClearHistoryButtonLogic();
+  }
+
+  private void setClearHistoryButtonLogic() {
+    JButton bCHistory = view.getMapButton().get("Clear");
+    DefaultTableModel tMHistory = view.getTModelHistory();
+    bCHistory.addActionListener(e -> {
+      backupService.deleteAllHistory();
+      tMHistory.setColumnCount(0);
+    });
+  }
+
+  private void setDownButtonLogic() {
+    JButton bDown = view.getMapButton().get("▼");
+    JTextField tfInput = view.getTfInput();
+    bDown.addActionListener(e -> {
+      String token = model.moveIndexDown();
+      if (!token.isEmpty() || token != null) {
+        tfInput.setText(token);
+      }
+    });
+  }
+
+  private void setUpButtonLogic() {
+    JButton bUp = view.getMapButton().get("▲");
+    JTextField tfInput = view.getTfInput();
+    bUp.addActionListener(e -> {
+      String token = model.moveIndexUp();
+      if (!token.isEmpty() || token != null) {
+        tfInput.setText(token);
+      }
+    });
   }
 
   private void setHistoryButtonLogic() {
