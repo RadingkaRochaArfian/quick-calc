@@ -63,7 +63,7 @@ public class CalculatorController {
         setButtonText(listBeforeCtrl, listAfterCtrl);
       }
       JTextField tfInput = view.getTfInput();
-      if (tfInput.getText().isEmpty()) {
+      if (tfInput.getText().isEmpty() || tfInput.getText().equals("Error")) {
         tfInput.setText("0");
       }
     });
