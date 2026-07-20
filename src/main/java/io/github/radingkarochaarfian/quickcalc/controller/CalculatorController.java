@@ -90,6 +90,14 @@ public class CalculatorController {
     setClearButtonLogic();
     setAllClearButtonLogic();
     setEqualButtonLogic();
+    setHistoryButtonLogic();
+  }
+
+  private void setHistoryButtonLogic() {
+    JButton bHistory = view.getMapButton().get("H");
+    bHistory.addActionListener(e -> {
+      view.toggleHistoryPanel();
+    });
   }
 
   private void setEqualButtonLogic() {
