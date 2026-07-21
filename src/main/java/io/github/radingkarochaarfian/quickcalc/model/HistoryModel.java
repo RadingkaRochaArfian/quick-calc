@@ -6,20 +6,14 @@ import java.util.List;
 
 public class HistoryModel {
   public static class HistoryEntry {
-    private final int id;
     private final String expression;
     private final String result;
     private final List<String> listHistoryInput;
 
-    public HistoryEntry(int id, String expression, String result, List<String> listInput) {
-      this.id = id;
+    public HistoryEntry(String expression, String result, List<String> listInput) {
       this.expression = expression;
       this.result = result;
       this.listHistoryInput = new ArrayList<>(listInput);
-    }
-
-    public int getId() {
-      return id;
     }
 
     public String getExpression() {
@@ -43,7 +37,7 @@ public class HistoryModel {
   private int idCount;
 
   public void addHistory(String expression, String result, List<String> listToken) {
-    HistoryEntry newEntry = new HistoryEntry(idCount++, expression, result, listToken);
+    HistoryEntry newEntry = new HistoryEntry(expression, result, listToken);
     listHistoryEntry.add(newEntry);
   }
 
