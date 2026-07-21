@@ -57,6 +57,8 @@ public class HistoryBackupService {
   }
 
   public void syncLocalToDatabase() {
+    if (offlineStatus)
+      return;
     File jsonFile = new File(FILE_JSON);
     if (!jsonFile.exists())
       return;
