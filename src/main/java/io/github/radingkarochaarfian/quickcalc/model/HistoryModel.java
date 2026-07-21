@@ -61,6 +61,14 @@ public class HistoryModel {
     return null;
   }
 
+  public boolean removeHistoryEntryAt(int rowTableIndex) {
+    if (rowTableIndex >= 0 && rowTableIndex < listHistoryEntry.size()) {
+      listHistoryEntry.remove(rowTableIndex);
+      return true;
+    }
+    return false;
+  }
+
   public int getListHistoryEntrySize() {
     return listHistoryEntry.size();
   }
