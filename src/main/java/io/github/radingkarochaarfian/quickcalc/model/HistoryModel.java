@@ -34,7 +34,6 @@ public class HistoryModel {
   }
 
   private final List<HistoryEntry> listHistoryEntry = new ArrayList<>();
-  private int idCount;
 
   public void addHistory(String expression, String result, List<String> listToken) {
     HistoryEntry newEntry = new HistoryEntry(expression, result, listToken);
