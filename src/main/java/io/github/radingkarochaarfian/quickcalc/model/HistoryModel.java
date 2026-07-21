@@ -68,6 +68,5 @@ public class HistoryModel {
 
   public void clearListHistoryEntry() {
     listHistoryEntry.clear();
-    idCount = 1;
   }
 }
