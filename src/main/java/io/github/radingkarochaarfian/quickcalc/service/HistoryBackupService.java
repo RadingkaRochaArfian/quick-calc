@@ -56,26 +56,10 @@ public class HistoryBackupService {
   public void syncLocalToDatabase() {
     if (offlineStatus)
       return;
-    File jsonFile = new File(FILE_JSON);
-    if (!jsonFile.exists())
-      return;
-    List<String> listLocalEquation = loadFromJson();
-    List<String> listDbEquation = historyRepo.loadAll();
-    int sizeListLocal = listLocalEquation.size();
-    int sizeListDb = listDbEquation.size();
-    if (sizeListLocal > sizeListDb) {
-      for (int i = sizeListDb; i < sizeListLocal; i++) {
-        String equation = listLocalEquation.get(i);
-        String[] splitLine = equation.split(" = ");
-        if (splitLine.length == 2) {
-          historyRepo.save(splitLine[0].trim(), splitLine[1].trim());
-        }
-      }
-    }
-    offlineStatus = false;
+    List<HistoryEntry> listLocal = loadFromJson();
   }
 
-  public List<String> loadHistory() {
+  public List<HistoryEntry> loadHistory() {
     if (offlineStatus) {
       return loadFromJson();
     } else {
@@ -113,14 +97,14 @@ public class HistoryBackupService {
     }
   }
 
-  private List<String> loadFromJson() {
+  private List<HistoryEntry> loadFromJson() {
     File jsonFile = new File(FILE_JSON);
     if (!jsonFile.exists())
       return new ArrayList<>();
     try (FileReader reader = new FileReader(jsonFile)) {
-      Type listType = new TypeToken<ArrayList<String>>() {
+      Type listType = new TypeToken<ArrayList<HistoryEntry>>() {
       }.getType();
-      List<String> listEquation = gson.fromJson(reader, listType);
+      List<HistoryEntry> listEquation = gson.fromJson(reader, listType);
       return (listEquation != null) ? listEquation : new ArrayList<>();
     } catch (IOException e) {
       showError("Failed to load json file.");
