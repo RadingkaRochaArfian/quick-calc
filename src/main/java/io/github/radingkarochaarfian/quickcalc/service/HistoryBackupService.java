@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import io.github.radingkarochaarfian.quickcalc.model.HistoryModel.HistoryEntry;
 import io.github.radingkarochaarfian.quickcalc.repository.HistoryRepository;
 
 public class HistoryBackupService {
@@ -48,11 +49,7 @@ public class HistoryBackupService {
         csvFile.createNewFile();
       }
     } catch (IOException e) {
-      JOptionPane.showMessageDialog(
-          null,
-          "Failed to create backup file(s)",
-          "Error",
-          JOptionPane.ERROR_MESSAGE);
+      showError("Failed to create backup file(s)");
     }
   }
 
@@ -103,11 +100,16 @@ public class HistoryBackupService {
     try (FileWriter writer = new FileWriter(FILE_JSON)) {
       gson.toJson(listHistory, writer);
     } catch (IOException e) {
-      JOptionPane.showMessageDialog(
-          null,
-          "Failed to save json backup.",
-          "Error",
-          JOptionPane.ERROR_MESSAGE);
+      showError("Failed to save json backup.");
+    }
+  }
+
+  private void saveToJson(List<HistoryEntry> lHistoryEntry) {
+    folderCheck();
+    try (FileWriter writer = new FileWriter(FILE_JSON)) {
+      gson.toJson(lHistoryEntry, writer);
+    } catch (IOException e) {
+      showError("Failed to save json backup.");
     }
   }
 
@@ -121,11 +123,7 @@ public class HistoryBackupService {
       List<String> listEquation = gson.fromJson(reader, listType);
       return (listEquation != null) ? listEquation : new ArrayList<>();
     } catch (IOException e) {
-      JOptionPane.showMessageDialog(
-          null,
-          "Failed to load json file.",
-          "Error",
-          JOptionPane.ERROR_MESSAGE);
+      showError("Failed to load json file.");
       return new ArrayList<>();
     }
 
@@ -141,11 +139,7 @@ public class HistoryBackupService {
       }
       printer.println(expression.trim() + "," + result.trim());
     } catch (IOException e) {
-      JOptionPane.showMessageDialog(
-          null,
-          "Failed to save csv backup.",
-          "Error",
-          JOptionPane.ERROR_MESSAGE);
+      showError("Failed to save csv backup.");
     }
   }
 
@@ -156,11 +150,7 @@ public class HistoryBackupService {
     try (FileWriter writer = new FileWriter(FILE_JSON)) {
       gson.toJson(new ArrayList<>(), writer);
     } catch (IOException e) {
-      JOptionPane.showMessageDialog(
-          null,
-          "Failed to delete json backup.",
-          "Error",
-          JOptionPane.ERROR_MESSAGE);
+      showError("Failed to delete json backup");
     }
   }
 
@@ -170,5 +160,13 @@ public class HistoryBackupService {
 
   public boolean isOfflineMode() {
     return offlineStatus;
+  }
+
+  private void showError(String message) {
+    JOptionPane.showMessageDialog(
+        null,
+        message,
+        "Error",
+        JOptionPane.ERROR_MESSAGE);
   }
 }
