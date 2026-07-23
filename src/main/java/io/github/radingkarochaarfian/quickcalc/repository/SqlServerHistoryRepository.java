@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
 import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel.HistoryEntry;
+import io.github.radingkarochaarfian.quickcalc.util.CalculatorUtils;
 
 public class SqlServerHistoryRepository implements HistoryRepository {
   private final DatabaseConfig dbconfig;
@@ -41,21 +42,28 @@ public class SqlServerHistoryRepository implements HistoryRepository {
     return listHistory;
   }
 
-  public List<HistoryEntry> loadAllEntry(){
-    List<HistoryEntry> lHistoryEntry =new ArrayList<>();
-    String query="SELECT id, expression, result FROM history ORDER BY id DESC";
-    try(Connection conn=dbconfig.getConnection()){
-      Statement stmt=conn.createStatement();
-      ResultSet rs=stmt.executeQuery(query){
-        while(rs.next()){
-          int id=rs.getInt("id");
-          String expression=rs.getString("expression");
-          String result=rs.getString("result");
-          List<String>listInput=//todo
-          HistoryEntry hEntry=new HistoryEntry(id, expression, result, listInput);
-        }
+  public List<HistoryEntry> loadAllEntry() {
+    List<HistoryEntry> lHistoryEntry = new ArrayList<>();
+    String query = "SELECT id, expression, result FROM history ORDER BY id DESC";
+    try (Connection conn = dbconfig.getConnection();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query)) {
+      while (rs.next()) {
+        int id = rs.getInt("id");
+        String expression = rs.getString("expression");
+        String result = rs.getString("result");
+        List<String> listInput = CalculatorUtils.parseToInput(expression + "=" + result);
+        HistoryEntry hEntry = new HistoryEntry(id, expression, result, listInput);
+        lHistoryEntry.add(hEntry);
       }
+    } catch (SQLException e) {
+      JOptionPane.showMessageDialog(
+          null,
+          "Failed to load data.",
+          "Error",
+          JOptionPane.ERROR_MESSAGE);
     }
+    return lHistoryEntry;
   }
 
   public void deleteAll() {

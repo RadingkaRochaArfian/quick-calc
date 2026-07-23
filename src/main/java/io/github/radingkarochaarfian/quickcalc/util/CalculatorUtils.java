@@ -22,7 +22,7 @@ public final class CalculatorUtils {
     }
   }
 
-  public List<String> parseToInput(String equation) {
+  public static List<String> parseToInput(String equation) {
     List<String> listInput = new ArrayList<>();
     if (equation == null || equation.trim().isEmpty())
       return listInput;
