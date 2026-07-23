@@ -72,7 +72,7 @@ public class CalculatorModel {
     return sb.toString();
   }
 
-  public List<String> parseToInput(String equation) {// todo
+  public List<String> parseToInput(String equation) {
     List<String> listInput = new ArrayList<>();
     if (equation == null || equation.trim().isEmpty())
       return listInput;

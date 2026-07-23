@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
+import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel.HistoryEntry;
 
 public class SqlServerHistoryRepository implements HistoryRepository {
@@ -50,6 +51,7 @@ public class SqlServerHistoryRepository implements HistoryRepository {
           int id=rs.getInt("id");
           String expression=rs.getString("expression");
           String result=rs.getString("result");
+          List<String>listInput=//todo
           HistoryEntry hEntry=new HistoryEntry(id, expression, result, listInput);
         }
       }
