@@ -11,7 +11,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
-import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel.HistoryEntry;
 import io.github.radingkarochaarfian.quickcalc.util.CalculatorUtils;
 
@@ -20,26 +19,6 @@ public class SqlServerHistoryRepository implements HistoryRepository {
 
   public SqlServerHistoryRepository(DatabaseConfig iDbConfig) {
     dbconfig = iDbConfig;
-  }
-
-  public List<String> loadAll() {
-    List<String> listHistory = new ArrayList<>();
-    String query = "SELECT expression, result FROM history ORDER BY id DESC";
-    try (Connection conn = dbconfig.getConnection();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(query)) {
-      while (rs.next()) {
-        String line = rs.getString("expression") + " = " + rs.getString("result");
-        listHistory.add(line);
-      }
-    } catch (SQLException e) {
-      JOptionPane.showMessageDialog(
-          null,
-          "Failed to load data.",
-          "Error",
-          JOptionPane.ERROR_MESSAGE);
-    }
-    return listHistory;
   }
 
   public List<HistoryEntry> loadAllEntry() {

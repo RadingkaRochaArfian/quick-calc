@@ -59,11 +59,15 @@ public class HistoryBackupService {
     List<HistoryEntry> listLocal = loadFromJson();
   }
 
-  public List<HistoryEntry> loadHistory() {
+  public List<HistoryEntry> loadHistory() {// done
     if (offlineStatus) {
       return loadFromJson();
     } else {
-      return historyRepo.loadAll();
+      List<HistoryEntry> lHistoryEntry = historyRepo.loadAllEntry();
+      if (!lHistoryEntry.isEmpty()) {
+        saveToJson(lHistoryEntry);
+      }
+      return lHistoryEntry;
     }
   }
 
