@@ -53,10 +53,16 @@ public class HistoryBackupService {
     }
   }
 
-  public void syncLocalToDatabase() {
+  public void syncLocalToDatabase() {// todo
     if (offlineStatus)
       return;
     List<HistoryEntry> listLocal = loadFromJson();
+    boolean updatedStatus = false;
+    for (HistoryEntry entry : listLocal) {
+      if (entry.getId() == -1) {
+
+      }
+    }
   }
 
   public List<HistoryEntry> loadHistory() {// done
@@ -81,7 +87,7 @@ public class HistoryBackupService {
     }
   }
 
-  private void saveToJson(String equation) {
+  private void saveToJson(String equation) {// todo
     folderCheck();
     List<String> listHistory = loadFromJson();
     listHistory.add(equation);

@@ -59,13 +59,21 @@ public class SqlServerHistoryRepository implements HistoryRepository {
     }
   }
 
-  public void save(String expression, String result) {
+  public int save(String expression, String result) {
     String query = "INSERT INTO history (expression, result) VALUES (?, ?)";
+    int generatedId = -1;
     try (Connection conn = dbconfig.getConnection();
-        PreparedStatement ps = conn.prepareStatement(query)) {
+        PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
       ps.setString(1, expression);
       ps.setString(2, result);
-      ps.executeUpdate();
+      int checkAffectedRow = ps.executeUpdate();
+      if (checkAffectedRow > 0) {
+        try (ResultSet rs = ps.getGeneratedKeys()) {
+          if (rs.next()) {
+            generatedId = rs.getInt(1);
+          }
+        }
+      }
     } catch (SQLException e) {
       JOptionPane.showMessageDialog(
           null,
@@ -73,5 +81,6 @@ public class SqlServerHistoryRepository implements HistoryRepository {
           "Error",
           JOptionPane.ERROR_MESSAGE);
     }
+    return generatedId;
   }
 }
