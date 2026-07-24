@@ -57,11 +57,28 @@ public class HistoryBackupService {
     if (offlineStatus)
       return;
     List<HistoryEntry> listLocal = loadFromJson();
+    List<HistoryEntry> listFullUpdated = new ArrayList<>();
     boolean updatedStatus = false;
     for (HistoryEntry entry : listLocal) {
       if (entry.getId() == -1) {
-
+        int generatedId = historyRepo.save(entry.getExpression(), entry.getResult());
+        if (generatedId != -1) {
+          HistoryEntry syncEntry = new HistoryEntry(
+              generatedId,
+              entry.getExpression(),
+              entry.getResult(),
+              entry.getListHistoryInput());
+          listFullUpdated.add(syncEntry);
+          updatedStatus = true;
+        } else {
+          listFullUpdated.add(entry);
+        }
+      } else {
+        listFullUpdated.add(entry);
       }
+    }
+    if (updatedStatus) {
+      saveToJson(listFullUpdated);
     }
   }
 
