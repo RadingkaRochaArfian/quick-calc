@@ -164,6 +164,11 @@ public class HistoryBackupService {
     if (!offlineStatus && id != -1) {
       historyRepo.deleteById(id);
     }
+    List<HistoryEntry> lHistoryEntry = loadFromJson();
+    if (idx >= 0 && idx < lHistoryEntry.size()) {
+      lHistoryEntry.remove(idx);
+      saveToJson(lHistoryEntry);
+    }
   }
 
   public void setOfflineMode(boolean status) {
