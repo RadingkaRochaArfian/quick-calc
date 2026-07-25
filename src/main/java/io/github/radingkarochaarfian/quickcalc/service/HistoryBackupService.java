@@ -54,7 +54,7 @@ public class HistoryBackupService {
     }
   }
 
-  public void syncLocalToDatabase() {// todo
+  public void syncLocalToDatabase() {
     if (offlineStatus)
       return;
     List<HistoryEntry> listLocal = loadFromJson();
@@ -83,7 +83,7 @@ public class HistoryBackupService {
     }
   }
 
-  public List<HistoryEntry> loadHistory() {// done
+  public List<HistoryEntry> loadHistory() {
     if (offlineStatus) {
       return loadFromJson();
     } else {
@@ -101,21 +101,17 @@ public class HistoryBackupService {
     if (!offlineStatus) {
       id = historyRepo.save(expression, result);
     }
-    List<String> listInput = CalculatorUtils.parseToInput(expression + "=" + result);
+    List<String> listInput = CalculatorUtils.parseToInput(CalculatorUtils.getEquation(expression, result));
     HistoryEntry entry = new HistoryEntry(id, expression, result, listInput);
     saveToJson(entry);
     saveToCsv(expression, result);
   }
 
-  private void saveToJson(String equation) {// todo
+  private void saveToJson(HistoryEntry entry) {
     folderCheck();
-    List<String> listHistory = loadFromJson();
-    listHistory.add(equation);
-    try (FileWriter writer = new FileWriter(FILE_JSON)) {
-      gson.toJson(listHistory, writer);
-    } catch (IOException e) {
-      showError("Failed to save json backup.");
-    }
+    List<HistoryEntry> lHistoryEntry = loadFromJson();
+    lHistoryEntry.add(entry);
+    saveToJson(lHistoryEntry);
   }
 
   private void saveToJson(List<HistoryEntry> lHistoryEntry) {
@@ -157,14 +153,16 @@ public class HistoryBackupService {
     }
   }
 
-  public void deleteAllHistory() {
+  public void deleteAllHistoryBackup() {
     if (!offlineStatus) {
       historyRepo.deleteAll();
     }
-    try (FileWriter writer = new FileWriter(FILE_JSON)) {
-      gson.toJson(new ArrayList<>(), writer);
-    } catch (IOException e) {
-      showError("Failed to delete json backup");
+    saveToJson(new ArrayList<>());
+  }
+
+  public void deleteHistoryBackupAt(int idx, int id) {
+    if (!offlineStatus && id != -1) {
+      historyRepo.deleteById(id);
     }
   }
 

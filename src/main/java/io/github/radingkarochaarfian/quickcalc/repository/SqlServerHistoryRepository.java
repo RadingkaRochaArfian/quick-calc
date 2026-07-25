@@ -51,6 +51,17 @@ public class SqlServerHistoryRepository implements HistoryRepository {
     }
   }
 
+  public void deleteById(int id) {
+    String query = "DELETE FROM history WHERE id = ?";
+    try (Connection conn = dbconfig.getConnection();
+        PreparedStatement ps = conn.prepareStatement(query)) {
+      ps.setInt(1, id);
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      showError("Failed to delete data by id.");
+    }
+  }
+
   public int save(String expression, String result) {
     String query = "INSERT INTO history (expression, result) VALUES (?, ?)";
     int generatedId = -1;
