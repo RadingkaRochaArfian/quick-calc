@@ -22,6 +22,10 @@ public final class CalculatorUtils {
     }
   }
 
+  public static String getEquation(String expression, String result) {
+    return expression + " = " + result;
+  }
+
   public static List<String> parseToInput(String equation) {
     List<String> listInput = new ArrayList<>();
     if (equation == null || equation.trim().isEmpty())
