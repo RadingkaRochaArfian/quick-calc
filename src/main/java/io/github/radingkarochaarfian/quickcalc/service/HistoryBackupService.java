@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel.HistoryEntry;
 import io.github.radingkarochaarfian.quickcalc.repository.HistoryRepository;
+import io.github.radingkarochaarfian.quickcalc.util.CalculatorUtils;
 
 public class HistoryBackupService {
   private final HistoryRepository historyRepo;
@@ -96,12 +97,14 @@ public class HistoryBackupService {
 
   public void saveHistory(String expression, String result) {
     folderCheck();
-    String equation = expression + " = " + result;
-    saveToJson(equation);
-    saveToCsv(expression, result);
+    int id = -1;
     if (!offlineStatus) {
-      historyRepo.save(expression, result);
+      id = historyRepo.save(expression, result);
     }
+    List<String> listInput = CalculatorUtils.parseToInput(expression + "=" + result);
+    HistoryEntry entry = new HistoryEntry(id, expression, result, listInput);
+    saveToJson(entry);
+    saveToCsv(expression, result);
   }
 
   private void saveToJson(String equation) {// todo
