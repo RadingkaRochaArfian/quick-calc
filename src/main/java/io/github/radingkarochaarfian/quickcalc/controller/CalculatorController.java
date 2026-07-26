@@ -94,13 +94,22 @@ public class CalculatorController {
     setUpButtonLogic();
     setDownButtonLogic();
     setClearHistoryButtonLogic();
+    setDeleteHistoryButtonLogic();
+  }
+
+  private void setDeleteHistoryButtonLogic() {
+    JButton bDHistory = view.getMapButton().get("Delete");
+    int selectedRow = view.getTHistory().getSelectedRow();
+    bDHistory.addActionListener(e -> {
+
+    });
   }
 
   private void setClearHistoryButtonLogic() {
     JButton bCHistory = view.getMapButton().get("Clear");
     DefaultTableModel tMHistory = view.getTModelHistory();
     bCHistory.addActionListener(e -> {
-      backupService.deleteAllHistory();
+      backupService.deleteAllHistoryBackup();
       tMHistory.setColumnCount(0);
     });
   }
