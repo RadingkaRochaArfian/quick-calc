@@ -36,7 +36,7 @@ public class SqlServerHistoryRepository implements HistoryRepository {
         lHistoryEntry.add(hEntry);
       }
     } catch (SQLException e) {
-      showError("Failed to load data.");
+      CalculatorUtils.showError(null, "Failed to load data.");
     }
     return lHistoryEntry;
   }
@@ -47,7 +47,7 @@ public class SqlServerHistoryRepository implements HistoryRepository {
         Statement stmt = conn.createStatement()) {
       stmt.executeUpdate(query);
     } catch (SQLException e) {
-      showError("Failed to delete all data.");
+      CalculatorUtils.showError(null, "Failed to delete all data.");
     }
   }
 
@@ -58,7 +58,7 @@ public class SqlServerHistoryRepository implements HistoryRepository {
       ps.setInt(1, id);
       ps.executeUpdate();
     } catch (SQLException e) {
-      showError("Failed to delete data by id.");
+      CalculatorUtils.showError(null, "Failed to delete data by id.");
     }
   }
 
@@ -78,16 +78,9 @@ public class SqlServerHistoryRepository implements HistoryRepository {
         }
       }
     } catch (SQLException e) {
-      showError("Failed to save data.");
+      CalculatorUtils.showError(null, "Failed to save data.");
     }
     return generatedId;
   }
 
-  private void showError(String message) {
-    JOptionPane.showMessageDialog(
-        null,
-        message,
-        "Error",
-        JOptionPane.ERROR_MESSAGE);
-  }
 }
