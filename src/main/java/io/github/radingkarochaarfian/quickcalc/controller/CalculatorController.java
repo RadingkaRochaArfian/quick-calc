@@ -97,6 +97,20 @@ public class CalculatorController {
     setClearHistoryButtonLogic();
     setDeleteHistoryButtonLogic();
     setLeftButtonLogic();
+    setRightButtonLogic();
+  }
+
+  private void setRightButtonLogic() {
+    JTextField tfInput = view.getTfInput();
+    JButton bRight = view.getMapButton().get("▶");
+    bRight.addActionListener(e -> {
+      tfInput.requestFocus();
+      int caretPos = tfInput.getCaretPosition();
+      int inputLength = tfInput.getText().length();
+      if (caretPos < inputLength) {
+        tfInput.setCaretPosition(caretPos + 1);
+      }
+    });
   }
 
   private void setLeftButtonLogic() {
