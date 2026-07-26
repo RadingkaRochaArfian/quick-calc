@@ -13,6 +13,7 @@ import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
 import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel;
 import io.github.radingkarochaarfian.quickcalc.model.MathEvaluator;
+import io.github.radingkarochaarfian.quickcalc.model.HistoryModel.HistoryEntry;
 import io.github.radingkarochaarfian.quickcalc.service.HistoryBackupService;
 import io.github.radingkarochaarfian.quickcalc.util.CalculatorUtils;
 import io.github.radingkarochaarfian.quickcalc.view.CalculatorView;
@@ -100,8 +101,15 @@ public class CalculatorController {
   private void setDeleteHistoryButtonLogic() {
     JButton bDHistory = view.getMapButton().get("Delete");
     int selectedRow = view.getTHistory().getSelectedRow();
+    if (selectedRow == -1) {
+      CalculatorUtils.showInformation(view, "Select a row first.");
+      return;
+    }
     bDHistory.addActionListener(e -> {
-
+      view.getTModelHistory().removeRow(selectedRow);
+      HistoryEntry selectedEntry = hModel.getHistoryEntryAt(selectedRow);
+      hModel.removeHistoryEntryAt(selectedRow);
+      backupService.deleteHistoryBackupAt(selectedRow, selectedEntry.getId());
     });
   }
 
