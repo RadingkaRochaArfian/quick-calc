@@ -1,7 +1,10 @@
 package io.github.radingkarochaarfian.quickcalc.util;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 public final class CalculatorUtils {
   private CalculatorUtils() {
@@ -24,6 +27,22 @@ public final class CalculatorUtils {
 
   public static String getEquation(String expression, String result) {
     return expression + " = " + result;
+  }
+
+  public static void showError(Component parent, String message) {
+    JOptionPane.showMessageDialog(
+        parent,
+        message,
+        "Error",
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+  public static void showInformation(Component parent, String message) {
+    JOptionPane.showMessageDialog(
+        parent,
+        message,
+        "Information",
+        JOptionPane.INFORMATION_MESSAGE);
   }
 
   public static List<String> parseToInput(String equation) {
