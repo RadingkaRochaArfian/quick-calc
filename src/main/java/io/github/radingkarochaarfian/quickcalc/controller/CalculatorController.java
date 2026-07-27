@@ -46,6 +46,22 @@ public class CalculatorController {
 
   private void initController() {
     setButtonLogic();
+    setHistoryTableContent();
+  }
+
+  private void setHistoryTableContent() {
+    backupService.syncLocalToDatabase();
+    List<HistoryEntry> lHistoryEntry = backupService.loadHistory();
+    DefaultTableModel tModelHistory = view.getTModelHistory();
+    tModelHistory.setRowCount(0);
+    for (HistoryEntry entry : lHistoryEntry) {
+      Object[] rowData = new Object[] {
+          entry.getId(),
+          entry.getExpression(),
+          entry.getResult()
+      };
+      tModelHistory.addRow(rowData);
+    }
   }
 
   private void setButtonLogic() {
