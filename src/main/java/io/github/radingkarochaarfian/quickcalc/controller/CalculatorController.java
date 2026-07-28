@@ -2,6 +2,7 @@ package io.github.radingkarochaarfian.quickcalc.controller;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -90,6 +91,30 @@ public class CalculatorController {
       public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
           statusCtrlHold = true;
+        }
+
+        if (statusCtrlHold) {
+          HashMap<String, JButton> mapButton = view.getMapButton();
+          switch (e.getKeyCode()) {
+            case KeyEvent.VK_DELETE:
+              mapButton.get("AC").doClick();
+              break;
+            case KeyEvent.VK_ENTER:
+              mapButton.get("=").doClick();
+              break;
+            case KeyEvent.VK_8:
+              mapButton.get("×").doClick();
+              break;
+            case KeyEvent.VK_SLASH:
+              mapButton.get("÷").doClick();
+              break;
+            case KeyEvent.VK_BACK_SLASH:
+              mapButton.get("+/-").doClick();
+              break;
+            case KeyEvent.VK_BACK_SPACE:
+              mapButton.get("C").doClick();
+              break;
+          }
         }
       }
 
