@@ -73,7 +73,7 @@ public class CalculatorController {
     });
     testTimer = new Timer(100, e -> {
       List<String> listBeforeCtrl = List.of("÷", "=", "×", "+/-", "C", "AC");
-      List<String> listAfterCtrl = List.of("/", "↲", "*", "\\", "ESC", "DEL");
+      List<String> listAfterCtrl = List.of("/", "↲", "*", "\\", "⌫", "DEL");
       if (!statusCtrlHold) {
         setButtonText(listBeforeCtrl, listBeforeCtrl);
       } else {
@@ -98,6 +98,7 @@ public class CalculatorController {
           statusCtrlHold = false;
         }
       }
+
     });
     setNumberButtonLogic();
     setOperatorButtonLogic();
