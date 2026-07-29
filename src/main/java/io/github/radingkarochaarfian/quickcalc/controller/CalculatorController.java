@@ -53,14 +53,22 @@ public class CalculatorController {
 
   private void setTextFieldLogic() {
     JTextField tfInput = view.getTfInput();
+    HashMap<String, JButton> mapButton = view.getMapButton();
     tfInput.addKeyListener(new KeyAdapter() {
 
       public void keyPressed(KeyEvent e) {
+
         if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE) {
-          JButton bAllClear = view.getMapButton().get("AC");
+          JButton bAllClear = mapButton.get("AC");
           bAllClear.doClick();
           e.consume();
         }
+        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+          JButton bClear = mapButton.get("C");
+          bClear.doClick();
+          e.consume();
+        }
+
       }
 
     });
