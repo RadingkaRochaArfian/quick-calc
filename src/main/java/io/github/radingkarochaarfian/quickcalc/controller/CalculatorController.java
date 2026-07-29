@@ -48,6 +48,22 @@ public class CalculatorController {
   private void initController() {
     setButtonLogic();
     setHistoryTableContent();
+    setTextFieldLogic();
+  }
+
+  private void setTextFieldLogic() {
+    JTextField tfInput = view.getTfInput();
+    tfInput.addKeyListener(new KeyAdapter() {
+
+      public void keyPressed(KeyEvent e) {
+        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE) {
+          JButton bAllClear = view.getMapButton().get("AC");
+          bAllClear.doClick();
+          e.consume();
+        }
+      }
+
+    });
   }
 
   private void setHistoryTableContent() {
