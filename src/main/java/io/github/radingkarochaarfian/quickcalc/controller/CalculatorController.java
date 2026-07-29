@@ -58,15 +58,31 @@ public class CalculatorController {
 
       public void keyPressed(KeyEvent e) {
 
-        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE) {
-          JButton bAllClear = mapButton.get("AC");
-          bAllClear.doClick();
-          e.consume();
+        if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+          statusCtrlHold = true;
         }
-        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-          JButton bClear = mapButton.get("C");
-          bClear.doClick();
-          e.consume();
+
+        if (statusCtrlHold) {
+          switch (e.getKeyCode()) {
+            case KeyEvent.VK_DELETE:
+              JButton bAllClear = mapButton.get("AC");
+              bAllClear.doClick();
+              e.consume();
+              break;
+            case KeyEvent.VK_BACK_SPACE:
+              JButton bClear = mapButton.get("C");
+              bClear.doClick();
+              e.consume();
+              break;
+          }
+        }
+
+      }
+
+      public void keyReleased(KeyEvent e) {
+
+        if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+          statusCtrlHold = false;
         }
 
       }
