@@ -165,6 +165,7 @@ public class CalculatorController {
       }
 
     });
+    setButtonUnfocusable();
     setNumberButtonLogic();
     setOperatorButtonLogic();
     setPlusMinusButtonLogic();
@@ -180,6 +181,12 @@ public class CalculatorController {
     setDeleteHistoryButtonLogic();
     setLeftButtonLogic();
     setRightButtonLogic();
+  }
+
+  private void setButtonUnfocusable() {
+    view.getMapButton().values().forEach(btn -> {
+      btn.setFocusable(false);
+    });
   }
 
   private void setRightButtonLogic() {
