@@ -228,7 +228,7 @@ public class CalculatorView extends JFrame {
     return mUser;
   }
 
-  public JMenuItem getMiResetDatabaseCredential() {
-    return miResetDatabaseCredential;
+  public HashMap<String, JMenuItem> getMapMenuItem() {
+    return mapMenuItem;
   }
 }
