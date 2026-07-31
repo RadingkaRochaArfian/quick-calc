@@ -29,7 +29,7 @@ public class CalculatorView extends JFrame {
 
   private JMenuBar mbMain;
   private JMenu mUser;
-  private JMenuItem miResetDatabaseCredential;
+  private HashMap<String, JMenuItem> mapMenuItem;
 
   public CalculatorView() {
     setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
@@ -83,9 +83,10 @@ public class CalculatorView extends JFrame {
   private void setMenuComponent() {
     mbMain = new JMenuBar();
     mUser = new JMenu("User");
-    miResetDatabaseCredential = new JMenuItem("Reset Database Credential");
+    JMenuItem miResetDataCred = new JMenuItem("Reset Database Credential");
     mbMain.add(mUser);
-    mUser.add(miResetDatabaseCredential);
+    mUser.add(miResetDataCred);
+    mapMenuItem.put("Reset Database Credential", miResetDataCred);
     setJMenuBar(mbMain);
   }
 
