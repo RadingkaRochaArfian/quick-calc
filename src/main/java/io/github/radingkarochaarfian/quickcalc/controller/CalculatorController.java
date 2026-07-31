@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -53,7 +54,7 @@ public class CalculatorController {
   }
 
   private void setMenuItemLogic() {// todo
-
+    HashMap<String, JMenuItem> mapMenuItem = view.getMapMenuItem();
   }
 
   private void setTextFieldLogic() {
