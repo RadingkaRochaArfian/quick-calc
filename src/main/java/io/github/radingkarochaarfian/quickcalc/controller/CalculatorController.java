@@ -49,6 +49,11 @@ public class CalculatorController {
     setButtonLogic();
     setHistoryTableContent();
     setTextFieldLogic();
+    setMenuItemLogic();
+  }
+
+  private void setMenuItemLogic() {// todo
+
   }
 
   private void setTextFieldLogic() {
