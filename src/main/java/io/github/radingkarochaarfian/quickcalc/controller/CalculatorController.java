@@ -53,10 +53,28 @@ public class CalculatorController {
     setMenuItemLogic();
   }
 
-  private void setMenuItemLogic() {// todo
+  private void setMenuItemLogic() {
     HashMap<String, JMenuItem> mapMenuItem = view.getMapMenuItem();
+    setUserMenuLogic(mapMenuItem);
+    setUtilityMenuLogic(mapMenuItem);
   }
 
+  private void setUtilityMenuLogic(HashMap<String,JMenuItem> mapMenuItem){
+    setMiClearAllLogic(mapMenuItem.get("CLEAR_ALL"));
+  }
+  private void setUserMenuLogic(HashMap<String,JMenuItem> mapMenuItem){
+    setMiResetDbCredLogic(mapMenuItem.get("RESET_DB_CREDENTIAL"));
+  }
+
+  private void setMiResetDbCredLogic(JMenuItem miResetDbCred){//todo
+    
+  }
+
+  private void setMiClearAllLogic(JMenuItem miClearAll){
+    miClearAll.addActionListener(e->{
+      performAllClear();
+    });
+  }
   private void setTfInputLogic() {
     JTextField tfInput = view.getTfInput();
     HashMap<String, JButton> mapButton = view.getMapButton();
