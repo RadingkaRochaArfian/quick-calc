@@ -299,12 +299,15 @@ public class CalculatorController {
     });
   }
 
+  private void performAllClear(){
+    model.clearState();
+    view.getTfInput().setText("0");
+    view.getTfDisplay().setText("0");
+  }
   private void setAllClearButtonLogic() {
-    JTextField tfInput = view.getTfInput();
     JButton bAllClear = view.getMapButton().get("AC");
     bAllClear.addActionListener(e -> {
-      model.clearState();
-      tfInput.setText("0");
+      performAllClear();
     });
   }
 
