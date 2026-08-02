@@ -26,6 +26,7 @@ public class CalculatorView extends JFrame {
   private JSplitPane spMain;
   private JTable tHistory;
   private DefaultTableModel tModelHistory;
+  private JTextField tfDisplay;
 
   private JMenuBar mbMain;
   private JMenu mUser;
@@ -51,6 +52,7 @@ public class CalculatorView extends JFrame {
     setSouthComponentMain(pMain);
     setCenterComponentHistory(pHistory);
     setSouthComponentHistory(pHistory);
+    setNorthComponentHistory(pHistory);
     spMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pMain, pHistory);
     spMain.setDividerLocation(1.0);
     spMain.setContinuousLayout(true);
@@ -110,6 +112,12 @@ public class CalculatorView extends JFrame {
       mapButton.put(s, btn);
     }
     panel.add(pSouth, BorderLayout.SOUTH);
+  }
+
+  private void setNorthComponentHistory(JPanel panel) {
+    tfDisplay = new JTextField("0");
+    tfDisplay.setEditable(false);
+    panel.add(tfDisplay, BorderLayout.NORTH);
   }
 
   private void setNorthComponentMain(JPanel panel) {
@@ -206,6 +214,10 @@ public class CalculatorView extends JFrame {
 
   public JTextField getTfInput() {
     return tfInput;
+  }
+
+  public JTextField getTfDisplay() {
+    return tfDisplay;
   }
 
   public JTable getTHistory() {
