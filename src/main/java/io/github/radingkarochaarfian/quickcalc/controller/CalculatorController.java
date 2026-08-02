@@ -49,7 +49,7 @@ public class CalculatorController {
   private void initController() {
     setButtonLogic();
     setHistoryTableContent();
-    setTextFieldLogic();
+    setTfInputLogic();
     setMenuItemLogic();
   }
 
@@ -57,7 +57,7 @@ public class CalculatorController {
     HashMap<String, JMenuItem> mapMenuItem = view.getMapMenuItem();
   }
 
-  private void setTextFieldLogic() {
+  private void setTfInputLogic() {
     JTextField tfInput = view.getTfInput();
     HashMap<String, JButton> mapButton = view.getMapButton();
     tfInput.addKeyListener(new KeyAdapter() {

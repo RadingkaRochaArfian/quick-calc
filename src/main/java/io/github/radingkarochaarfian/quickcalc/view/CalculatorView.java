@@ -28,8 +28,6 @@ public class CalculatorView extends JFrame {
   private DefaultTableModel tModelHistory;
   private JTextField tfDisplay;
 
-  private JMenuBar mbMain;
-  private JMenu mUser;
   private HashMap<String, JMenuItem> mapMenuItem;
 
   public CalculatorView() {
@@ -83,13 +81,22 @@ public class CalculatorView extends JFrame {
   }
 
   private void setMenuComponent() {
-    mbMain = new JMenuBar();
-    mUser = new JMenu("User");
+    JMenuBar mbMain = new JMenuBar();
+    setUserMenuItem();
+    setUtilityMenuItem();
+    setJMenuBar(mbMain);
+  }
+
+  private void setUserMenuItem(JMenuBar mbMain) {
+    JMenu mUser = new JMenu("User");
     JMenuItem miResetDataCred = new JMenuItem("Reset Database Credential");
     mbMain.add(mUser);
     mUser.add(miResetDataCred);
-    mapMenuItem.put("Reset Database Credential", miResetDataCred);
-    setJMenuBar(mbMain);
+    mapMenuItem.put("RESET_DB_CREDENTIAL", miResetDataCred);
+  }
+
+  private void setUtilityMenuItem() {
+
   }
 
   private void setCenterComponentHistory(JPanel panel) {
@@ -230,14 +237,6 @@ public class CalculatorView extends JFrame {
 
   public JSplitPane getSpMain() {
     return spMain;
-  }
-
-  public JMenuBar getMbMain() {
-    return mbMain;
-  }
-
-  public JMenu getMUser() {
-    return mUser;
   }
 
   public HashMap<String, JMenuItem> getMapMenuItem() {
