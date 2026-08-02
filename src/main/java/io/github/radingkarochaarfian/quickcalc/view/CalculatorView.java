@@ -82,21 +82,25 @@ public class CalculatorView extends JFrame {
 
   private void setMenuComponent() {
     JMenuBar mbMain = new JMenuBar();
-    setUserMenuItem();
-    setUtilityMenuItem();
+    setUserMenuItem(mbMain);
+    setUtilityMenuItem(mbMain);
     setJMenuBar(mbMain);
   }
 
   private void setUserMenuItem(JMenuBar mbMain) {
     JMenu mUser = new JMenu("User");
-    JMenuItem miResetDataCred = new JMenuItem("Reset Database Credential");
+    JMenuItem miResetDbCred = new JMenuItem("Reset Database Credential");
     mbMain.add(mUser);
-    mUser.add(miResetDataCred);
-    mapMenuItem.put("RESET_DB_CREDENTIAL", miResetDataCred);
+    mUser.add(miResetDbCred);
+    mapMenuItem.put("RESET_DB_CREDENTIAL", miResetDbCred);
   }
 
-  private void setUtilityMenuItem() {
-
+  private void setUtilityMenuItem(JMenuBar mbMain) {
+    JMenu mUtility = new JMenu("Utility");
+    JMenuItem miClearAll = new JMenuItem("Clear All");
+    mbMain.add(mUtility);
+    mUtility.add(miClearAll);
+    mapMenuItem.put("CLEAR_ALL", miClearAll);
   }
 
   private void setCenterComponentHistory(JPanel panel) {
