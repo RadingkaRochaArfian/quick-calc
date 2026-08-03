@@ -59,22 +59,17 @@ public class CalculatorController {
     setUtilityMenuLogic(mapMenuItem);
   }
 
-  private void setUtilityMenuLogic(HashMap<String,JMenuItem> mapMenuItem){
-    setMiClearAllLogic(mapMenuItem.get("CLEAR_ALL"));
-  }
-  private void setUserMenuLogic(HashMap<String,JMenuItem> mapMenuItem){
-    setMiResetDbCredLogic(mapMenuItem.get("RESET_DB_CREDENTIAL"));
-  }
-
-  private void setMiResetDbCredLogic(JMenuItem miResetDbCred){//todo
-    
-  }
-
-  private void setMiClearAllLogic(JMenuItem miClearAll){
-    miClearAll.addActionListener(e->{
+  private void setUtilityMenuLogic(HashMap<String, JMenuItem> mapMenuItem) {
+    JMenuItem miClearAll = mapMenuItem.get("CLEAR_ALL");
+    miClearAll.addActionListener(e -> {
       performAllClear();
     });
   }
+
+  private void setUserMenuLogic(HashMap<String, JMenuItem> mapMenuItem) {
+    JMenuItem miResetDbCred = mapMenuItem.get("RESET_DB_CREDENTIAL");
+  }
+
   private void setTfInputLogic() {
     JTextField tfInput = view.getTfInput();
     HashMap<String, JButton> mapButton = view.getMapButton();
@@ -317,11 +312,12 @@ public class CalculatorController {
     });
   }
 
-  private void performAllClear(){
+  private void performAllClear() {
     model.clearState();
     view.getTfInput().setText("0");
     view.getTfDisplay().setText("0");
   }
+
   private void setAllClearButtonLogic() {
     JButton bAllClear = view.getMapButton().get("AC");
     bAllClear.addActionListener(e -> {
