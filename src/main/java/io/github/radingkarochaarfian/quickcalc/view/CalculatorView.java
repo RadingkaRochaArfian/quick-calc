@@ -84,7 +84,16 @@ public class CalculatorView extends JFrame {
     JMenuBar mbMain = new JMenuBar();
     setUserMenuItem(mbMain);
     setUtilityMenuItem(mbMain);
+    setAboutMenuItem(mbMain);
     setJMenuBar(mbMain);
+  }
+
+  private void setAboutMenuItem(JMenuBar mbMain) {
+    JMenu mAbout = new JMenu("About");
+    JMenuItem miShortcut = new JMenuItem("Shortcut");
+    mbMain.add(mAbout);
+    mAbout.add(miShortcut);
+    mapMenuItem.put("SHORTCUT", mAbout);
   }
 
   private void setUserMenuItem(JMenuBar mbMain) {
