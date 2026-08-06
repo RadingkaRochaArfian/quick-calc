@@ -89,7 +89,7 @@ public class CalculatorView extends JFrame {
   }
 
   private void setAboutMenuItem(JMenuBar mbMain) {
-    JMenu mAbout = new JMenu("About");
+    JMenu mAbout = new JMenu("Help");
     JMenuItem miShortcut = new JMenuItem("Shortcut");
     mbMain.add(mAbout);
     mAbout.add(miShortcut);

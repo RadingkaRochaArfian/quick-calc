@@ -57,10 +57,10 @@ public class CalculatorController {
     HashMap<String, JMenuItem> mapMenuItem = view.getMapMenuItem();
     setUserMenuLogic(mapMenuItem);
     setUtilityMenuLogic(mapMenuItem);
-    setAboutMenuLogic(mapMenuItem);
+    setHelpMenuLogic(mapMenuItem);
   }
 
-  private void setAboutMenuLogic(HashMap<String, JMenuItem> mapMenuItem) {
+  private void setHelpMenuLogic(HashMap<String, JMenuItem> mapMenuItem) {
     JMenuItem miShortcut = mapMenuItem.get("SHORTCUT");
   }
 
