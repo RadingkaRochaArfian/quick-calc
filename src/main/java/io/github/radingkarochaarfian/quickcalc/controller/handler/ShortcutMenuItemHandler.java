@@ -91,6 +91,10 @@ public class ShortcutMenuItemHandler implements ActionListener {
               <td>Modifier (+/-)</td>
               <td align="right"><span class="keybind">\\</span></td>
             </tr>
+            <tr>
+              <td>Calculate (=)</td>
+              <td align="right"><span class="keybind">Enter</span></td>
+            </tr>
           </table>
           <h3>Navigation</h3>
           <table>

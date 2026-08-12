@@ -8,8 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel.HistoryEntry;
 import io.github.radingkarochaarfian.quickcalc.util.CalculatorUtils;
@@ -24,7 +22,7 @@ public class SqlServerHistoryRepository implements HistoryRepository {
   public List<HistoryEntry> loadAllEntry() {
     List<HistoryEntry> lHistoryEntry = new ArrayList<>();
     String query = "SELECT id, expression, result FROM history ORDER BY id DESC";
-    try (Connection conn = dbconfig.getConnection();
+    try (Connection conn = dbconfig.getMasterConnection();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(query)) {
       while (rs.next()) {

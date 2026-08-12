@@ -97,7 +97,12 @@ public class DatabaseConfig {
     return Boolean.parseBoolean(prop.getProperty(KEY_USE_LOCAL));
   }
 
-  public void setUseLocalOnly(boolean useLocal) {
+  public void resetDatabaseCredential() {
+    prop.setProperty(KEY_USERNAME, "sa");
+    prop.setProperty(KEY_PASSWORD, "insertPassword");
+  }
+
+  public void setUseLocalOnly(boolean useLocal) {// todo method on handler
     prop.setProperty(KEY_USE_LOCAL, String.valueOf(useLocal));
     savePropertiesToFile();
   }
