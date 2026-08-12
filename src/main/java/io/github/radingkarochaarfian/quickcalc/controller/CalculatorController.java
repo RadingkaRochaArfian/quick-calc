@@ -12,6 +12,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
+import io.github.radingkarochaarfian.quickcalc.controller.handler.ResetDatabaseCredentialsMenuItemHandler;
 import io.github.radingkarochaarfian.quickcalc.controller.handler.ShortcutMenuItemHandler;
 import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel;
@@ -75,6 +76,7 @@ public class CalculatorController {
 
   private void setUserMenuLogic(HashMap<String, JMenuItem> mapMenuItem) {
     JMenuItem miResetDbCred = mapMenuItem.get("RESET_DB_CREDENTIAL");
+    miResetDbCred.addActionListener(new ResetDatabaseCredentialsMenuItemHandler(view, dbConfig));
   }
 
   private void setTfInputLogic() {
