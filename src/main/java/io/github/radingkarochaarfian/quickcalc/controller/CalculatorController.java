@@ -77,38 +77,21 @@ public class CalculatorController {
 
   private void setTfInputLogic() {
     JTextField tfInput = view.getTfInput();
-    HashMap<String, JButton> mapButton = view.getMapButton();
     tfInput.addKeyListener(new KeyAdapter() {
 
       public void keyPressed(KeyEvent e) {
+        switch (e) {
 
+        }
         if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
           statusCtrlHold = true;
         }
-
-        if (statusCtrlHold) {
-          switch (e.getKeyCode()) {
-            case KeyEvent.VK_DELETE:
-              JButton bAllClear = mapButton.get("AC");
-              bAllClear.doClick();
-              e.consume();
-              break;
-            case KeyEvent.VK_BACK_SPACE:
-              JButton bClear = mapButton.get("C");
-              bClear.doClick();
-              e.consume();
-              break;
-          }
-        }
-
       }
 
       public void keyReleased(KeyEvent e) {
-
         if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
           statusCtrlHold = false;
         }
-
       }
 
     });
@@ -157,7 +140,7 @@ public class CalculatorController {
           statusCtrlHold = true;
         }
 
-        if (statusCtrlHold) {
+        if (statusCtrlHold) {// fix shortcut
           HashMap<String, JButton> mapButton = view.getMapButton();
           switch (e.getKeyCode()) {
             case KeyEvent.VK_DELETE:
