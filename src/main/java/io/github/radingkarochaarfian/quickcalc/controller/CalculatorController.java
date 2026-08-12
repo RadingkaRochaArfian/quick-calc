@@ -12,6 +12,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
+import io.github.radingkarochaarfian.quickcalc.controller.handler.ShortcutMenuItemHandler;
 import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
 import io.github.radingkarochaarfian.quickcalc.model.HistoryModel;
 import io.github.radingkarochaarfian.quickcalc.model.MathEvaluator;
@@ -62,6 +63,7 @@ public class CalculatorController {
 
   private void setHelpMenuLogic(HashMap<String, JMenuItem> mapMenuItem) {
     JMenuItem miShortcut = mapMenuItem.get("SHORTCUT");
+    miShortcut.addActionListener(new ShortcutMenuItemHandler(view));
   }
 
   private void setUtilityMenuLogic(HashMap<String, JMenuItem> mapMenuItem) {
@@ -77,14 +79,20 @@ public class CalculatorController {
 
   private void setTfInputLogic() {
     JTextField tfInput = view.getTfInput();
+    HashMap<String, JButton> mapButton = view.getMapButton();
     tfInput.addKeyListener(new KeyAdapter() {
 
       public void keyPressed(KeyEvent e) {
-        switch (e) {
-
-        }
-        if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-          statusCtrlHold = true;
+        switch (e.getKeyCode()) {
+          case KeyEvent.VK_CONTROL:
+            statusCtrlHold = true;
+            break;
+          case KeyEvent.VK_H:
+            mapButton.get("H").doClick();
+            break;
+          case KeyEvent.VK_BACK_SLASH:
+            mapButton.get("+/-").doClick();
+            break;
         }
       }
 
