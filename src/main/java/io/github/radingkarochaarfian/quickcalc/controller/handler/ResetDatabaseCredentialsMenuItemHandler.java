@@ -9,8 +9,8 @@ import javax.swing.JOptionPane;
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
 
 public class ResetDatabaseCredentialsMenuItemHandler implements ActionListener {
-  private Component parent;
-  private DatabaseConfig dbConfig;
+  private final Component parent;
+  private final DatabaseConfig dbConfig;
 
   public ResetDatabaseCredentialsMenuItemHandler(Component parent, DatabaseConfig dbConfig) {
     this.parent = parent;

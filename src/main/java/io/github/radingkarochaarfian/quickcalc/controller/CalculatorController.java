@@ -6,12 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
+import io.github.radingkarochaarfian.quickcalc.config.DatabaseInit;
+import io.github.radingkarochaarfian.quickcalc.controller.handler.OfflineOnlyMenuItemHandler;
 import io.github.radingkarochaarfian.quickcalc.controller.handler.ResetDatabaseCredentialsMenuItemHandler;
 import io.github.radingkarochaarfian.quickcalc.controller.handler.ShortcutMenuItemHandler;
 import io.github.radingkarochaarfian.quickcalc.model.CalculatorModel;
@@ -28,6 +31,7 @@ public class CalculatorController {
   private final CalculatorView view;
   private final MathEvaluator evaluator;
   private final DatabaseConfig dbConfig;
+  private final DatabaseInit dbInit;
   private final HistoryBackupService backupService;
   private boolean statusCtrlHold;
   private Timer testTimer;
@@ -37,12 +41,14 @@ public class CalculatorController {
       HistoryModel iHModel,
       MathEvaluator iEvaluator,
       DatabaseConfig iDbConfig,
+      DatabaseInit iDbInit,
       HistoryBackupService bService) {
     model = iModel;
     hModel = iHModel;
     view = iView;
     evaluator = iEvaluator;
     dbConfig = iDbConfig;
+    dbInit = iDbInit;
     backupService = bService;
 
     initController();
@@ -77,6 +83,9 @@ public class CalculatorController {
   private void setUserMenuLogic(HashMap<String, JMenuItem> mapMenuItem) {
     JMenuItem miResetDbCred = mapMenuItem.get("RESET_DB_CREDENTIALS");
     miResetDbCred.addActionListener(new ResetDatabaseCredentialsMenuItemHandler(view, dbConfig));
+    JCheckBoxMenuItem miOfflineOnly = (JCheckBoxMenuItem) mapMenuItem.get("USE_OFFLINE_ONLY");
+    miOfflineOnly.setSelected(dbConfig.isUseLocalOnly());
+    miOfflineOnly.addActionListener(new OfflineOnlyMenuItemHandler(view, dbConfig, dbInit));
   }
 
   private void setTfInputLogic() {
@@ -178,7 +187,7 @@ public class CalculatorController {
     });
     testTimer = new Timer(100, e -> {
       List<String> listBeforeCtrl = List.of("÷", "=", "×", "+/-", "C", "AC");
-      List<String> listAfterCtrl = List.of("/", "↲", "*", "\\", "⌫", "DEL");
+      List<String> listAfterCtrl = List.of("/", "↲", "*", "\\", "ESC", "DEL");
       if (!statusCtrlHold) {
         setButtonText(listBeforeCtrl, listBeforeCtrl);
       } else {

@@ -32,7 +32,7 @@ public class QuickCalcApp {
       CalculatorModel model = new CalculatorModel();
       HistoryModel hModel = new HistoryModel();
       MathEvaluator evaluator = new ShuntingYardEvaluator();
-      CalculatorController controller = new CalculatorController(view, model, hModel, evaluator, dbConfig,
+      CalculatorController controller = new CalculatorController(view, model, hModel, evaluator, dbConfig, dbInit,
           backupService);
       view.setVisible(true);
     });

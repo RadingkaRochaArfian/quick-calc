@@ -98,10 +98,13 @@ public class CalculatorView extends JFrame {
 
   private void setUserMenuItem(JMenuBar mbMain) {
     JMenu mUser = new JMenu("User");
-    JMenuItem miResetDbCred = new JMenuItem("Reset Database Credential");
     mbMain.add(mUser);
+    JMenuItem miResetDbCred = new JMenuItem("Reset Database Credential");
     mUser.add(miResetDbCred);
     mapMenuItem.put("RESET_DB_CREDENTIALS", miResetDbCred);
+    JCheckBoxMenuItem miOfflineOnly = new JCheckBoxMenuItem("Use Offline Only");
+    mUser.add(miOfflineOnly);
+    mapMenuItem.put("USE_OFFLINE_ONLY", miOfflineOnly);
   }
 
   private void setUtilityMenuItem(JMenuBar mbMain) {

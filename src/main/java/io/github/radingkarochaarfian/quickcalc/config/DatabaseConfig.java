@@ -102,7 +102,7 @@ public class DatabaseConfig {
     prop.setProperty(KEY_PASSWORD, "insertPassword");
   }
 
-  public void setUseLocalOnly(boolean useLocal) {// todo method on handler
+  public void setUseLocalOnly(boolean useLocal) {
     prop.setProperty(KEY_USE_LOCAL, String.valueOf(useLocal));
     savePropertiesToFile();
   }

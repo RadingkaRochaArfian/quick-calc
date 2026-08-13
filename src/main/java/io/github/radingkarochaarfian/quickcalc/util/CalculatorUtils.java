@@ -45,6 +45,14 @@ public final class CalculatorUtils {
         JOptionPane.INFORMATION_MESSAGE);
   }
 
+  public static void showWarning(Component parent, String message) {
+    JOptionPane.showMessageDialog(
+        parent,
+        message,
+        "Warning",
+        JOptionPane.WARNING_MESSAGE);
+  }
+
   public static List<String> parseToInput(String equation) {
     List<String> listInput = new ArrayList<>();
     if (equation == null || equation.trim().isEmpty())
