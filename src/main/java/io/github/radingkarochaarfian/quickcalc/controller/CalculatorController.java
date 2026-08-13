@@ -140,8 +140,8 @@ public class CalculatorController {
             break;
           case KeyEvent.VK_ADD:
           case KeyEvent.VK_EQUALS:
-            if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_EQUALS) {
-              mapButton.get("×").doClick();
+            if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_ADD) {
+              mapButton.get("+").doClick();
               e.consume();
             }
             break;
@@ -163,6 +163,19 @@ public class CalculatorController {
               e.consume();
             }
             break;
+          case KeyEvent.VK_DECIMAL:
+          case KeyEvent.VK_PERIOD:
+            mapButton.get(".").doClick();
+            e.consume();
+            break;
+        }
+        List<String> numList = List.of(
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+        int keyCode = e.getKeyCode();
+        if (keyCode >= KeyEvent.VK_0 && keyCode <= KeyEvent.VK_9) {
+          mapButton.get(numList.get(keyCode - KeyEvent.VK_0)).doClick();
+        } else if (keyCode >= KeyEvent.VK_NUMPAD0 && keyCode <= KeyEvent.VK_NUMPAD9) {
+          mapButton.get(numList.get(keyCode - KeyEvent.VK_NUMPAD0)).doClick();
         }
       }
 
@@ -239,8 +252,8 @@ public class CalculatorController {
             break;
           case KeyEvent.VK_ADD:
           case KeyEvent.VK_EQUALS:
-            if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_EQUALS) {
-              mapButton.get("×").doClick();
+            if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_ADD) {
+              mapButton.get("+").doClick();
             }
             break;
           case KeyEvent.VK_SUBTRACT:
@@ -257,12 +270,18 @@ public class CalculatorController {
           case KeyEvent.VK_ESCAPE:
             mapButton.get("C").doClick();
             break;
+          case KeyEvent.VK_DECIMAL:
+          case KeyEvent.VK_PERIOD:
+            mapButton.get(".").doClick();
+            break;
         }
         List<String> numList = List.of(
-            "1", "2", "3", "4", "5", "6", "7", "8", "9");
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
         int keyCode = e.getKeyCode();
-        if (keyCode >= KeyEvent.VK_1 && keyCode <= KeyEvent.VK_9) {
-          mapButton.get(numList.get(keyCode - KeyEvent.VK_1)).doClick();
+        if (keyCode >= KeyEvent.VK_0 && keyCode <= KeyEvent.VK_9) {
+          mapButton.get(numList.get(keyCode - KeyEvent.VK_0)).doClick();
+        } else if (keyCode >= KeyEvent.VK_NUMPAD0 && keyCode <= KeyEvent.VK_NUMPAD9) {
+          mapButton.get(numList.get(keyCode - KeyEvent.VK_NUMPAD0)).doClick();
         }
       }
 
