@@ -101,7 +101,7 @@ public class CalculatorView extends JFrame {
     JMenuItem miResetDbCred = new JMenuItem("Reset Database Credential");
     mbMain.add(mUser);
     mUser.add(miResetDbCred);
-    mapMenuItem.put("RESET_DB_CREDENTIAL", miResetDbCred);
+    mapMenuItem.put("RESET_DB_CREDENTIALS", miResetDbCred);
   }
 
   private void setUtilityMenuItem(JMenuBar mbMain) {

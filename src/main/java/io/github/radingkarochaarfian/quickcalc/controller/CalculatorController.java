@@ -75,7 +75,7 @@ public class CalculatorController {
   }
 
   private void setUserMenuLogic(HashMap<String, JMenuItem> mapMenuItem) {
-    JMenuItem miResetDbCred = mapMenuItem.get("RESET_DB_CREDENTIAL");
+    JMenuItem miResetDbCred = mapMenuItem.get("RESET_DB_CREDENTIALS");
     miResetDbCred.addActionListener(new ResetDatabaseCredentialsMenuItemHandler(view, dbConfig));
   }
 
@@ -91,9 +91,52 @@ public class CalculatorController {
             break;
           case KeyEvent.VK_H:
             mapButton.get("H").doClick();
+            e.consume();
             break;
           case KeyEvent.VK_BACK_SLASH:
             mapButton.get("+/-").doClick();
+            e.consume();
+            break;
+          case KeyEvent.VK_ESCAPE:
+            view.getRootPane().requestFocus();
+            break;
+          case KeyEvent.VK_DELETE:
+            mapButton.get("AC").doClick();
+            e.consume();
+            break;
+          case KeyEvent.VK_DIVIDE:
+          case KeyEvent.VK_SLASH:
+            mapButton.get("÷").doClick();
+            e.consume();
+            break;
+          case KeyEvent.VK_MULTIPLY:
+          case KeyEvent.VK_8:
+            if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_MULTIPLY) {
+              mapButton.get("×").doClick();
+              e.consume();
+            }
+            break;
+          case KeyEvent.VK_ENTER:
+            mapButton.get("=").doClick();
+            e.consume();
+            break;
+          case KeyEvent.VK_UP:
+            mapButton.get("▲").doClick();
+            break;
+          case KeyEvent.VK_DOWN:
+            mapButton.get("▼").doClick();
+            break;
+          case KeyEvent.VK_9:
+            if (e.isShiftDown()) {
+              mapButton.get("(").doClick();
+              e.consume();
+            }
+            break;
+          case KeyEvent.VK_0:
+            if (e.isShiftDown()) {
+              mapButton.get(")").doClick();
+              e.consume();
+            }
             break;
         }
       }
