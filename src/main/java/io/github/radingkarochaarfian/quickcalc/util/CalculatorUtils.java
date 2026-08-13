@@ -53,6 +53,14 @@ public final class CalculatorUtils {
         JOptionPane.WARNING_MESSAGE);
   }
 
+  public static void showPlainMessage(Component parent, String message, String title) {
+    JOptionPane.showMessageDialog(
+        parent,
+        message,
+        title,
+        JOptionPane.PLAIN_MESSAGE);
+  }
+
   public static List<String> parseToInput(String equation) {
     List<String> listInput = new ArrayList<>();
     if (equation == null || equation.trim().isEmpty())
