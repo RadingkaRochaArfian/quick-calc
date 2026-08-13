@@ -4,7 +4,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JOptionPane;
+import io.github.radingkarochaarfian.quickcalc.util.CalculatorUtils;
 
 public class ShortcutMenuItemHandler implements ActionListener {
   private final Component parent;
@@ -123,10 +123,6 @@ public class ShortcutMenuItemHandler implements ActionListener {
 
         </html>
             """;
-    JOptionPane.showMessageDialog(
-        parent,
-        shortcutHtml,
-        "Quick Calc Shortcut",
-        JOptionPane.PLAIN_MESSAGE);
+    CalculatorUtils.showPlainMessage(parent, shortcutHtml, "Quick Calc Shortcut");
   }
 }
