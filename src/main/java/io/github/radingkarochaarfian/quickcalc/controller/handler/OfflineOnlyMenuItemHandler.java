@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JOptionPane;
 
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseConfig;
 import io.github.radingkarochaarfian.quickcalc.config.DatabaseInit;
@@ -27,12 +26,15 @@ public class OfflineOnlyMenuItemHandler implements ActionListener {
     boolean isOfflineOnlyModeSelected = miOfflineOnly.isSelected();
     if (isOfflineOnlyModeSelected) {
       dbConfig.setUseLocalOnly(true);
-      CalculatorUtils.showInformation("Application is now running on Offline Mode Only", "Offline Mode Activated");
+      CalculatorUtils.showInformation(parent, "Application is now running on Offline Mode Only.");
     } else {
       boolean isConnected = dbInit.initializeDatabase();
       if (isConnected) {
-        // showInformation("Application is connected to database", "Successfull
-        // Connection");
+        miOfflineOnly.setSelected(false);
+        CalculatorUtils.showInformation(parent, "Application is connected to database.");
+      } else {
+        miOfflineOnly.setSelected(true);
+        CalculatorUtils.showWarning(parent, "Failed to connect to database.");
       }
     }
   }
