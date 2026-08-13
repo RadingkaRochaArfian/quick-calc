@@ -524,6 +524,7 @@ public class CalculatorController {
         if (CalculatorUtils.isOperator(currentText)) {
           model.addInput(currentText);
           tfInput.setText(textLabel);
+          return;
         }
         if (tfInput.isFocusOwner()) {
           tfInput.replaceSelection(textLabel);
