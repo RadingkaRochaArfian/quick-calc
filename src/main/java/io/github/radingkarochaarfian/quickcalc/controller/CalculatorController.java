@@ -85,6 +85,10 @@ public class CalculatorController {
     tfInput.addKeyListener(new KeyAdapter() {
 
       public void keyPressed(KeyEvent e) {
+        if (e.isControlDown() && e.getKeyCode() != KeyEvent.VK_CONTROL) {
+          e.consume();
+          return;
+        }
         switch (e.getKeyCode()) {
           case KeyEvent.VK_CONTROL:
             statusCtrlHold = true;
@@ -189,32 +193,32 @@ public class CalculatorController {
     view.getRootPane().addKeyListener(new KeyAdapter() {
 
       public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-          statusCtrlHold = true;
+        if (e.isControlDown() && e.getKeyCode() != KeyEvent.VK_CONTROL) {
+          return;
         }
-
-        if (statusCtrlHold) {// fix shortcut
-          HashMap<String, JButton> mapButton = view.getMapButton();
-          switch (e.getKeyCode()) {
-            case KeyEvent.VK_DELETE:
-              mapButton.get("AC").doClick();
-              break;
-            case KeyEvent.VK_ENTER:
-              mapButton.get("=").doClick();
-              break;
-            case KeyEvent.VK_8:
-              mapButton.get("×").doClick();
-              break;
-            case KeyEvent.VK_SLASH:
-              mapButton.get("÷").doClick();
-              break;
-            case KeyEvent.VK_BACK_SLASH:
-              mapButton.get("+/-").doClick();
-              break;
-            case KeyEvent.VK_BACK_SPACE:
-              mapButton.get("C").doClick();
-              break;
-          }
+        HashMap<String, JButton> mapButton = view.getMapButton();
+        switch (e.getKeyCode()) {
+          case KeyEvent.VK_CONTROL:
+            statusCtrlHold = true;
+            break;
+          case KeyEvent.VK_DELETE:
+            mapButton.get("AC").doClick();
+            break;
+          case KeyEvent.VK_ENTER:
+            mapButton.get("=").doClick();
+            break;
+          case KeyEvent.VK_8:
+            mapButton.get("×").doClick();
+            break;
+          case KeyEvent.VK_SLASH:
+            mapButton.get("÷").doClick();
+            break;
+          case KeyEvent.VK_BACK_SLASH:
+            mapButton.get("+/-").doClick();
+            break;
+          case KeyEvent.VK_ESCAPE:
+            mapButton.get("C").doClick();
+            break;
         }
       }
 
