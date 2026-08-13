@@ -81,6 +81,7 @@ public class CalculatorView extends JFrame {
   }
 
   private void setMenuComponent() {
+    mapMenuItem = new HashMap<>();
     JMenuBar mbMain = new JMenuBar();
     setUserMenuItem(mbMain);
     setUtilityMenuItem(mbMain);
