@@ -133,18 +133,6 @@ public class CalculatorController {
             mapButton.get("=").doClick();
             e.consume();
             break;
-          case KeyEvent.VK_SUBTRACT:
-          case KeyEvent.VK_MINUS:
-            mapButton.get("-").doClick();
-            e.consume();
-            break;
-          case KeyEvent.VK_ADD:
-          case KeyEvent.VK_EQUALS:
-            if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_EQUALS) {
-              mapButton.get("×").doClick();
-              e.consume();
-            }
-            break;
           case KeyEvent.VK_UP:
             mapButton.get("▲").doClick();
             break;
@@ -222,9 +210,6 @@ public class CalculatorController {
           case KeyEvent.VK_CONTROL:
             statusCtrlHold = true;
             break;
-          case KeyEvent.VK_H:
-            mapButton.get("H").doClick();
-            break;
           case KeyEvent.VK_DELETE:
             mapButton.get("AC").doClick();
             break;
@@ -236,16 +221,6 @@ public class CalculatorController {
             if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_MULTIPLY) {
               mapButton.get("×").doClick();
             }
-            break;
-          case KeyEvent.VK_ADD:
-          case KeyEvent.VK_EQUALS:
-            if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_EQUALS) {
-              mapButton.get("×").doClick();
-            }
-            break;
-          case KeyEvent.VK_SUBTRACT:
-          case KeyEvent.VK_MINUS:
-            mapButton.get("-").doClick();
             break;
           case KeyEvent.VK_DIVIDE:
           case KeyEvent.VK_SLASH:

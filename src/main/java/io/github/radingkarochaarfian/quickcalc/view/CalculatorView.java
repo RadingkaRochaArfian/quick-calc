@@ -18,8 +18,8 @@ import javax.swing.table.DefaultTableModel;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 public class CalculatorView extends JFrame {
-  private final int MIN_WIDTH = 290;
-  private final int MIN_HEIGHT = 330;
+  private final int MIN_WIDTH = 330;
+  private final int MIN_HEIGHT = 360;
   private JTextField tfInput;
   private HashMap<String, JButton> mapButton;
 
@@ -130,7 +130,7 @@ public class CalculatorView extends JFrame {
 
   private void setSouthComponentHistory(JPanel panel) {
     JPanel pSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-    for (String s : List.of("◀", "▶", "Clear", "Restore", "Delete")) {
+    for (String s : List.of("←", "→", "Clear", "Restore", "Delete")) {
       JButton btn = new JButton(s);
       pSouth.add(btn);
       mapButton.put(s, btn);
