@@ -132,6 +132,7 @@ public class CalculatorView extends JFrame {
     JPanel pSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
     for (String s : List.of("←", "→", "Clear", "Restore", "Delete")) {
       JButton btn = new JButton(s);
+      btn.setFocusable(false);
       pSouth.add(btn);
       mapButton.put(s, btn);
     }
@@ -150,6 +151,7 @@ public class CalculatorView extends JFrame {
     tfInput.setHorizontalAlignment(JTextField.RIGHT);
     tfInput.setFont(new Font("Arial", Font.BOLD, 25));
     tfInput.setBackground(new Color(240, 240, 240));
+    tfInput.setEditable(false);
     JPanel northPanel = new JPanel();
     JPanel northPanelWest = new JPanel();
     northPanel.setLayout(new BorderLayout(10, 10));

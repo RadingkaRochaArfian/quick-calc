@@ -3,8 +3,6 @@ package io.github.radingkarochaarfian.quickcalc.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.radingkarochaarfian.quickcalc.util.CalculatorUtils;
-
 public class CalculatorModel {
   private List<String> listHistoryInput = new ArrayList<>();
   private int currIndex = -1;
@@ -47,6 +45,10 @@ public class CalculatorModel {
   public void addInput(String text) {
     listHistoryInput.add(text);
     currIndex++;
+  }
+
+  public void replaceLastInput(String input) {
+    listHistoryInput.set(listHistoryInput.size() - 1, input);
   }
 
   public void setListHistoryInput(List<String> listInput) {

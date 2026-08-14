@@ -35,6 +35,7 @@ public class CalculatorController {
   private final HistoryBackupService backupService;
   private boolean statusCtrlHold;
   private Timer testTimer;
+  private boolean isResultState;
 
   public CalculatorController(CalculatorView iView,
       CalculatorModel iModel,
@@ -526,26 +527,31 @@ public class CalculatorController {
     }
   }
 
-  private void setNumberButtonLogic() {
+  private void setNumberButtonLogic() {// todo: tfdisplay
     JTextField tfInput = view.getTfInput();
     for (String textLabel : getListOfNum()) {
       JButton btnNum = view.getMapButton().get(textLabel);
       btnNum.addActionListener(e -> {
         model.truncateBelow();
-        String currentText = tfInput.getText();
-        if (CalculatorUtils.isOperator(currentText)) {
-          model.addInput(currentText);
-          tfInput.setText(textLabel);
+        if (isResultState) {
+          model.clearState();
+          tfInput.setText(textLabel.equals(".") ? "0." : textLabel);
+          isResultState = false;
           return;
         }
-        if (tfInput.isFocusOwner()) {
-          tfInput.replaceSelection(textLabel);
+        String currentText = tfInput.getText();
+        if (CalculatorUtils.isOperator(currentText)) {
+          model.addInput(textLabel);
+          tfInput.setText(textLabel.equals(".") ? "0." : textLabel);
+          return;
+        }
+        if (currentText.equals("0") && !textLabel.equals(".")) {
+          tfInput.setText(textLabel);
         } else {
-          if (currentText.equals("0")) {
-            tfInput.setText(textLabel);
-          } else {
-            tfInput.setText(currentText + textLabel);
+          if (currentText.equals(".") && textLabel.equals(".")) {
+            return;
           }
+          tfInput.setText(currentText + textLabel);
         }
       });
     }
