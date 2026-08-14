@@ -241,6 +241,18 @@ public class CalculatorController {
           case KeyEvent.VK_DELETE:
             mapButton.get("AC").doClick();
             break;
+          case KeyEvent.VK_UP:
+            mapButton.get("▲").doClick();
+            break;
+          case KeyEvent.VK_DOWN:
+            mapButton.get("▼").doClick();
+            break;
+          case KeyEvent.VK_LEFT:
+            mapButton.get("←").doClick();
+            break;
+          case KeyEvent.VK_RIGHT:
+            mapButton.get("→").doClick();
+            break;
           case KeyEvent.VK_ENTER:
             mapButton.get("=").doClick();
             break;
