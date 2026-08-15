@@ -411,11 +411,17 @@ public class CalculatorController {
     JTextField tfInput = view.getTfInput();
     JButton bEqual = view.getMapButton().get("=");
     bEqual.addActionListener(e -> {
+      String currText = tfInput.getText();
+      if (CalculatorUtils.isOperator(currText)) {
+        return;
+      }
       model.addInput(tfInput.getText());
       try {
         String expression = model.getExpressionOnString();
         double evalResult = evaluator.evaluate(expression);
-        String formattedResult = (evalResult % 1 == 0) ? String.valueOf((long) evalResult) : String.valueOf(evalResult);
+        String formattedResult = (evalResult % 1 == 0)
+            ? String.valueOf((long) evalResult)
+            : String.valueOf(evalResult);
 
         backupService.saveHistory(expression, formattedResult);
         List<String> listToken = model.getListHistoryInput();
@@ -427,8 +433,11 @@ public class CalculatorController {
         });
 
         tfInput.setText(formattedResult);
+        isResultState = true;
       } catch (Exception ex) {
         tfInput.setText("Error");
+        model.clearState();
+        isResultState = true;
       }
     });
   }
