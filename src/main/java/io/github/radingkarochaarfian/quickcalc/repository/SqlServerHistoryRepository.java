@@ -22,7 +22,7 @@ public class SqlServerHistoryRepository implements HistoryRepository {
   public List<HistoryEntry> loadAllEntry() {
     List<HistoryEntry> lHistoryEntry = new ArrayList<>();
     String query = "SELECT id, expression, result FROM history ORDER BY id DESC";
-    try (Connection conn = dbconfig.getMasterConnection();
+    try (Connection conn = dbconfig.getConnection();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(query)) {
       while (rs.next()) {

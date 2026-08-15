@@ -356,12 +356,12 @@ public class CalculatorController {
 
   private void setDeleteHistoryButtonLogic() {
     JButton bDHistory = view.getMapButton().get("Delete");
-    int selectedRow = view.getTHistory().getSelectedRow();
-    if (selectedRow == -1) {
-      CalculatorUtils.showInformation(view, "Select a row first.");
-      return;
-    }
     bDHistory.addActionListener(e -> {
+      int selectedRow = view.getTHistory().getSelectedRow();
+      if (selectedRow == -1) {
+        CalculatorUtils.showInformation(view, "Select a row first.");
+        return;
+      }
       view.getTModelHistory().removeRow(selectedRow);
       HistoryEntry selectedEntry = hModel.getHistoryEntryAt(selectedRow);
       hModel.removeHistoryEntryAt(selectedRow);

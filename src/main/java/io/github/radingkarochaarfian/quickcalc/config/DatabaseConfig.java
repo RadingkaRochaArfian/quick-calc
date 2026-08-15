@@ -32,8 +32,9 @@ public class DatabaseConfig {
     prop.setProperty(KEY_PROVIDER_CLASS, "io.github.radingkarochaarfian.quickcalc.config.SqlServerProvider");
     prop.setProperty(KEY_REPO_CLASS, "io.github.radingkarochaarfian.quickcalc.repository.SqlServerHistoryRepository");
     prop.setProperty(KEY_URL,
-        "jdbc:sqlserver://localhost:1433;databaseName=QuickCalcDB;encrypt=true;trustServerCertificate=true;");
-    prop.setProperty(KEY_MASTER_URL, "jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;");
+        "jdbc:sqlserver://localhost:1433;databaseName=QuickCalcDB;encrypt=true;trustServerCertificate=true;loginTimeout=3;connectRetryCount=0;");
+    prop.setProperty(KEY_MASTER_URL,
+        "jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;loginTimeout=3;connectRetryCount=0;");
     prop.setProperty(KEY_NAME, "QuickCalcDB");
     prop.setProperty(KEY_USERNAME, "sa");
     prop.setProperty(KEY_PASSWORD, "insertPassword");

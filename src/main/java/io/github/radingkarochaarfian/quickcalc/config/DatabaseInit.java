@@ -29,7 +29,7 @@ public class DatabaseInit {
         case 1:
           try {
             dbProvider.createDatabaseIfNotExist(dbConfig);
-            try (Connection conn = dbConfig.getConnection()) {
+            try (Connection conn = dbConfig.getMasterConnection()) {
               dbProvider.createaTableIfNotExist(conn);
               return true;
             }
