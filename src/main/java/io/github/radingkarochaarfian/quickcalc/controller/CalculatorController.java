@@ -169,6 +169,9 @@ public class CalculatorController {
             mapButton.get(".").doClick();
             e.consume();
             break;
+          case KeyEvent.VK_ALT:
+            view.getMbMain();
+            break;
         }
         List<String> numList = List.of(
             "0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
@@ -201,6 +204,7 @@ public class CalculatorController {
           entry.getResult()
       };
       tModelHistory.addRow(rowData);
+      hModel.addHistory(entry.getExpression(), entry.getResult(), entry.getListHistoryInput());
     }
   }
 
@@ -287,6 +291,9 @@ public class CalculatorController {
           case KeyEvent.VK_PERIOD:
             mapButton.get(".").doClick();
             break;
+          case KeyEvent.VK_ALT:
+            view.getMbMain();
+            break;
         }
         List<String> numList = List.of(
             "0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
@@ -362,10 +369,10 @@ public class CalculatorController {
         CalculatorUtils.showInformation(view, "Select a row first.");
         return;
       }
-      view.getTModelHistory().removeRow(selectedRow);
       HistoryEntry selectedEntry = hModel.getHistoryEntryAt(selectedRow);
       hModel.removeHistoryEntryAt(selectedRow);
       backupService.deleteHistoryBackupAt(selectedRow, selectedEntry.getId());
+      view.getTModelHistory().removeRow(selectedRow);
     });
   }
 
@@ -373,8 +380,9 @@ public class CalculatorController {
     JButton bCHistory = view.getMapButton().get("Clear");
     DefaultTableModel tMHistory = view.getTModelHistory();
     bCHistory.addActionListener(e -> {
+      hModel.clearListHistoryEntry();
       backupService.deleteAllHistoryBackup();
-      tMHistory.setColumnCount(0);
+      tMHistory.setRowCount(0);
     });
   }
 

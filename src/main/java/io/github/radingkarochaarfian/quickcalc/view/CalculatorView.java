@@ -28,6 +28,7 @@ public class CalculatorView extends JFrame {
   private DefaultTableModel tModelHistory;
   private JTextField tfDisplay;
 
+  private JMenuBar mbMain;
   private HashMap<String, JMenuItem> mapMenuItem;
 
   public CalculatorView() {
@@ -81,15 +82,16 @@ public class CalculatorView extends JFrame {
   }
 
   private void setMenuComponent() {
-    mapMenuItem = new HashMap<>();
-    JMenuBar mbMain = new JMenuBar();
-    setUserMenuItem(mbMain);
-    setUtilityMenuItem(mbMain);
-    setAboutMenuItem(mbMain);
+    mbMain = new JMenuBar();
+    mbMain.setVisible(false);
     setJMenuBar(mbMain);
+    mapMenuItem = new HashMap<>();
+    setUserMenuItem();
+    setUtilityMenuItem();
+    setAboutMenuItem();
   }
 
-  private void setAboutMenuItem(JMenuBar mbMain) {
+  private void setAboutMenuItem() {
     JMenu mAbout = new JMenu("Help");
     JMenuItem miShortcut = new JMenuItem("Shortcut");
     mbMain.add(mAbout);
@@ -97,7 +99,7 @@ public class CalculatorView extends JFrame {
     mapMenuItem.put("SHORTCUT", mAbout);
   }
 
-  private void setUserMenuItem(JMenuBar mbMain) {
+  private void setUserMenuItem() {
     JMenu mUser = new JMenu("User");
     mbMain.add(mUser);
     JMenuItem miResetDbCred = new JMenuItem("Reset Database Credential");
@@ -108,7 +110,7 @@ public class CalculatorView extends JFrame {
     mapMenuItem.put("USE_OFFLINE_ONLY", miOfflineOnly);
   }
 
-  private void setUtilityMenuItem(JMenuBar mbMain) {
+  private void setUtilityMenuItem() {
     JMenu mUtility = new JMenu("Utility");
     JMenuItem miClearAll = new JMenuItem("Clear All");
     mbMain.add(mUtility);
@@ -260,5 +262,9 @@ public class CalculatorView extends JFrame {
 
   public HashMap<String, JMenuItem> getMapMenuItem() {
     return mapMenuItem;
+  }
+
+  public JMenuBar getMbMain() {
+    return mbMain;
   }
 }

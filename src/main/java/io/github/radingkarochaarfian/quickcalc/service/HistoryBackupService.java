@@ -36,21 +36,9 @@ public class HistoryBackupService {
   }
 
   private void folderCheck() {
-    try {
-      File folder = new File(FOLDER_BACKUP);
-      if (!folder.exists()) {
-        folder.mkdirs();
-      }
-      File jsonFile = new File(FILE_JSON);
-      if (!jsonFile.exists()) {
-        jsonFile.createNewFile();
-      }
-      File csvFile = new File(FILE_CSV);
-      if (!csvFile.exists()) {
-        csvFile.createNewFile();
-      }
-    } catch (IOException e) {
-      showError("Failed to create backup file(s)");
+    File folder = new File(FOLDER_BACKUP);
+    if (!folder.exists()) {
+      folder.mkdirs();
     }
   }
 
