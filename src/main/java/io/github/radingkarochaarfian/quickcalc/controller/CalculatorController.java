@@ -558,7 +558,7 @@ public class CalculatorController {
         }
         String currentText = tfInput.getText();
         if (CalculatorUtils.isOperator(currentText)) {
-          model.addInput(textLabel);
+          model.addInput(currentText);
           tfInput.setText(textLabel.equals(".") ? "0." : textLabel);
           return;
         }
