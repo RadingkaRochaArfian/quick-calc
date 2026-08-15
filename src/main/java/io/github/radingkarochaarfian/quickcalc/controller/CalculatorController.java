@@ -510,15 +510,23 @@ public class CalculatorController {
   private void setOperatorButtonLogic() {
     JTextField tfInput = view.getTfInput();
     for (String textLabel : getListOfOperator()) {
-      JButton btnNum = view.getMapButton().get(textLabel);
-      btnNum.addActionListener(e -> {
+      JButton btnOp = view.getMapButton().get(textLabel);
+      btnOp.addActionListener(e -> {
         model.truncateBelow();
         String currText = tfInput.getText();
+        if (isResultState) {
+          model.clearState();
+          model.addInput(currText);
+          tfInput.setText(textLabel);
+          isResultState = false;
+          return;
+        }
         int caretPos = tfInput.isFocusOwner() ? tfInput.getCaretPosition() : currText.length();
         if (isCaretInsideBracket(currText, caretPos)) {
           insertTfInput(textLabel);
         } else if (CalculatorUtils.isOperator(currText)) {
           tfInput.setText(textLabel);
+          model.replaceLastInput(textLabel);
         } else {
           model.addInput(tfInput.getText());
           tfInput.setText(textLabel);
