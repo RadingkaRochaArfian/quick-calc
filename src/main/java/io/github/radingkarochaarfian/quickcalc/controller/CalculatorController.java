@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.Timer;
@@ -170,7 +171,9 @@ public class CalculatorController {
             e.consume();
             break;
           case KeyEvent.VK_ALT:
-            view.getMbMain();
+            JMenuBar mbMain = view.getMbMain();
+            boolean complement = mbMain.isVisible() ? false : true;
+            view.getMbMain().setVisible(complement);
             break;
         }
         List<String> numList = List.of(
@@ -199,9 +202,7 @@ public class CalculatorController {
     tModelHistory.setRowCount(0);
     for (HistoryEntry entry : lHistoryEntry) {
       Object[] rowData = new Object[] {
-          entry.getId(),
-          entry.getExpression(),
-          entry.getResult()
+          entry.getDisplayString()
       };
       tModelHistory.addRow(rowData);
       hModel.addHistory(entry.getExpression(), entry.getResult(), entry.getListHistoryInput());
@@ -292,7 +293,9 @@ public class CalculatorController {
             mapButton.get(".").doClick();
             break;
           case KeyEvent.VK_ALT:
-            view.getMbMain();
+            JMenuBar mbMain = view.getMbMain();
+            boolean complement = mbMain.isVisible() ? false : true;
+            view.getMbMain().setVisible(complement);
             break;
         }
         List<String> numList = List.of(
