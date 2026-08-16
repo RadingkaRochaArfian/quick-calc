@@ -97,54 +97,51 @@ public class CalculatorController {
 
       public void keyPressed(KeyEvent e) {
         if (e.isControlDown() && e.getKeyCode() != KeyEvent.VK_CONTROL) {
-          e.consume();
           return;
         }
         switch (e.getKeyCode()) {
           case KeyEvent.VK_CONTROL:
             statusCtrlHold = true;
             break;
+          case KeyEvent.VK_BACK_SPACE:
+            int caretPos = tfInput.getCaretPosition();
+            String currText = tfInput.getText();
+            String newText = currText.substring(0, caretPos - 1) + currText.substring(caretPos);
+            tfInput.setText(newText);
+            break;
           case KeyEvent.VK_H:
             mapButton.get("H").doClick();
-            e.consume();
             break;
           case KeyEvent.VK_BACK_SLASH:
             mapButton.get("+/-").doClick();
-            e.consume();
             break;
           case KeyEvent.VK_ESCAPE:
             view.getRootPane().requestFocus();
             break;
           case KeyEvent.VK_DELETE:
             mapButton.get("AC").doClick();
-            e.consume();
             break;
           case KeyEvent.VK_DIVIDE:
           case KeyEvent.VK_SLASH:
             mapButton.get("÷").doClick();
-            e.consume();
             break;
           case KeyEvent.VK_MULTIPLY:
           case KeyEvent.VK_8:
             if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_MULTIPLY) {
               mapButton.get("×").doClick();
-              e.consume();
             }
             break;
           case KeyEvent.VK_ENTER:
             mapButton.get("=").doClick();
-            e.consume();
             break;
           case KeyEvent.VK_SUBTRACT:
           case KeyEvent.VK_MINUS:
             mapButton.get("-").doClick();
-            e.consume();
             break;
           case KeyEvent.VK_ADD:
           case KeyEvent.VK_EQUALS:
             if (e.isShiftDown() || e.getKeyCode() == KeyEvent.VK_ADD) {
               mapButton.get("+").doClick();
-              e.consume();
             }
             break;
           case KeyEvent.VK_UP:
@@ -156,19 +153,16 @@ public class CalculatorController {
           case KeyEvent.VK_9:
             if (e.isShiftDown()) {
               mapButton.get("(").doClick();
-              e.consume();
             }
             break;
           case KeyEvent.VK_0:
             if (e.isShiftDown()) {
               mapButton.get(")").doClick();
-              e.consume();
             }
             break;
           case KeyEvent.VK_DECIMAL:
           case KeyEvent.VK_PERIOD:
             mapButton.get(".").doClick();
-            e.consume();
             break;
           case KeyEvent.VK_ALT:
             JMenuBar mbMain = view.getMbMain();
@@ -210,13 +204,8 @@ public class CalculatorController {
   }
 
   private void setButtonLogic() {
-    view.getTfInput().addKeyListener(new KeyAdapter() {
-      public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-          view.getRootPane().requestFocusInWindow();
-      }
-    });
-    testTimer = new Timer(100, e -> {
+    JTextField tfInput = view.getTfInput();
+    testTimer = new Timer(150, e -> {// todo
       List<String> listBeforeCtrl = List.of("÷", "=", "×", "+/-", "C", "AC");
       List<String> listAfterCtrl = List.of("/", "↲", "*", "\\", "ESC", "DEL");
       if (!statusCtrlHold) {
@@ -224,7 +213,6 @@ public class CalculatorController {
       } else {
         setButtonText(listBeforeCtrl, listAfterCtrl);
       }
-      JTextField tfInput = view.getTfInput();
       if (tfInput.getText().isEmpty() || tfInput.getText().equals("Error")) {
         tfInput.setText("0");
       }
@@ -240,6 +228,11 @@ public class CalculatorController {
         switch (e.getKeyCode()) {
           case KeyEvent.VK_CONTROL:
             statusCtrlHold = true;
+            break;
+          case KeyEvent.VK_BACK_SPACE:
+            String currText = tfInput.getText();
+            String newText = currText.substring(0, currText.length() - 1);
+            tfInput.setText(newText);
             break;
           case KeyEvent.VK_H:
             mapButton.get("H").doClick();
