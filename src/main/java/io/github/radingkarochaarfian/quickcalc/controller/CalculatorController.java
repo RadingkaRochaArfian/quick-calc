@@ -422,6 +422,9 @@ public class CalculatorController {
     JTextField tfInput = view.getTfInput();
     JButton bEqual = view.getMapButton().get("=");
     bEqual.addActionListener(e -> {
+      if (isResultState) {
+        return;
+      }
       String currText = tfInput.getText();
       if (CalculatorUtils.isOperator(currText)) {
         return;
