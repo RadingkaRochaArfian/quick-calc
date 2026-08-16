@@ -99,13 +99,13 @@ public class CalculatorController {
         if (e.isControlDown() && e.getKeyCode() != KeyEvent.VK_CONTROL) {
           return;
         }
+        String currText = tfInput.getText();
         switch (e.getKeyCode()) {
           case KeyEvent.VK_CONTROL:
             statusCtrlHold = true;
             break;
           case KeyEvent.VK_BACK_SPACE:
             int caretPos = tfInput.getCaretPosition();
-            String currText = tfInput.getText();
             String newText = currText.substring(0, caretPos - 1) + currText.substring(caretPos);
             tfInput.setText(newText);
             break;
@@ -116,6 +116,9 @@ public class CalculatorController {
             mapButton.get("+/-").doClick();
             break;
           case KeyEvent.VK_ESCAPE:
+            if (currText.isEmpty()) {
+              tfInput.setText("0");
+            }
             view.getRootPane().requestFocus();
             break;
           case KeyEvent.VK_DELETE:
@@ -232,6 +235,9 @@ public class CalculatorController {
           case KeyEvent.VK_BACK_SPACE:
             String currText = tfInput.getText();
             String newText = currText.substring(0, currText.length() - 1);
+            if (newText.isEmpty()) {
+              newText = "0";
+            }
             tfInput.setText(newText);
             break;
           case KeyEvent.VK_H:
