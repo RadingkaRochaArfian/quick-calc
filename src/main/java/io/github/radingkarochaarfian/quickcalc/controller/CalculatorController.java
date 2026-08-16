@@ -205,7 +205,7 @@ public class CalculatorController {
           entry.getDisplayString()
       };
       tModelHistory.addRow(rowData);
-      hModel.addHistory(entry.getExpression(), entry.getResult(), entry.getListHistoryInput());
+      hModel.addHistory(entry.getId(), entry.getExpression(), entry.getResult(), entry.getListHistoryInput());
     }
   }
 
