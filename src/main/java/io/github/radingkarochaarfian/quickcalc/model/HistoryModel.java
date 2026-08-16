@@ -45,11 +45,6 @@ public class HistoryModel {
 
   private final List<HistoryEntry> listHistoryEntry = new ArrayList<>();
 
-  public void addHistory(String expression, String result, List<String> listToken) {
-    HistoryEntry newEntry = new HistoryEntry(expression, result, listToken);
-    listHistoryEntry.add(newEntry);
-  }
-
   public void addHistory(int id, String expression, String result, List<String> listToken) {
     HistoryEntry newEntry = new HistoryEntry(id, expression, result, listToken);
     listHistoryEntry.add(newEntry);

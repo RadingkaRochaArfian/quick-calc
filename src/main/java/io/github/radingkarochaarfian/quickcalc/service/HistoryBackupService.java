@@ -83,7 +83,7 @@ public class HistoryBackupService {
     }
   }
 
-  public void saveHistory(String expression, String result) {
+  public HistoryEntry saveHistory(String expression, String result) {
     folderCheck();
     int id = -1;
     if (!offlineStatus) {
@@ -93,6 +93,7 @@ public class HistoryBackupService {
     HistoryEntry entry = new HistoryEntry(id, expression, result, listInput);
     saveToJson(entry);
     saveToCsv(expression, result);
+    return entry;
   }
 
   private void saveToJson(HistoryEntry entry) {

@@ -418,7 +418,7 @@ public class CalculatorController {
     });
   }
 
-  private void setEqualButtonLogic() {
+  private void setEqualButtonLogic() {// fix id problem
     JTextField tfInput = view.getTfInput();
     JButton bEqual = view.getMapButton().get("=");
     bEqual.addActionListener(e -> {
@@ -434,9 +434,9 @@ public class CalculatorController {
             ? String.valueOf((long) evalResult)
             : String.valueOf(evalResult);
 
-        backupService.saveHistory(expression, formattedResult);
+        HistoryEntry savedEntry = backupService.saveHistory(expression, formattedResult);
         List<String> listToken = model.getListHistoryInput();
-        hModel.addHistory(expression, formattedResult, listToken);
+        hModel.addHistory(savedEntry.getId(), expression, formattedResult, listToken);
 
         DefaultTableModel tModel = view.getTModelHistory();
         tModel.addRow(new Object[] {
