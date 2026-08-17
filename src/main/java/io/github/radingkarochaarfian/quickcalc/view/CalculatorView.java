@@ -232,6 +232,14 @@ public class CalculatorView extends JFrame {
     panel.add(region, BorderLayout.CENTER);
   }
 
+  public void toggleFullscreen() {
+    if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+      setExtendedState(JFrame.NORMAL);
+    } else {
+      setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }
+  }
+
   public void toggleHistoryPanel() {
     int currentWidth = getWidth();
     int currentHeight = getHeight();

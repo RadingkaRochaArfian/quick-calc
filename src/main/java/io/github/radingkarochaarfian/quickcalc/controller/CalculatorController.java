@@ -113,6 +113,9 @@ public class CalculatorController {
           case KeyEvent.VK_H:
             mapButton.get("H").doClick();
             break;
+          case KeyEvent.VK_F11:
+          view.toggleFullscreen();
+          break;
           case KeyEvent.VK_BACK_SLASH:
             mapButton.get("+/-").doClick();
             break;
@@ -228,6 +231,9 @@ public class CalculatorController {
             }
             tfInput.setText(newText);
             break;
+          case KeyEvent.VK_F11:
+          view.toggleFullscreen();
+          break;
           case KeyEvent.VK_H:
             mapButton.get("H").doClick();
             break;
@@ -288,7 +294,7 @@ public class CalculatorController {
         List<String> numList = List.of(
             "0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
         int keyCode = e.getKeyCode();
-        if (keyCode >= KeyEvent.VK_0 && keyCode <= KeyEvent.VK_9) {
+        if (keyCode >= KeyEvent.VK_0 && keyCode <= KeyEvent.VK_9) {// fix 8
           mapButton.get(numList.get(keyCode - KeyEvent.VK_0)).doClick();
         } else if (keyCode >= KeyEvent.VK_NUMPAD0 && keyCode <= KeyEvent.VK_NUMPAD9) {
           mapButton.get(numList.get(keyCode - KeyEvent.VK_NUMPAD0)).doClick();
