@@ -34,9 +34,10 @@ public class CalculatorController {
   private final DatabaseConfig dbConfig;
   private final DatabaseInit dbInit;
   private final HistoryBackupService backupService;
-  private boolean statusCtrlHold;
-  private Timer testTimer;
   private boolean isResultState;
+
+  private static final List<String> listBeforeCtrl = List.of("÷", "=", "×", "+/-", "C", "AC");
+  private static final List<String> listAfterCtrl = List.of("/", "↲", "*", "\\", "ESC", "DEL");
 
   public CalculatorController(CalculatorView iView,
       CalculatorModel iModel,
@@ -102,7 +103,7 @@ public class CalculatorController {
         String currText = tfInput.getText();
         switch (e.getKeyCode()) {
           case KeyEvent.VK_CONTROL:
-            statusCtrlHold = true;
+            setButtonText(listBeforeCtrl, listAfterCtrl);
             break;
           case KeyEvent.VK_BACK_SPACE:
             int caretPos = tfInput.getCaretPosition();
@@ -185,7 +186,7 @@ public class CalculatorController {
 
       public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-          statusCtrlHold = false;
+          setButtonText(listBeforeCtrl, listBeforeCtrl);
         }
       }
 
@@ -208,19 +209,6 @@ public class CalculatorController {
 
   private void setButtonLogic() {
     JTextField tfInput = view.getTfInput();
-    testTimer = new Timer(150, e -> {// todo
-      List<String> listBeforeCtrl = List.of("÷", "=", "×", "+/-", "C", "AC");
-      List<String> listAfterCtrl = List.of("/", "↲", "*", "\\", "ESC", "DEL");
-      if (!statusCtrlHold) {
-        setButtonText(listBeforeCtrl, listBeforeCtrl);
-      } else {
-        setButtonText(listBeforeCtrl, listAfterCtrl);
-      }
-      if (tfInput.getText().isEmpty() || tfInput.getText().equals("Error")) {
-        tfInput.setText("0");
-      }
-    });
-    testTimer.start();
     view.getRootPane().addKeyListener(new KeyAdapter() {
 
       public void keyPressed(KeyEvent e) {
@@ -230,7 +218,7 @@ public class CalculatorController {
         HashMap<String, JButton> mapButton = view.getMapButton();
         switch (e.getKeyCode()) {
           case KeyEvent.VK_CONTROL:
-            statusCtrlHold = true;
+            setButtonText(listBeforeCtrl, listAfterCtrl);
             break;
           case KeyEvent.VK_BACK_SPACE:
             String currText = tfInput.getText();
@@ -309,7 +297,7 @@ public class CalculatorController {
 
       public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-          statusCtrlHold = false;
+          setButtonText(listBeforeCtrl, listBeforeCtrl);
         }
       }
 
@@ -417,7 +405,7 @@ public class CalculatorController {
     });
   }
 
-  private void setEqualButtonLogic() {// fix id problem
+  private void setEqualButtonLogic() {
     JTextField tfInput = view.getTfInput();
     JButton bEqual = view.getMapButton().get("=");
     bEqual.addActionListener(e -> {
@@ -451,6 +439,11 @@ public class CalculatorController {
         tfInput.setText("Error");
         model.clearState();
         isResultState = true;
+        Timer errorTimer = new Timer(200, eT -> {
+          tfInput.setText("0");
+        });
+        errorTimer.setRepeats(false);
+        errorTimer.start();
       }
     });
   }
