@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,6 +44,11 @@ public class CalculatorView extends JFrame {
     setTitle("0 - QuickCalc");
     getRootPane().setFocusable(true);
     setLocationRelativeTo(null);
+    addComponentListener(new ComponentAdapter() {
+      public void componentResized(ComponentEvent e) {
+        updateButtonFontSize();
+      }
+    });
   }
 
   private void setComponent() {
@@ -242,6 +249,13 @@ public class CalculatorView extends JFrame {
         spMain.setDividerLocation(0.5);
       });
       isHistoryOpen = true;
+    }
+  }
+
+  private void updateButtonFontSize() {
+    float newSize = Math.max(13f, getWidth() / 50f);
+    for (JButton btn : mapButton.values()) {
+      btn.setFont(btn.getFont().deriveFont(newSize));
     }
   }
 
