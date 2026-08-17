@@ -23,6 +23,9 @@ public class CalculatorView extends JFrame {
   private JTextField tfInput;
   private HashMap<String, JButton> mapButton;
 
+  private boolean isHistoryOpen;
+  private JPanel pHistory;
+
   private JSplitPane spMain;
   private JTable tHistory;
   private DefaultTableModel tModelHistory;
@@ -43,9 +46,10 @@ public class CalculatorView extends JFrame {
 
   private void setComponent() {
     JPanel pMain = new JPanel(new BorderLayout(10, 10));
-    JPanel pHistory = new JPanel(new BorderLayout(10, 10));
+    pHistory = new JPanel(new BorderLayout(10, 10));
     pMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     pHistory.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    pHistory.setVisible(false);
     mapButton = new HashMap<>();
     setNorthComponentMain(pMain);
     setSouthComponentMain(pMain);
@@ -210,8 +214,10 @@ public class CalculatorView extends JFrame {
         } else {
         }
         JButton button = new JButton(listButtonText[i][j]);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        button.setFont(new Font("Roboto", Font.BOLD, 13));
         button.setFocusable(false);
+        button.setMargin(new Insets(0, 0, 0, 0));
+        button.setMinimumSize(new Dimension(30, 30));
         southPanel.add(button, gbc);
         mapButton.put(listButtonText[i][j], button);
       }
@@ -222,17 +228,20 @@ public class CalculatorView extends JFrame {
   public void toggleHistoryPanel() {
     int currentWidth = getWidth();
     int currentHeight = getHeight();
-    int currentDivider = spMain.getDividerLocation();
-    boolean isWidthMax = currentWidth >= (getGraphicsConfiguration().getBounds().getWidth());
-    if (currentDivider == currentWidth) {
-      if (!isWidthMax) {
-        setSize(currentWidth * 2, currentHeight);
-      }
-      spMain.setDividerLocation(0.5);
+    if (isHistoryOpen) {
+      pHistory.setVisible(false);
+      int targetWidth = Math.max(currentWidth / 2, MIN_WIDTH);
+      setSize(targetWidth, currentHeight);
+      isHistoryOpen = false;
     } else {
-      int minWidth = ((currentWidth / 2) >= MIN_WIDTH) ? (currentWidth / 2) : MIN_WIDTH;
-      setSize(minWidth, currentHeight);
-      spMain.setDividerLocation(minWidth);
+      pHistory.setVisible(true);
+      double maxScreenWidth = getGraphicsConfiguration().getBounds().getWidth();
+      int targetWidth = Math.min((int) maxScreenWidth, currentWidth * 2);
+      setSize(targetWidth, currentHeight);
+      SwingUtilities.invokeLater(() -> {
+        spMain.setDividerLocation(0.5);
+      });
+      isHistoryOpen = true;
     }
   }
 
