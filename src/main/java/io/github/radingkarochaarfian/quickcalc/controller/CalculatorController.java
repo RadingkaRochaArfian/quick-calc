@@ -58,9 +58,11 @@ public class CalculatorController {
   }
 
   private void initController() {
+    setRootPaneLogic();
     setButtonLogic();
     setHistoryTableContent();
     setTfInputLogic();
+    setTfDisplayLogic();
     setMenuItemLogic();
   }
 
@@ -89,6 +91,20 @@ public class CalculatorController {
     JCheckBoxMenuItem miOfflineOnly = (JCheckBoxMenuItem) mapMenuItem.get("USE_OFFLINE_ONLY");
     miOfflineOnly.setSelected(dbConfig.isUseLocalOnly());
     miOfflineOnly.addActionListener(new OfflineOnlyMenuItemHandler(view, dbConfig, dbInit));
+  }
+
+  private void setTfDisplayLogic() {
+    JTextField tfDisplay = view.getTfDisplay();
+    tfDisplay.addKeyListener(new KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+          case KeyEvent.VK_ESCAPE:
+            view.getRootPane().requestFocus();
+            break;
+
+        }
+      }
+    });
   }
 
   private void setTfInputLogic() {
@@ -214,7 +230,7 @@ public class CalculatorController {
     }
   }
 
-  private void setButtonLogic() {
+  private void setRootPaneLogic() {
     JTextField tfInput = view.getTfInput();
     view.getRootPane().addKeyListener(new KeyAdapter() {
 
@@ -228,6 +244,9 @@ public class CalculatorController {
             setButtonText(listBeforeCtrl, listAfterCtrl);
             break;
           case KeyEvent.VK_BACK_SPACE:
+            if (isResultState) {
+              break;
+            }
             String currText = tfInput.getText();
             String newText = currText.substring(0, currText.length() - 1);
             if (newText.isEmpty()) {
@@ -316,7 +335,9 @@ public class CalculatorController {
       }
 
     });
-    setButtonUnfocusable();
+  }
+
+  private void setButtonLogic() {
     setNumberButtonLogic();
     setOperatorButtonLogic();
     setPlusMinusButtonLogic();
@@ -332,12 +353,6 @@ public class CalculatorController {
     setDeleteHistoryButtonLogic();
     setLeftButtonLogic();
     setRightButtonLogic();
-  }
-
-  private void setButtonUnfocusable() {
-    view.getMapButton().values().forEach(btn -> {
-      btn.setFocusable(false);
-    });
   }
 
   private void setRightButtonLogic() {
@@ -421,6 +436,7 @@ public class CalculatorController {
 
   private void setEqualButtonLogic() {
     JTextField tfInput = view.getTfInput();
+    JTextField tfDisplay = view.getTfDisplay();
     JButton bEqual = view.getMapButton().get("=");
     bEqual.addActionListener(e -> {
       if (isResultState) {
@@ -437,6 +453,7 @@ public class CalculatorController {
         String formattedResult = (evalResult % 1 == 0)
             ? String.valueOf((long) evalResult)
             : String.valueOf(evalResult);
+        tfDisplay.setText(expression + " = " + formattedResult);
 
         HistoryEntry savedEntry = backupService.saveHistory(expression, formattedResult);
         List<String> listToken = model.getListHistoryInput();
@@ -451,10 +468,12 @@ public class CalculatorController {
         isResultState = true;
       } catch (Exception ex) {
         tfInput.setText("Error");
+        tfDisplay.setText(model.getExpressionOnString() + " = Error");
         model.clearState();
         isResultState = true;
         Timer errorTimer = new Timer(200, eT -> {
           tfInput.setText("0");
+          tfDisplay.setText("0");
         });
         errorTimer.setRepeats(false);
         errorTimer.start();
@@ -481,6 +500,7 @@ public class CalculatorController {
     bClear.addActionListener(e -> {
       model.truncateBelow();
       tfInput.setText("0");
+      updateTfDisplay();
     });
   }
 
@@ -548,6 +568,7 @@ public class CalculatorController {
           model.addInput(currText);
           tfInput.setText(textLabel);
           isResultState = false;
+          updateTfDisplay();
           return;
         }
         int caretPos = tfInput.isFocusOwner() ? tfInput.getCaretPosition() : currText.length();
@@ -560,11 +581,12 @@ public class CalculatorController {
           model.addInput(tfInput.getText());
           tfInput.setText(textLabel);
         }
+        updateTfDisplay();
       });
     }
   }
 
-  private void setNumberButtonLogic() {// todo: tfdisplay
+  private void setNumberButtonLogic() {
     JTextField tfInput = view.getTfInput();
     for (String textLabel : getListOfNum()) {
       JButton btnNum = view.getMapButton().get(textLabel);
@@ -574,12 +596,14 @@ public class CalculatorController {
           model.clearState();
           tfInput.setText(textLabel.equals(".") ? "0." : textLabel);
           isResultState = false;
+          updateTfDisplay();
           return;
         }
         String currentText = tfInput.getText();
         if (CalculatorUtils.isOperator(currentText)) {
           model.addInput(currentText);
           tfInput.setText(textLabel.equals(".") ? "0." : textLabel);
+          updateTfDisplay();
           return;
         }
         if (currentText.equals("0") && !textLabel.equals(".")) {
@@ -590,6 +614,7 @@ public class CalculatorController {
           }
           tfInput.setText(currentText + textLabel);
         }
+        updateTfDisplay();
       });
     }
   }
@@ -597,6 +622,17 @@ public class CalculatorController {
   private void setButtonText(List<String> listTextBefore, List<String> listTextAfter) {
     for (int i = 0; i < listTextBefore.size(); i++) {
       view.getMapButton().get(listTextBefore.get(i)).setText(listTextAfter.get(i));
+    }
+  }
+
+  private void updateTfDisplay() {
+    JTextField tfInput = view.getTfInput();
+    JTextField tfDisplay = view.getTfDisplay();
+    String currentExpression = model.getExpressionOnString();
+    if (currentExpression.isEmpty()) {
+      tfDisplay.setText(tfInput.getText());
+    } else {
+      tfDisplay.setText(currentExpression + " " + tfInput.getText());
     }
   }
 
