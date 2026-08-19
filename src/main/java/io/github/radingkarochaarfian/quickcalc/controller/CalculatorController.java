@@ -375,6 +375,7 @@ public class CalculatorController {
     JButton bRestore = view.getMapButton().get("Restore");
     JTable tHistory = view.getTHistory();
     JTextField tfInput = view.getTfInput();
+    JTextField tfDisplay = view.getTfDisplay();
     bRestore.addActionListener(e -> {
       int selectedRow = tHistory.getSelectedRow();
       if (selectedRow == -1) {
@@ -382,10 +383,10 @@ public class CalculatorController {
         return;
       }
       HistoryEntry selectedEntry = hModel.getHistoryEntryAt(selectedRow);
-      List<String> restoredListInput = model.restoreInput(selectedEntry.getListHistoryInput());
-      isResultState = false;
-      tfInput.setText(restoredListInput.get(restoredListInput.size() - 1));
-      view.getMapButton().get("=").doClick();
+      model.restoreInput(selectedEntry.getListHistoryInput());
+      tfDisplay.setText(selectedEntry.getExpression() + " = " + selectedEntry.getResult());
+      tfInput.setText(selectedEntry.getResult());
+      isResultState = true;
     });
   }
 
