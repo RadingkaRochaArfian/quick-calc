@@ -351,8 +351,13 @@ public class CalculatorController {
     setDownButtonLogic();
     setClearHistoryButtonLogic();
     setDeleteHistoryButtonLogic();
+    setRestoreHistoryButtonLogic();
     setLeftButtonLogic();
     setRightButtonLogic();
+  }
+
+  private void setRestoreHistoryButtonLogic() {
+    JButton bRestore = view.getMapButton().get("Restore");
   }
 
   private void setRightButtonLogic() {

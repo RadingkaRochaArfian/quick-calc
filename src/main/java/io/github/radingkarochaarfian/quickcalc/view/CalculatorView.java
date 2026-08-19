@@ -172,6 +172,7 @@ public class CalculatorView extends JFrame {
     northPanelWest.setLayout(new BorderLayout(0, 3));
     for (String s : List.of("▲", "▼")) {
       JButton btn = new JButton(s);
+      btn.setFocusable(false);
       if (s.equals("▲"))
         northPanelWest.add(btn, BorderLayout.NORTH);
       else
