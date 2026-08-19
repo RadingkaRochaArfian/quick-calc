@@ -7,12 +7,13 @@ public class CalculatorModel {
   private List<String> listHistoryInput = new ArrayList<>();
   private int currIndex = -1;
 
-  public void restoreInput(List<String> listInput) {
+  public List<String> restoreInput(List<String> listInput) {
     if (listInput == null || listInput.isEmpty()) {
       clearState();
     }
-    listHistoryInput = listInput;
+    listHistoryInput = new ArrayList<>(listInput);
     currIndex = listHistoryInput.size() - 1;
+    return listHistoryInput;
   }
 
   public String moveIndexUp() {
@@ -20,7 +21,7 @@ public class CalculatorModel {
       currIndex--;
       return listHistoryInput.get(currIndex);
     }
-    return null;// check if null later
+    return null;
   }
 
   public String moveIndexDown() {
@@ -28,12 +29,14 @@ public class CalculatorModel {
       currIndex++;
       return listHistoryInput.get(currIndex);
     }
-    return null;// check if null later
+    return null;
   }
 
   public void truncateBelow() {
     if (currIndex > -1) {
       listHistoryInput = new ArrayList<>(listHistoryInput.subList(0, currIndex + 1));
+    } else if (currIndex == -1) {
+      listHistoryInput.clear();
     }
   }
 

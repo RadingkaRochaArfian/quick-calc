@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -64,6 +65,20 @@ public class CalculatorController {
     setTfInputLogic();
     setTfDisplayLogic();
     setMenuItemLogic();
+    setTHistoryLogic();
+  }
+
+  private void setTHistoryLogic() {
+    JTable tHistory = view.getTHistory();
+    tHistory.addKeyListener(new KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+          case KeyEvent.VK_ESCAPE:
+            view.getRootPane().requestFocus();
+            break;
+        }
+      }
+    });
   }
 
   private void setMenuItemLogic() {
@@ -358,6 +373,20 @@ public class CalculatorController {
 
   private void setRestoreHistoryButtonLogic() {
     JButton bRestore = view.getMapButton().get("Restore");
+    JTable tHistory = view.getTHistory();
+    JTextField tfInput = view.getTfInput();
+    bRestore.addActionListener(e -> {
+      int selectedRow = tHistory.getSelectedRow();
+      if (selectedRow == -1) {
+        CalculatorUtils.showInformation(view, "Select a row first.");
+        return;
+      }
+      HistoryEntry selectedEntry = hModel.getHistoryEntryAt(selectedRow);
+      List<String> restoredListInput = model.restoreInput(selectedEntry.getListHistoryInput());
+      isResultState = false;
+      tfInput.setText(restoredListInput.get(restoredListInput.size() - 1));
+      view.getMapButton().get("=").doClick();
+    });
   }
 
   private void setRightButtonLogic() {
