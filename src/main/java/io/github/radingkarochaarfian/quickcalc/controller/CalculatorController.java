@@ -703,7 +703,7 @@ public class CalculatorController {
   }
 
   public String togglePlusMinusAt(String text, int caretPosition) {
-    if (text.isEmpty() || text == null || text.equals("0")) {
+    if (text.isEmpty() || text.equals("0")) {
       return text;
     }
     boolean insideBracket = isCaretInsideBracket(text, caretPosition);

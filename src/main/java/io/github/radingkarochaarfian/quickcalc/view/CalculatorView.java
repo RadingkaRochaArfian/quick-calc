@@ -44,9 +44,22 @@ public class CalculatorView extends JFrame {
     setTitle("0 - QuickCalc");
     getRootPane().setFocusable(true);
     setLocationRelativeTo(null);
+    setRootPaneListeners();
+  }
+
+  private void setRootPaneListeners() {
     addComponentListener(new ComponentAdapter() {
       public void componentResized(ComponentEvent e) {
         updateButtonFontSize();
+        SwingUtilities.invokeLater(() -> {
+          if (isHistoryOpen) {
+            spMain.setResizeWeight(0.5);
+            spMain.setDividerLocation(.5);
+          } else {
+            spMain.setResizeWeight(1.);
+            spMain.setDividerLocation(1.);
+          }
+        });
       }
     });
   }
@@ -65,6 +78,7 @@ public class CalculatorView extends JFrame {
     setNorthComponentHistory(pHistory);
     spMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pMain, pHistory);
     spMain.setDividerLocation(1.0);
+    spMain.setResizeWeight(1.);
     spMain.setContinuousLayout(true);
     add(spMain, BorderLayout.CENTER);
     setSpMainDivider();
@@ -107,7 +121,7 @@ public class CalculatorView extends JFrame {
     JMenuItem miShortcut = new JMenuItem("Shortcut");
     mbMain.add(mAbout);
     mAbout.add(miShortcut);
-    mapMenuItem.put("SHORTCUT", mAbout);
+    mapMenuItem.put("SHORTCUT", miShortcut);
   }
 
   private void setUserMenuItem() {
@@ -234,7 +248,8 @@ public class CalculatorView extends JFrame {
   }
 
   public void toggleFullscreen() {
-    if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
+    boolean isMaximized = (getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH;
+    if (isMaximized) {
       setExtendedState(JFrame.NORMAL);
     } else {
       setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -242,22 +257,26 @@ public class CalculatorView extends JFrame {
   }
 
   public void toggleHistoryPanel() {
+    boolean isMaximized = (getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH;
     int currentWidth = getWidth();
     int currentHeight = getHeight();
     if (isHistoryOpen) {
       pHistory.setVisible(false);
-      int targetWidth = Math.max(currentWidth / 2, MIN_WIDTH);
-      setSize(targetWidth, currentHeight);
+      if (!isMaximized) {
+        int targetWidth = Math.max(currentWidth / 2, MIN_WIDTH);
+        setSize(targetWidth, currentHeight);
+      }
       isHistoryOpen = false;
+      spMain.setDividerLocation(1.0);
     } else {
       pHistory.setVisible(true);
       double maxScreenWidth = getGraphicsConfiguration().getBounds().getWidth();
       int targetWidth = Math.min((int) maxScreenWidth, currentWidth * 2);
       setSize(targetWidth, currentHeight);
+      isHistoryOpen = true;
       SwingUtilities.invokeLater(() -> {
         spMain.setDividerLocation(0.5);
       });
-      isHistoryOpen = true;
     }
   }
 
