@@ -27,6 +27,7 @@ public class CalculatorView extends JFrame {
 
   private boolean isHistoryOpen;
   private JPanel pHistory;
+  private JPanel pMain;
 
   private JSplitPane spMain;
   private JTable tHistory;
@@ -50,7 +51,6 @@ public class CalculatorView extends JFrame {
   private void setRootPaneListeners() {
     addComponentListener(new ComponentAdapter() {
       public void componentResized(ComponentEvent e) {
-        updateButtonFontSize();
         SwingUtilities.invokeLater(() -> {
           if (isHistoryOpen) {
             spMain.setResizeWeight(0.5);
@@ -59,13 +59,14 @@ public class CalculatorView extends JFrame {
             spMain.setResizeWeight(1.);
             spMain.setDividerLocation(1.);
           }
+          updateUIFonts();
         });
       }
     });
   }
 
   private void setComponent() {
-    JPanel pMain = new JPanel(new BorderLayout(10, 10));
+    pMain = new JPanel(new BorderLayout(10, 10));
     pHistory = new JPanel(new BorderLayout(10, 10));
     pMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     pHistory.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -280,10 +281,29 @@ public class CalculatorView extends JFrame {
     }
   }
 
-  private void updateButtonFontSize() {
-    float newSize = Math.max(13f, getWidth() / 50f);
-    for (JButton btn : mapButton.values()) {
-      btn.setFont(btn.getFont().deriveFont(newSize));
+  private void updateUIFonts() {
+    int mainWidth = pMain.getWidth();
+    int historyWidth = pHistory.getWidth();
+    float btnMainSize = Math.max(13f, mainWidth / 20f);
+    float btnHistorySize = Math.max(11f, historyWidth / 25f);
+    float tfInputFontSize = Math.max(20, mainWidth / 13f);
+    float tfDisplayFontSize = Math.max(13f, historyWidth / 22f);
+    float tHistoryFontSize = Math.max(12f, historyWidth / 25f);
+    int tHistoryRowHeight = Math.max(22, (int) (tHistoryFontSize * 1.5));
+    tfInput.setFont(tfInput.getFont().deriveFont(Font.BOLD, tfInputFontSize));
+    tfDisplay.setFont(tfDisplay.getFont().deriveFont(tfDisplayFontSize));
+    tHistory.setFont(tHistory.getFont().deriveFont(tHistoryFontSize));
+    tHistory.setRowHeight(tHistoryRowHeight);
+    tHistory.getTableHeader().setFont(
+        tHistory.getTableHeader().getFont().deriveFont(Font.BOLD, tHistoryFontSize));
+    List<String> historyButtons = List.of("←", "→", "Clear", "Restore", "Delete");
+    for (var entry : mapButton.entrySet()) {
+      JButton btn = entry.getValue();
+      if (historyButtons.contains(entry.getKey())) {
+        btn.setFont(btn.getFont().deriveFont(btnHistorySize));
+      } else {
+        btn.setFont(btn.getFont().deriveFont(btnMainSize));
+      }
     }
   }
 
