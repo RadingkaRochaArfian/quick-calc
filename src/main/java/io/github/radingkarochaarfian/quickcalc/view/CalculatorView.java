@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.LayoutManager;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.HashMap;
@@ -20,8 +21,8 @@ import javax.swing.table.DefaultTableModel;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 public class CalculatorView extends JFrame {
-  private final int MIN_WIDTH = 330;
-  private final int MIN_HEIGHT = 360;
+  private int MIN_WIDTH = 490;
+  private int MIN_HEIGHT = 540;
   private JTextField tfInput;
   private HashMap<String, JButton> mapButton;
 
@@ -60,6 +61,7 @@ public class CalculatorView extends JFrame {
             spMain.setDividerLocation(1.);
           }
           updateUIFonts();
+          updateButtonGap();
         });
       }
     });
@@ -223,11 +225,7 @@ public class CalculatorView extends JFrame {
         }
         gbc.gridx = j;
         gbc.gridy = i;
-        if (j == 4) {
-          gbc.insets = new Insets(2, 5, 2, 2);
-        } else {
-          gbc.insets = new Insets(2, 2, 2, 2);
-        }
+        gbc.insets = new Insets(2, 2, 2, 2);
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         if (listButtonText[i][j].equals("=")) {
@@ -283,12 +281,16 @@ public class CalculatorView extends JFrame {
 
   private void updateUIFonts() {
     int mainWidth = pMain.getWidth();
+    int mainHeight = pMain.getWidth();
     int historyWidth = pHistory.getWidth();
-    float btnMainSize = Math.max(13f, mainWidth / 20f);
-    float btnHistorySize = Math.max(11f, historyWidth / 25f);
-    float tfInputFontSize = Math.max(20, mainWidth / 13f);
-    float tfDisplayFontSize = Math.max(13f, historyWidth / 22f);
-    float tHistoryFontSize = Math.max(12f, historyWidth / 25f);
+    int historyHeight = pHistory.getHeight();
+    float mainScale = (float) Math.sqrt(mainWidth * mainHeight);
+    float historyScale = (float) Math.sqrt(historyHeight * historyWidth);
+    float btnMainSize = Math.max(13f, mainScale / 22f);
+    float btnHistorySize = Math.max(11f, historyScale / 24f);
+    float tfInputFontSize = Math.max(20, mainScale / 16f);
+    float tfDisplayFontSize = Math.max(13f, historyScale / 24f);
+    float tHistoryFontSize = Math.max(12f, historyScale / 28f);
     int tHistoryRowHeight = Math.max(22, (int) (tHistoryFontSize * 1.5));
     tfInput.setFont(tfInput.getFont().deriveFont(Font.BOLD, tfInputFontSize));
     tfDisplay.setFont(tfDisplay.getFont().deriveFont(tfDisplayFontSize));
@@ -303,6 +305,23 @@ public class CalculatorView extends JFrame {
         btn.setFont(btn.getFont().deriveFont(btnHistorySize));
       } else {
         btn.setFont(btn.getFont().deriveFont(btnMainSize));
+      }
+    }
+  }
+
+  private void updateButtonGap() {
+    int mainWidth = pMain.getWidth();
+    int mainHeight = pMain.getHeight();
+    float mainScale = (float) Math.sqrt(mainWidth * mainHeight);
+    int mainGap = Math.max(2, Math.round(mainScale / 90f));
+    for (var entry : mapButton.entrySet()) {
+      JButton btn = entry.getValue();
+      LayoutManager layoutCheck = btn.getParent().getLayout();
+      if (layoutCheck instanceof GridBagLayout) {
+        GridBagLayout layout = (GridBagLayout) btn.getParent().getLayout();
+        GridBagConstraints gbc = layout.getConstraints(btn);
+        gbc.insets = new Insets(mainGap, mainGap, mainGap, mainGap);
+        layout.setConstraints(btn, gbc);
       }
     }
   }
