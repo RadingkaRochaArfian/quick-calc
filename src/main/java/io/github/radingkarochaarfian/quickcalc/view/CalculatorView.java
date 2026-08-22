@@ -21,8 +21,8 @@ import javax.swing.table.DefaultTableModel;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 public class CalculatorView extends JFrame {
-  private int MIN_WIDTH = 490;
-  private int MIN_HEIGHT = 540;
+  private int minWidth = 490;
+  private int minHeight = 540;
   private JTextField tfInput;
   private HashMap<String, JButton> mapButton;
 
@@ -39,7 +39,7 @@ public class CalculatorView extends JFrame {
   private HashMap<String, JMenuItem> mapMenuItem;
 
   public CalculatorView() {
-    setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
+    setMinimumSize(new Dimension(minWidth, minHeight));
     setLayout(new BorderLayout(10, 10));
     setComponent();
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -260,14 +260,18 @@ public class CalculatorView extends JFrame {
     int currentWidth = getWidth();
     int currentHeight = getHeight();
     if (isHistoryOpen) {
+      minWidth /= 2;
+      setMinimumSize(new Dimension(minWidth, minHeight));
       pHistory.setVisible(false);
       if (!isMaximized) {
-        int targetWidth = Math.max(currentWidth / 2, MIN_WIDTH);
+        int targetWidth = Math.max(currentWidth / 2, minWidth);
         setSize(targetWidth, currentHeight);
       }
       isHistoryOpen = false;
       spMain.setDividerLocation(1.0);
     } else {
+      minWidth *= 2;
+      setMinimumSize(new Dimension(minWidth, minHeight));
       pHistory.setVisible(true);
       double maxScreenWidth = getGraphicsConfiguration().getBounds().getWidth();
       int targetWidth = Math.min((int) maxScreenWidth, currentWidth * 2);
@@ -281,7 +285,7 @@ public class CalculatorView extends JFrame {
 
   private void updateUIFonts() {
     int mainWidth = pMain.getWidth();
-    int mainHeight = pMain.getWidth();
+    int mainHeight = pMain.getHeight();
     int historyWidth = pHistory.getWidth();
     int historyHeight = pHistory.getHeight();
     float mainScale = (float) Math.sqrt(mainWidth * mainHeight);
