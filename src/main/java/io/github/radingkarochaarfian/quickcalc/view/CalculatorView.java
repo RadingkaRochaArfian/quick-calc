@@ -21,12 +21,13 @@ import javax.swing.table.DefaultTableModel;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 public class CalculatorView extends JFrame {
-  private int minWidth = 490;
-  private int minHeight = 540;
+  private final int BASEWIDTH = 490;
+  private final int BASEHEIGHT = 540;
   private JTextField tfInput;
   private HashMap<String, JButton> mapButton;
 
   private boolean isHistoryOpen;
+  private boolean wasHistoryOpen;
   private JPanel pHistory;
   private JPanel pMain;
 
@@ -39,7 +40,7 @@ public class CalculatorView extends JFrame {
   private HashMap<String, JMenuItem> mapMenuItem;
 
   public CalculatorView() {
-    setMinimumSize(new Dimension(minWidth, minHeight));
+    setMinimumSize(new Dimension(BASEWIDTH, BASEHEIGHT));
     setLayout(new BorderLayout(10, 10));
     setComponent();
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -250,8 +251,19 @@ public class CalculatorView extends JFrame {
     boolean isMaximized = (getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH;
     if (isMaximized) {
       setExtendedState(JFrame.NORMAL);
+      if(isHistoryOpen){
+        double maxScreenWidth = getGraphicsConfiguration().getBounds().getWidth();
+        int newWidth=Math.min((int)(getWidth()*1.5),(int)maxScreenWidth);
+        setSize(newWidth,getHeight());
+      }else if(wasHistoryOpen){
+        int newWidth=Math.max((int)(getWidth()*.5),BASEWIDTH);
+        setSize(newWidth,getHeight());
+      }
     } else {
       setExtendedState(JFrame.MAXIMIZED_BOTH);
+      if(isHistoryOpen){
+        wasHistoryOpen=true;
+      }
     }
   }
 
@@ -260,23 +272,23 @@ public class CalculatorView extends JFrame {
     int currentWidth = getWidth();
     int currentHeight = getHeight();
     if (isHistoryOpen) {
-      minWidth /= 2;
-      setMinimumSize(new Dimension(minWidth, minHeight));
+      isHistoryOpen = false;
+      setMinimumSize(new Dimension(BASEWIDTH, BASEHEIGHT));
       pHistory.setVisible(false);
       if (!isMaximized) {
-        int targetWidth = Math.max(currentWidth / 2, minWidth);
+        int targetWidth = Math.max(currentWidth / 2, BASEWIDTH);
         setSize(targetWidth, currentHeight);
       }
-      isHistoryOpen = false;
       spMain.setDividerLocation(1.0);
     } else {
-      minWidth *= 2;
-      setMinimumSize(new Dimension(minWidth, minHeight));
-      pHistory.setVisible(true);
-      double maxScreenWidth = getGraphicsConfiguration().getBounds().getWidth();
-      int targetWidth = Math.min((int) maxScreenWidth, currentWidth * 2);
-      setSize(targetWidth, currentHeight);
       isHistoryOpen = true;
+      setMinimumSize(new Dimension(BASEWIDTH*2, BASEHEIGHT));
+      pHistory.setVisible(true);
+      if(!isMaximized){
+        double maxScreenWidth = getGraphicsConfiguration().getBounds().getWidth();
+        int targetWidth = Math.min((int) maxScreenWidth, currentWidth * 2);
+        setSize(targetWidth, currentHeight);
+      }
       SwingUtilities.invokeLater(() -> {
         spMain.setDividerLocation(0.5);
       });
