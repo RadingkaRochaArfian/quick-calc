@@ -36,6 +36,7 @@ public class CalculatorController {
   private final DatabaseInit dbInit;
   private final HistoryBackupService backupService;
   private boolean isResultState;
+  private boolean wasRestored;
 
   private static final List<String> listBeforeCtrl = List.of("÷", "=", "×", "+/-", "C", "AC");
   private static final List<String> listAfterCtrl = List.of("/", "↲", "*", "\\", "ESC", "DEL");
@@ -387,6 +388,8 @@ public class CalculatorController {
       tfDisplay.setText(selectedEntry.getExpression() + " = " + selectedEntry.getResult());
       tfInput.setText(selectedEntry.getResult());
       isResultState = true;
+      wasRestored=true;
+      view.getRootPane().requestFocus();
     });
   }
 
@@ -455,7 +458,13 @@ public class CalculatorController {
     JButton bUp = view.getMapButton().get("▲");
     JTextField tfInput = view.getTfInput();
     bUp.addActionListener(e -> {
-      String token = model.moveIndexUp();
+      String token;
+      if(wasRestored){
+        token = model.getListHistoryInput().get(model.getCurrentIndex());
+        wasRestored=false;
+      }else{
+        token = model.moveIndexUp();
+      }
       if (token != null && !token.isEmpty()) {
         tfInput.setText(token);
       }

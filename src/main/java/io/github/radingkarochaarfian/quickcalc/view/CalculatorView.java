@@ -258,6 +258,7 @@ public class CalculatorView extends JFrame {
       }else if(wasHistoryOpen){
         int newWidth=Math.max((int)(getWidth()*.5),BASEWIDTH);
         setSize(newWidth,getHeight());
+        wasHistoryOpen=false;
       }
     } else {
       setExtendedState(JFrame.MAXIMIZED_BOTH);
